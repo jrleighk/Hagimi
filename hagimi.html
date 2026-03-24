@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HAGIMI Whisky Cask Advisor</title>
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --card: #ffffff;
+      --text: #1f1f1f;
+      --muted: #666;
+      --border: #e5e5e5;
+      --primary: #1f6feb;
+      --primary-hover: #1557b0;
+      --secondary: #f1f3f5;
+      --success: #1a7f37;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, #fafaf8 0%, #f2f2ef 100%);
+      color: var(--text);
+      padding: 24px;
+    }
+
+    .app {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .header {
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      margin: 0 0 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 140px;
+      resize: vertical;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      font-size: 16px;
+      line-height: 1.5;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #fcfcfc;
+    }
+
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(31, 111, 235, 0.12);
+      background: #fff;
+    }
+
+    .hint {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.05s ease, background 0.2s ease, opacity 0.2s ease;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #e9ecef;
+    }
+
+    .btn-copy {
+      background: #eef7ee;
+      color: var(--success);
+      border: 1px solid #cde7d0;
+    }
+
+    .btn-copy:hover {
+      background: #e4f3e6;
+    }
+
+    .status {
+      margin-top: 18px;
+      min-height: 24px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .output-card {
+      margin-top: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: #fbfbfb;
+    }
+
+    .output-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .output-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    #output {
+      padding: 22px 20px 24px;
+      white-space: pre-wrap;
+      line-height: 1.7;
+      font-size: 15px;
+      min-height: 180px;
+      background: #fff;
+    }
+
+    .placeholder {
+      color: #999;
+    }
+
+    .loading::after {
+      content: " ...";
+      animation: dots 1.2s steps(3, end) infinite;
+    }
+
+    @keyframes dots {
+      0%, 20% { content: " ."; }
+      40% { content: " .."; }
+      60%, 100% { content: " ..."; }
+    }
+
+    .footer-note {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #888;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 14px;
+      }
+
+      .title {
+        font-size: 26px;
+      }
+
+      textarea {
+        min-height: 120px;
+        font-size: 16px;
+      }
+
+      .output-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .output-actions {
+        width: 100%;
+      }
+
+      .output-actions button {
+        flex: 1 1 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <h1 class="title">🥃 HAGIMI Whisky Cask Advisor</h1>
+      <p class="subtitle">
+        Enter your whisky cask details below. HAGIMI will return pricing analysis,
+        market positioning, profit estimates, and a client-facing sales message.
+      </p>
+    </div>
+
+    <div class="card">
+      <label for="input" class="label">Cask input</label>
+      <textarea
+        id="input"
+        placeholder="Example: Macallan 1990 sherry cask, bottled in 2026 (36 years old), cost £1750 per bottle, estimated 250 bottles, target Hong Kong"
+      ></textarea>
+
+      <div class="hint">
+        Press <strong>Enter</strong> to analyze. Press <strong>Shift + Enter</strong> for a new line.
+      </div>
+
+      <div class="toolbar">
+        <button class="btn-primary" onclick="send()">Analyze</button>
+        <button class="btn-secondary" onclick="fillExample()">Use example</button>
+        <button class="btn-secondary" onclick="clearAll()">Clear</button>
+      </div>
+
+      <div id="status" class="status"></div>
+    </div>
+
+    <div class="output-card">
+      <div class="output-header">
+        <h2 class="output-title">Analysis Result</h2>
+        <div class="output-actions">
+          <button class="btn-copy" onclick="copyOutput()">Copy result</button>
+        </div>
+      </div>
+      <div id="output" class="placeholder">Your result will appear here.</div>
+    </div>
+
+    <div class="footer-note">
+      Powered by your Make + HAGIMI workflow.
+    </div>
+  </div>
+
+  <script>
+    const webhookUrl = "https://hook.eu1.make.com/q7aux9niyxc179nk1vjj9fuyr9o7wg86?msg=";
+
+    const inputEl = document.getElementById("input");
+    const outputEl = document.getElementById("output");
+    const statusEl = document.getElementById("status");
+
+    inputEl.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        send();
+      }
+    });
+
+    function fillExample() {
+      inputEl.value = "Macallan 1990 sherry cask, bottled in 2026 (36 years old), cost £1750 per bottle, estimated 250 bottles, target Hong Kong";
+      inputEl.focus();
+    }
+
+    function clearAll() {
+      inputEl.value = "";
+      outputEl.textContent = "Your result will appear here.";
+      outputEl.className = "placeholder";
+      statusEl.textContent = "";
+      inputEl.focus();
+    }
+
+    async function send() {
+      const input = inputEl.value.trim();
+
+      if (!input) {
+        statusEl.textContent = "Please enter your cask details first.";
+        outputEl.textContent = "Your result will appear here.";
+        outputEl.className = "placeholder";
+        return;
+      }
+
+      statusEl.textContent = "Analyzing";
+      statusEl.className = "status loading";
+      outputEl.textContent = "Please wait while HAGIMI analyzes your request.";
+      outputEl.className = "";
+
+      try {
+        const response = await fetch(webhookUrl + encodeURIComponent(input), {
+          method: "GET"
+        });
+
+        const data = await response.text();
+
+        outputEl.textContent = data;
+        outputEl.className = "";
+        statusEl.textContent = "Analysis complete.";
+        statusEl.className = "status";
+      } catch (error) {
+        outputEl.textContent = "Error: " + error;
+        outputEl.className = "";
+        statusEl.textContent = "Request failed.";
+        statusEl.className = "status";
+      }
+    }
+
+    async function copyOutput() {
+      const text = outputEl.textContent.trim();
+
+      if (!text || text === "Your result will appear here.") {
+        statusEl.textContent = "There is no result to copy yet.";
+        statusEl.className = "status";
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(text);
+        statusEl.textContent = "Result copied.";
+        statusEl.className = "status";
+      } catch (error) {
+        statusEl.textContent = "Copy failed. Please copy manually.";
+        statusEl.className = "status";
+      }
+    }
+  </script>
+</body>
+</html>
