@@ -27,7 +27,7 @@
       --accent-2: #7dd3fc;
       --user: #1e293b;
       --assistant: #132238;
-      --shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+      --shadow: 0 16px 40px rgba(0,0,0,0.28);
       --radius: 18px;
     }
 
@@ -348,7 +348,7 @@
         <img class="brand-icon" src="hagimi-icon.png" alt="HAGIMI icon" />
         <div class="brand-text">
           <h1 class="title">HAGIMI</h1>
-          <p class="subtitle">Blue Cat Asset Advisor · Whisky Cask Analysis · Local History Enabled</p>
+          <p class="subtitle">Blue Cat Advisor · Whisky Cask Pricing · Deal Assistant · Local History</p>
         </div>
       </div>
 
@@ -384,7 +384,7 @@
 
   <script>
     const webhookUrl = "https://hook.eu1.make.com/q7aux9niyxc179nk1vjj9fuyr9o7wg86?msg=";
-    const storageKey = "hagimi_chat_history_v2";
+    const storageKey = "hagimi_chat_history_v3";
 
     const chatEl = document.getElementById("chat");
     const inputEl = document.getElementById("input");
@@ -449,7 +449,7 @@
       if (!history.length) {
         addMessageToDOM(
           "assistant",
-          "Hello. I am HAGIMI, your blue cat advisor for whisky cask pricing, market positioning, and commercial strategy. Send me your cask details and I will analyze them for you.",
+          "Hello. I am HAGIMI, your blue cat advisor for whisky cask pricing, deal filtering, market positioning, and commercial strategy. Send me your cask details and I will analyze them for you.",
           "HAGIMI"
         );
         chatEl.scrollTop = chatEl.scrollHeight;
