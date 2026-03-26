@@ -100,6 +100,7 @@
       cursor: pointer;
       text-decoration: none;
       display: inline-block;
+      transition: 0.18s ease;
     }
 
     .btn:hover {
@@ -188,6 +189,7 @@
     .stat-value {
       font-size: 18px;
       font-weight: 800;
+      line-height: 1.4;
     }
 
     .bar {
@@ -223,6 +225,10 @@
       border: none;
       flex: 1;
       text-align: center;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
     }
 
     @media (max-width: 980px) {
@@ -288,7 +294,8 @@
         targetMarket: "Target Market",
         soldPercentage: "Sold Percentage",
         viewLaunch: "View Launch",
-        requestAllocation: "Request Allocation"
+        requestAllocation: "Request Allocation",
+        viewCask: "View Cask"
       },
       zh: {
         pageTitle: "HAGIMI 市场",
@@ -305,7 +312,8 @@
         targetMarket: "目标市场",
         soldPercentage: "已售比例",
         viewLaunch: "查看发售",
-        requestAllocation: "登记认购"
+        requestAllocation: "登记认购",
+        viewCask: "查看酒桶"
       }
     };
 
@@ -333,7 +341,22 @@
       projects.forEach(project => {
         const available = project.tokenSupply - project.sold;
         const soldPercent = ((project.sold / project.tokenSupply) * 100).toFixed(1);
-        const tokenPrice = calculateTokenPrice(project);
+
+        const tokenPriceGBP = typeof calculateTokenPriceGBP === "function"
+          ? calculateTokenPriceGBP(project)
+          : (1 + (project.sold / project.tokenSupply) * 0.6);
+
+        const tokenPriceUSD = typeof calculateTokenPriceUSD === "function"
+          ? calculateTokenPriceUSD(project)
+          : tokenPriceGBP * (typeof GBP_TO_USD !== "undefined" ? GBP_TO_USD : 1.27);
+
+        const tokenPriceUSDT = typeof calculateTokenPriceUSDT === "function"
+          ? calculateTokenPriceUSDT(project)
+          : tokenPriceUSD;
+
+        const totalValueUSD = typeof toUSD === "function"
+          ? toUSD(project.totalValue)
+          : project.totalValue * (typeof GBP_TO_USD !== "undefined" ? GBP_TO_USD : 1.27);
 
         const card = document.createElement("div");
         card.className = "card";
@@ -353,24 +376,35 @@
           <div class="stats">
             <div class="stat">
               <div class="stat-label">${t.estimatedValue}</div>
-              <div class="stat-value">${formatCurrencyGBP(project.totalValue)}</div>
+              <div class="stat-value">
+                £${Number(project.totalValue).toLocaleString()}<br>
+                $${Number(totalValueUSD).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+              </div>
             </div>
+
             <div class="stat">
               <div class="stat-label">${t.tokenPrice}</div>
-              <div class="stat-value">£${tokenPrice.toFixed(2)}</div>
+              <div class="stat-value">
+                £${tokenPriceGBP.toFixed(2)}<br>
+                $${tokenPriceUSD.toFixed(2)} / ${tokenPriceUSDT.toFixed(2)} USDT
+              </div>
             </div>
+
             <div class="stat">
               <div class="stat-label">${t.sold}</div>
               <div class="stat-value">${project.sold.toLocaleString()}</div>
             </div>
+
             <div class="stat">
               <div class="stat-label">${t.available}</div>
               <div class="stat-value">${available.toLocaleString()}</div>
             </div>
+
             <div class="stat">
               <div class="stat-label">${t.suitability}</div>
               <div class="stat-value">${project.suitabilityScore}/10</div>
             </div>
+
             <div class="stat">
               <div class="stat-label">${t.targetMarket}</div>
               <div class="stat-value" style="font-size:14px">${project.targetMarket}</div>
@@ -387,7 +421,8 @@
 
           <div class="card-actions">
             <a class="btn btn-primary" href="token.html?project=${project.id}">${t.viewLaunch}</a>
-            <a class="btn" href="${getAllocationLink(project.id)}">${t.requestAllocation}</a>
+            <a class="btn" href="${typeof getAllocationLink === "function" ? getAllocationLink(project.id) : `allocation.html?project=${encodeURIComponent(project.id)}`}">${t.requestAllocation}</a>
+            <a class="btn" href="cask.html?project=${encodeURIComponent(project.id)}">${t.viewCask}</a>
           </div>
         `;
 
