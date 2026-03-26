@@ -17,9 +17,7 @@
   <style>
     :root {
       --bg: #0b1220;
-      --bg-soft: #111b2e;
       --panel: rgba(15, 23, 42, 0.88);
-      --panel-2: rgba(20, 30, 52, 0.92);
       --text: #e5eefc;
       --muted: #9fb0cf;
       --border: rgba(148, 163, 184, 0.18);
@@ -28,7 +26,6 @@
       --user: #1e293b;
       --assistant: #132238;
       --shadow: 0 16px 40px rgba(0,0,0,0.28);
-      --radius: 18px;
     }
 
     * {
@@ -354,6 +351,7 @@
 
       <div class="actions">
         <button class="btn-secondary" onclick="fillExample()">Use example</button>
+        <button class="btn-secondary" onclick="openTokenPage()">Token Launch</button>
         <button class="btn-secondary" onclick="copyLastReply()">Copy last reply</button>
         <button class="btn-secondary" onclick="exportHistory()">Export history</button>
         <button class="btn-secondary" onclick="clearChat()">Clear chat</button>
@@ -384,7 +382,7 @@
 
   <script>
     const webhookUrl = "https://hook.eu1.make.com/q7aux9niyxc179nk1vjj9fuyr9o7wg86?msg=";
-    const storageKey = "hagimi_chat_history_v3";
+    const storageKey = "hagimi_chat_history_v4";
 
     const chatEl = document.getElementById("chat");
     const inputEl = document.getElementById("input");
@@ -398,6 +396,10 @@
         sendMessage();
       }
     });
+
+    function openTokenPage() {
+      window.location.href = "token.html";
+    }
 
     function getHistory() {
       try {
