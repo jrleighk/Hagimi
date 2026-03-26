@@ -14,7 +14,7 @@ font-family:-apple-system,BlinkMacSystemFont,sans-serif;
 }
 
 .container{
-max-width:700px;
+max-width:760px;
 margin:auto;
 padding:20px;
 }
@@ -23,10 +23,46 @@ padding:20px;
 background:#111b2e;
 padding:22px;
 border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
 }
 
-h1{margin:0 0 10px;font-size:26px;}
-.sub{color:#9fb0cf;margin-bottom:14px;}
+.topbar{
+display:flex;
+justify-content:space-between;
+margin-bottom:12px;
+}
+
+h1{margin:0 0 8px;font-size:26px;}
+.sub{color:#9fb0cf;margin-bottom:16px;line-height:1.6;}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-bottom:12px;
+}
+
+.mini{
+background:#1e293b;
+padding:12px;
+border-radius:12px;
+}
+
+.label{font-size:12px;color:#9fb0cf;}
+.value{font-size:18px;font-weight:800;line-height:1.4;}
+
+.bar{
+height:10px;
+background:#1e293b;
+border-radius:999px;
+margin:12px 0;
+}
+
+.fill{
+height:100%;
+background:#5fa8ff;
+width:0%;
+}
 
 input,textarea{
 width:100%;
@@ -53,14 +89,8 @@ cursor:pointer;
 .primary{background:#5fa8ff;color:#08111f;}
 .secondary{background:#1e293b;color:#fff;}
 
-.topbar{
-display:flex;
-justify-content:space-between;
-margin-bottom:12px;
-}
-
 .status{
-margin-top:10px;
+margin-top:12px;
 color:#cbd5e1;
 }
 </style>
@@ -80,6 +110,15 @@ color:#cbd5e1;
 <h1 id="title"></h1>
 <div class="sub" id="subtitle"></div>
 
+<div class="grid">
+<div class="mini"><div class="label" id="l1"></div><div class="value" id="v1"></div></div>
+<div class="mini"><div class="label" id="l2"></div><div class="value" id="v2"></div></div>
+<div class="mini"><div class="label" id="l3"></div><div class="value" id="price"></div></div>
+<div class="mini"><div class="label" id="l4"></div><div class="value" id="sold"></div></div>
+</div>
+
+<div class="bar"><div id="fill" class="fill"></div></div>
+
 <input id="name" placeholder="">
 <input id="contact" placeholder="">
 <input id="amount" placeholder="">
@@ -97,41 +136,52 @@ color:#cbd5e1;
 <script>
 
 const webhookUrl = "YOUR_MAKE_WEBHOOK_URL_HERE";
+const GBP_TO_USD = 1.27;
 
 let lang = localStorage.getItem("hagimi_lang") || "en";
 
 const t = {
 en:{
-title:"Request Allocation",
-sub:"Submit your interest for this whisky asset.",
+l1:"Total Value",
+l2:"Token Supply",
+l3:"Token Price",
+l4:"Sold",
+sub:"Submit your allocation request for this whisky-backed asset.",
 name:"Your Name",
 contact:"WhatsApp / WeChat / Email",
-amount:"Requested Amount",
+amount:"Requested Token Amount",
 notes:"Notes",
-submit:"Submit Request",
+submit:"Submit Allocation",
 back:"Back",
-success:"Submitted successfully",
-error:"Submission failed"
+success:"Allocation submitted successfully",
+loading:"Submitting..."
 },
 zh:{
-title:"认购登记",
-sub:"提交你的认购意向",
+l1:"总价值",
+l2:"Token总量",
+l3:"Token价格",
+l4:"已售",
+sub:"提交该威士忌资产的认购申请",
 name:"姓名",
 contact:"联系方式（微信/电话/邮箱）",
-amount:"认购数量",
+amount:"认购Token数量",
 notes:"备注",
-submit:"提交",
+submit:"提交认购",
 back:"返回",
 success:"提交成功",
-error:"提交失败"
+loading:"提交中..."
 }
 };
 
 function apply(){
 let tr=t[lang];
 
-document.getElementById("title").innerText=tr.title;
 document.getElementById("subtitle").innerText=tr.sub;
+
+document.getElementById("l1").innerText=tr.l1;
+document.getElementById("l2").innerText=tr.l2;
+document.getElementById("l3").innerText=tr.l3;
+document.getElementById("l4").innerText=tr.l4;
 
 document.getElementById("name").placeholder=tr.name;
 document.getElementById("contact").placeholder=tr.contact;
@@ -146,12 +196,44 @@ function toggleLang(){
 lang=lang==="en"?"zh":"en";
 localStorage.setItem("hagimi_lang",lang);
 apply();
+update();
 }
 
 const params = new URLSearchParams(window.location.search);
 const project = getProjectById(params.get("project"));
 
+document.getElementById("title").innerText = project.name;
+
+let sold = project.sold;
+let total = project.tokenSupply;
+
+function update(){
+
+const totalUSD = project.totalValue * GBP_TO_USD;
+
+const tokenPriceGBP = 1 + (sold / total) * 0.6;
+const tokenPriceUSD = tokenPriceGBP * GBP_TO_USD;
+const tokenPriceUSDT = tokenPriceUSD;
+
+document.getElementById("v1").innerHTML =
+  "£" + project.totalValue.toLocaleString() +
+  "<br>$" + totalUSD.toLocaleString(undefined,{maximumFractionDigits:0});
+
+document.getElementById("v2").innerText = total.toLocaleString();
+
+document.getElementById("sold").innerText = sold.toLocaleString();
+
+document.getElementById("price").innerHTML =
+  "£" + tokenPriceGBP.toFixed(2) +
+  "<br>$" + tokenPriceUSD.toFixed(2) +
+  " / " + tokenPriceUSDT.toFixed(2) + " USDT";
+
+document.getElementById("fill").style.width = (sold / total * 100) + "%";
+}
+
 async function submit(){
+
+const tr=t[lang];
 
 const name = document.getElementById("name").value.trim();
 const contact = document.getElementById("contact").value.trim();
@@ -161,11 +243,11 @@ const notes = document.getElementById("notes").value.trim();
 const status = document.getElementById("status");
 
 if(!name || !contact || !amount){
-status.innerText="Please fill required fields";
+status.innerText="Please complete required fields";
 return;
 }
 
-status.innerText="Submitting...";
+status.innerText = tr.loading;
 
 try{
 
@@ -182,7 +264,7 @@ notes
 })
 });
 
-status.innerText = t[lang].success;
+status.innerText = tr.success;
 
 document.getElementById("name").value="";
 document.getElementById("contact").value="";
@@ -190,7 +272,7 @@ document.getElementById("amount").value="";
 document.getElementById("notes").value="";
 
 }catch(e){
-status.innerText = t[lang].error;
+status.innerText="Error";
 }
 
 }
@@ -200,6 +282,7 @@ location.href="marketplace.html";
 }
 
 apply();
+update();
 
 </script>
 
