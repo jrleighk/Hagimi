@@ -21,9 +21,7 @@
       --shadow: 0 16px 40px rgba(0,0,0,0.28);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     html, body {
       margin: 0;
@@ -216,6 +214,7 @@
       display: flex;
       gap: 10px;
       margin-top: auto;
+      flex-wrap: wrap;
     }
 
     .btn-primary {
@@ -226,32 +225,15 @@
       text-align: center;
     }
 
-    .btn-primary:hover {
-      filter: brightness(1.05);
-    }
-
     @media (max-width: 980px) {
-      .grid {
-        grid-template-columns: 1fr 1fr;
-      }
+      .grid { grid-template-columns: 1fr 1fr; }
     }
 
     @media (max-width: 680px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .stats {
-        grid-template-columns: 1fr;
-      }
-
-      h1 {
-        font-size: 24px;
-      }
-
-      .hero h2 {
-        font-size: 24px;
-      }
+      .grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+      h1 { font-size: 24px; }
+      .hero h2 { font-size: 24px; }
     }
   </style>
 </head>
@@ -347,6 +329,7 @@
 
           <div class="card-actions">
             <a class="btn btn-primary" href="token.html?project=${project.id}">View Launch</a>
+            <a class="btn" href="${getAllocationLink(project.id)}">Request Allocation</a>
           </div>
         `;
 
