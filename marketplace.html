@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HAGIMI Marketplace</title>
+
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="apple-touch-icon" href="hagimi-icon.png" />
+  <link rel="icon" type="image/png" href="hagimi-icon.png" />
+
+  <style>
+    :root {
+      --bg: #0b1220;
+      --text: #e5eefc;
+      --muted: #9fb0cf;
+      --border: rgba(148, 163, 184, 0.18);
+      --card: rgba(17, 27, 46, 0.92);
+      --accent: #5fa8ff;
+      --accent2: #7dd3fc;
+      --shadow: 0 16px 40px rgba(0,0,0,0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(59,130,246,0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(14,165,233,0.16), transparent 24%),
+        linear-gradient(180deg, #08111f 0%, #0b1220 45%, #0f172a 100%);
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(10, 17, 31, 0.72);
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .brand-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      background: #0f172a;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+      letter-spacing: -0.03em;
+    }
+
+    .sub {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .hero {
+      border: 1px solid var(--border);
+      background: rgba(17, 27, 46, 0.72);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .hero h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 760px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(125, 211, 252, 0.10);
+      color: #bde8ff;
+      font-size: 12px;
+      border: 1px solid rgba(125, 211, 252, 0.16);
+      font-weight: 700;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .bar {
+      height: 10px;
+      background: #1e293b;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      width: 0%;
+    }
+
+    .story {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+      min-height: 68px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #08111f;
+      border: none;
+      flex: 1;
+      text-align: center;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+
+    @media (max-width: 980px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .hero h2 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <img class="brand-icon" src="hagimi-icon.png" alt="HAGIMI icon" />
+        <div>
+          <h1>HAGIMI Marketplace</h1>
+          <div class="sub">Curated whisky-backed token launch demos for high-quality asset opportunities</div>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <a class="btn" href="index.html">Back to HAGIMI</a>
+      </div>
+    </div>
+
+    <div class="hero">
+      <h2>Whisky Asset Launch Board</h2>
+      <p>
+        This marketplace presents structured token launch demos for selected whisky assets.
+        Each project combines whisky fundamentals, token supply logic, suitability scoring,
+        and narrative positioning for future liquidity modeling.
+      </p>
+    </div>
+
+    <div id="projectGrid" class="grid"></div>
+  </div>
+
+  <script src="projects.js"></script>
+  <script>
+    const grid = document.getElementById("projectGrid");
+
+    function renderProjects() {
+      grid.innerHTML = "";
+
+      projects.forEach(project => {
+        const available = project.tokenSupply - project.sold;
+        const soldPercent = ((project.sold / project.tokenSupply) * 100).toFixed(1);
+        const tokenPrice = calculateTokenPrice(project);
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+          <div>
+            <span class="tag">${project.suitabilityLabel}</span>
+          </div>
+
+          <div>
+            <h3>${project.name}</h3>
+            <div class="meta">
+              ${project.caskType} · ${project.abv} · ${project.estimatedBottles} bottles
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-label">Estimated Value</div>
+              <div class="stat-value">${formatCurrencyGBP(project.totalValue)}</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Token Price</div>
+              <div class="stat-value">£${tokenPrice.toFixed(2)}</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Sold</div>
+              <div class="stat-value">${project.sold.toLocaleString()}</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Available</div>
+              <div class="stat-value">${available.toLocaleString()}</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Suitability</div>
+              <div class="stat-value">${project.suitabilityScore}/10</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Target Market</div>
+              <div class="stat-value" style="font-size:14px">${project.targetMarket}</div>
+            </div>
+          </div>
+
+          <div class="bar">
+            <div class="fill" style="width:${soldPercent}%"></div>
+          </div>
+
+          <div class="meta">Sold Percentage: ${soldPercent}%</div>
+
+          <div class="story">${project.story}</div>
+
+          <div class="card-actions">
+            <a class="btn btn-primary" href="token.html?project=${project.id}">View Launch</a>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    renderProjects();
+  </script>
+</body>
+</html>
