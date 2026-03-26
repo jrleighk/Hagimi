@@ -345,13 +345,14 @@
         <img class="brand-icon" src="hagimi-icon.png" alt="HAGIMI icon" />
         <div class="brand-text">
           <h1 class="title">HAGIMI</h1>
-          <p class="subtitle">Blue Cat Advisor · Whisky Cask Pricing · Deal Assistant · Local History</p>
+          <p class="subtitle">Blue Cat Advisor · Whisky Cask Pricing · Deal Assistant · Token Structuring · Local History</p>
         </div>
       </div>
 
       <div class="actions">
         <button class="btn-secondary" onclick="fillExample()">Use example</button>
         <button class="btn-secondary" onclick="openTokenPage()">Token Launch</button>
+        <button class="btn-secondary" onclick="openMarketplacePage()">Marketplace</button>
         <button class="btn-secondary" onclick="copyLastReply()">Copy last reply</button>
         <button class="btn-secondary" onclick="exportHistory()">Export history</button>
         <button class="btn-secondary" onclick="clearChat()">Clear chat</button>
@@ -366,7 +367,7 @@
       <div id="chat" class="chat"></div>
 
       <div class="composer">
-        <textarea id="input" placeholder="Type your cask details here..."></textarea>
+        <textarea id="input" placeholder="Type your cask, bottle, or crypto details here..."></textarea>
 
         <div class="composer-actions">
           <div class="hint">Press Enter to send · Shift + Enter for a new line</div>
@@ -382,7 +383,7 @@
 
   <script>
     const webhookUrl = "https://hook.eu1.make.com/q7aux9niyxc179nk1vjj9fuyr9o7wg86?msg=";
-    const storageKey = "hagimi_chat_history_v4";
+    const storageKey = "hagimi_chat_history_v5";
 
     const chatEl = document.getElementById("chat");
     const inputEl = document.getElementById("input");
@@ -399,6 +400,10 @@
 
     function openTokenPage() {
       window.location.href = "token.html";
+    }
+
+    function openMarketplacePage() {
+      window.location.href = "marketplace.html";
     }
 
     function getHistory() {
@@ -451,7 +456,7 @@
       if (!history.length) {
         addMessageToDOM(
           "assistant",
-          "Hello. I am HAGIMI, your blue cat advisor for whisky cask pricing, deal filtering, market positioning, and commercial strategy. Send me your cask details and I will analyze them for you.",
+          "Hello. I am HAGIMI, your blue cat advisor for whisky cask pricing, bottle analysis, deal filtering, market positioning, token structuring, and commercial strategy. Send me your asset details and I will analyze them for you.",
           "HAGIMI"
         );
         chatEl.scrollTop = chatEl.scrollHeight;
@@ -520,7 +525,7 @@
       const input = inputEl.value.trim();
 
       if (!input) {
-        statusEl.textContent = "Please enter your cask details.";
+        statusEl.textContent = "Please enter your asset details.";
         return;
       }
 
