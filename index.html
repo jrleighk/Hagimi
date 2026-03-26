@@ -344,23 +344,24 @@
       <div class="brand">
         <img class="brand-icon" src="hagimi-icon.png" alt="HAGIMI icon" />
         <div class="brand-text">
-          <h1 class="title">HAGIMI</h1>
-          <p class="subtitle">Blue Cat Advisor · Whisky Cask Pricing · Deal Assistant · Token Structuring · Local History</p>
+          <h1 class="title" id="titleText">HAGIMI</h1>
+          <p class="subtitle" id="subtitleText">Blue Cat Advisor · Whisky Cask Pricing · Deal Assistant · Token Structuring · Local History</p>
         </div>
       </div>
 
       <div class="actions">
-        <button class="btn-secondary" onclick="fillExample()">Use example</button>
-        <button class="btn-secondary" onclick="openTokenPage()">Token Launch</button>
-        <button class="btn-secondary" onclick="openMarketplacePage()">Marketplace</button>
-        <button class="btn-secondary" onclick="copyLastReply()">Copy last reply</button>
-        <button class="btn-secondary" onclick="exportHistory()">Export history</button>
-        <button class="btn-secondary" onclick="clearChat()">Clear chat</button>
+        <button class="btn-secondary" onclick="fillExample()" id="btnExample">Use example</button>
+        <button class="btn-secondary" onclick="openTokenPage()" id="btnToken">Token Launch</button>
+        <button class="btn-secondary" onclick="openMarketplacePage()" id="btnMarketplace">Marketplace</button>
+        <button class="btn-secondary" onclick="copyLastReply()" id="btnCopy">Copy last reply</button>
+        <button class="btn-secondary" onclick="exportHistory()" id="btnExport">Export history</button>
+        <button class="btn-secondary" onclick="clearChat()" id="btnClear">Clear chat</button>
+        <button class="btn-secondary" onclick="toggleLanguage()" id="btnLang">中文 / EN</button>
       </div>
     </div>
 
     <div class="shell">
-      <div class="shell-header">
+      <div class="shell-header" id="headerText">
         Your chat history is stored on this device. Reopening this page on the same phone/browser will keep your records.
       </div>
 
@@ -370,9 +371,9 @@
         <textarea id="input" placeholder="Type your cask, bottle, or crypto details here..."></textarea>
 
         <div class="composer-actions">
-          <div class="hint">Press Enter to send · Shift + Enter for a new line</div>
+          <div class="hint" id="hintText">Press Enter to send · Shift + Enter for a new line</div>
           <div class="right-actions">
-            <button class="btn-primary" onclick="sendMessage()">Send</button>
+            <button class="btn-primary" onclick="sendMessage()" id="btnSend">Send</button>
           </div>
         </div>
 
@@ -383,13 +384,72 @@
 
   <script>
     const webhookUrl = "https://hook.eu1.make.com/q7aux9niyxc179nk1vjj9fuyr9o7wg86?msg=";
-    const storageKey = "hagimi_chat_history_v6";
+    const storageKey = "hagimi_chat_history_v7";
+    const languageKey = "hagimi_lang";
 
     const chatEl = document.getElementById("chat");
     const inputEl = document.getElementById("input");
     const statusEl = document.getElementById("status");
 
     let lastAssistantReply = "";
+    let currentLang = localStorage.getItem(languageKey) || "en";
+
+    const translations = {
+      en: {
+        subtitle: "Blue Cat Advisor · Whisky Cask Pricing · Deal Assistant · Token Structuring · Local History",
+        header: "Your chat history is stored on this device. Reopening this page on the same phone/browser will keep your records.",
+        placeholder: "Type your cask, bottle, or crypto details here...",
+        hint: "Press Enter to send · Shift + Enter for a new line",
+        example: "Use example",
+        token: "Token Launch",
+        marketplace: "Marketplace",
+        copy: "Copy last reply",
+        export: "Export history",
+        clear: "Clear chat",
+        send: "Send",
+        lang: "中文 / EN",
+        welcome: "Hello. I am HAGIMI, your blue cat advisor for whisky cask pricing, bottle analysis, deal filtering, market positioning, token structuring, and commercial strategy. Send me your asset details and I will analyze them for you.",
+        welcomeLabel: "HAGIMI",
+        empty: "Please enter your asset details.",
+        sending: "Sending request...",
+        analyzing: "HAGIMI is analyzing",
+        received: "Reply received.",
+        copied: "Last reply copied.",
+        copyFail: "Copy failed. Please copy manually.",
+        noReply: "There is no assistant reply to copy yet.",
+        noHistory: "There is no history to export.",
+        exported: "History exported.",
+        cleared: "Chat history cleared.",
+        requestFail: "Request failed. Please check your network or Make scenario status."
+      },
+      zh: {
+        subtitle: "蓝猫顾问 · 威士忌酒桶定价 · 成交辅助 · Token结构 · 本地记录",
+        header: "聊天记录会保存在当前设备中。下次用同一台手机或浏览器打开时，记录仍会保留。",
+        placeholder: "请输入酒桶、单瓶威士忌或加密货币信息...",
+        hint: "按 Enter 发送 · Shift + Enter 换行",
+        example: "示例",
+        token: "Token发售",
+        marketplace: "市场",
+        copy: "复制上一条回复",
+        export: "导出记录",
+        clear: "清空聊天",
+        send: "发送",
+        lang: "中文 / EN",
+        welcome: "你好，我是 HAGIMI，你的蓝猫顾问，可协助进行威士忌酒桶定价、单瓶分析、成交判断、市场定位、Token结构设计与商业策略分析。把资产信息发给我，我会帮你分析。",
+        welcomeLabel: "HAGIMI",
+        empty: "请输入你的资产信息。",
+        sending: "正在发送请求...",
+        analyzing: "HAGIMI 正在分析",
+        received: "已收到回复。",
+        copied: "已复制上一条回复。",
+        copyFail: "复制失败，请手动复制。",
+        noReply: "目前没有可复制的回复。",
+        noHistory: "没有可导出的记录。",
+        exported: "已导出记录。",
+        cleared: "聊天记录已清空。",
+        requestFail: "请求失败，请检查网络或 Make 场景状态。"
+      }
+    };
 
     inputEl.addEventListener("keydown", function (event) {
       if (event.key === "Enter" && !event.shiftKey) {
@@ -397,6 +457,30 @@
         sendMessage();
       }
     });
+
+    function applyLanguage() {
+      const t = translations[currentLang];
+
+      document.getElementById("subtitleText").innerText = t.subtitle;
+      document.getElementById("headerText").innerText = t.header;
+      document.getElementById("input").placeholder = t.placeholder;
+      document.getElementById("hintText").innerText = t.hint;
+      document.getElementById("btnExample").innerText = t.example;
+      document.getElementById("btnToken").innerText = t.token;
+      document.getElementById("btnMarketplace").innerText = t.marketplace;
+      document.getElementById("btnCopy").innerText = t.copy;
+      document.getElementById("btnExport").innerText = t.export;
+      document.getElementById("btnClear").innerText = t.clear;
+      document.getElementById("btnSend").innerText = t.send;
+      document.getElementById("btnLang").innerText = t.lang;
+    }
+
+    function toggleLanguage() {
+      currentLang = currentLang === "en" ? "zh" : "en";
+      localStorage.setItem(languageKey, currentLang);
+      applyLanguage();
+      renderHistory();
+    }
 
     function openTokenPage() {
       window.location.href = "token.html";
@@ -451,14 +535,11 @@
 
     function renderHistory() {
       const history = getHistory();
+      const t = translations[currentLang];
       chatEl.innerHTML = "";
 
       if (!history.length) {
-        addMessageToDOM(
-          "assistant",
-          "Hello. I am HAGIMI, your blue cat advisor for whisky cask pricing, bottle analysis, deal filtering, market positioning, token structuring, and commercial strategy. Send me your asset details and I will analyze them for you.",
-          "HAGIMI"
-        );
+        addMessageToDOM("assistant", t.welcome, t.welcomeLabel);
         chatEl.scrollTop = chatEl.scrollHeight;
         return;
       }
@@ -480,6 +561,8 @@
     }
 
     function addTypingIndicator() {
+      const t = translations[currentLang];
+
       const row = document.createElement("div");
       row.className = "row assistant";
       row.id = "typingRow";
@@ -493,7 +576,7 @@
 
       const meta = document.createElement("div");
       meta.className = "meta";
-      meta.textContent = "HAGIMI is analyzing";
+      meta.textContent = t.analyzing;
 
       wrap.appendChild(bubble);
       wrap.appendChild(meta);
@@ -513,26 +596,28 @@
     }
 
     function clearChat() {
+      const t = translations[currentLang];
       localStorage.removeItem(storageKey);
       lastAssistantReply = "";
-      statusEl.textContent = "Chat history cleared.";
+      statusEl.textContent = t.cleared;
       inputEl.value = "";
       renderHistory();
       inputEl.focus();
     }
 
     async function sendMessage() {
+      const t = translations[currentLang];
       const input = inputEl.value.trim();
 
       if (!input) {
-        statusEl.textContent = "Please enter your asset details.";
+        statusEl.textContent = t.empty;
         return;
       }
 
       addMessage("user", input);
       inputEl.value = "";
       inputEl.focus();
-      statusEl.textContent = "Sending request...";
+      statusEl.textContent = t.sending;
       addTypingIndicator();
 
       try {
@@ -545,35 +630,38 @@
         removeTypingIndicator();
         addMessage("assistant", data);
         lastAssistantReply = data;
-        statusEl.textContent = "Reply received.";
+        statusEl.textContent = t.received;
       } catch (error) {
         removeTypingIndicator();
-        const err = "Request failed. Please check your network or Make scenario status.";
+        const err = t.requestFail;
         addMessage("assistant", err);
         lastAssistantReply = err;
-        statusEl.textContent = "Request failed.";
+        statusEl.textContent = t.requestFail;
       }
     }
 
     async function copyLastReply() {
+      const t = translations[currentLang];
+
       if (!lastAssistantReply) {
-        statusEl.textContent = "There is no assistant reply to copy yet.";
+        statusEl.textContent = t.noReply;
         return;
       }
 
       try {
         await navigator.clipboard.writeText(lastAssistantReply);
-        statusEl.textContent = "Last reply copied.";
+        statusEl.textContent = t.copied;
       } catch (error) {
-        statusEl.textContent = "Copy failed. Please copy manually.";
+        statusEl.textContent = t.copyFail;
       }
     }
 
     function exportHistory() {
+      const t = translations[currentLang];
       const history = getHistory();
 
       if (!history.length) {
-        statusEl.textContent = "There is no history to export.";
+        statusEl.textContent = t.noHistory;
         return;
       }
 
@@ -590,9 +678,10 @@
       a.click();
 
       URL.revokeObjectURL(url);
-      statusEl.textContent = "History exported.";
+      statusEl.textContent = t.exported;
     }
 
+    applyLanguage();
     renderHistory();
   </script>
 </body>
