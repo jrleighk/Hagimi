@@ -66,11 +66,6 @@
       line-height: 1.5;
     }
 
-    .stat {
-      margin: 10px 0;
-      font-size: 16px;
-    }
-
     .grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -154,6 +149,13 @@
       font-size: 14px;
     }
 
+    .story {
+      color: #cbd5e1;
+      line-height: 1.6;
+      margin-top: 10px;
+      margin-bottom: 14px;
+    }
+
     @media (max-width: 720px) {
       h1 {
         font-size: 24px;
@@ -177,24 +179,23 @@
 
 <div class="container">
   <div class="topbar">
-    <button class="back-btn" onclick="goBack()">← Back to HAGIMI</button>
+    <button class="back-btn" onclick="goBack()">← Back to Marketplace</button>
   </div>
 
   <div class="card">
-    <h1>Macallan 1990 Cask</h1>
-    <div class="sub">
-      HAGIMI Token Launch Demo · Whisky-backed asset tokenization concept · Demo only
-    </div>
+    <h1 id="projectName">Project</h1>
+    <div id="projectSub" class="sub"></div>
+    <div id="projectStory" class="story"></div>
 
     <div class="grid">
       <div class="mini-card">
         <div class="mini-title">Total Value</div>
-        <div class="mini-value">£327,750</div>
+        <div class="mini-value" id="totalValue">£0</div>
       </div>
 
       <div class="mini-card">
         <div class="mini-title">Token Supply</div>
-        <div class="mini-value">327,750</div>
+        <div class="mini-value" id="tokenSupply">0</div>
       </div>
 
       <div class="mini-card">
@@ -209,12 +210,22 @@
 
       <div class="mini-card">
         <div class="mini-title">Sold</div>
-        <div class="mini-value"><span id="sold">120000</span></div>
+        <div class="mini-value"><span id="sold">0</span></div>
       </div>
 
       <div class="mini-card">
         <div class="mini-title">Available</div>
-        <div class="mini-value"><span id="available">207750</span></div>
+        <div class="mini-value"><span id="available">0</span></div>
+      </div>
+
+      <div class="mini-card">
+        <div class="mini-title">Suitability</div>
+        <div class="mini-value"><span id="suitabilityScore">0</span>/10</div>
+      </div>
+
+      <div class="mini-card">
+        <div class="mini-title">Classification</div>
+        <div class="mini-value" id="suitabilityLabel">-</div>
       </div>
     </div>
 
@@ -234,21 +245,37 @@
   </div>
 </div>
 
+<script src="projects.js"></script>
 <script>
-  let total = 327750;
-  let sold = 120000;
-  let price = 1.00;
+  const params = new URLSearchParams(window.location.search);
+  const projectId = params.get("project");
+  const project = getProjectById(projectId);
+
+  let total = project.tokenSupply;
+  let sold = project.sold;
+  let price = calculateTokenPrice(project);
   let time = 300;
 
   function goBack() {
-    window.location.href = "index.html";
+    window.location.href = "marketplace.html";
+  }
+
+  function renderProject() {
+    document.getElementById("projectName").innerText = project.name;
+    document.getElementById("projectSub").innerText =
+      `${project.distillery} · ${project.vintage} · ${project.caskType} · ${project.abv} · ${project.estimatedBottles} bottles · ${project.targetMarket}`;
+    document.getElementById("projectStory").innerText = project.story;
+    document.getElementById("totalValue").innerText = formatCurrencyGBP(project.totalValue);
+    document.getElementById("tokenSupply").innerText = project.tokenSupply.toLocaleString();
+    document.getElementById("suitabilityScore").innerText = project.suitabilityScore;
+    document.getElementById("suitabilityLabel").innerText = project.suitabilityLabel;
   }
 
   function updateUI() {
     document.getElementById("sold").innerText = sold.toLocaleString();
     document.getElementById("available").innerText = (total - sold).toLocaleString();
 
-    let percent = (sold / total) * 100;
+    const percent = (sold / total) * 100;
     document.getElementById("fill").style.width = percent + "%";
 
     price = 1 + (percent / 100) * 0.6;
@@ -291,6 +318,7 @@
     }
   }, 1000);
 
+  renderProject();
   updateUI();
 </script>
 
