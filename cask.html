@@ -8,7 +8,7 @@
 <style>
 body{
 margin:0;
-background:linear-gradient(180deg,#08111f,#0f172a);
+background:linear-gradient(180deg,#05080f,#0f172a);
 color:#e5eefc;
 font-family:-apple-system,BlinkMacSystemFont,sans-serif;
 }
@@ -26,14 +26,13 @@ margin-bottom:12px;
 }
 
 .card{
-background:#111b2e;
+background:rgba(17,27,46,0.9);
 padding:22px;
 border-radius:20px;
-box-shadow:0 10px 30px rgba(0,0,0,0.3);
 margin-bottom:16px;
 }
 
-h1{margin:0 0 10px;font-size:28px;}
+h1{margin:0 0 8px;font-size:28px;}
 .sub{color:#9fb0cf;margin-bottom:14px;}
 
 .grid{
@@ -54,20 +53,13 @@ border-radius:12px;
 .timeline{
 border-left:2px solid #5fa8ff;
 padding-left:16px;
-margin-top:10px;
 }
 
-.event{
-margin-bottom:12px;
-}
-
-.event-title{
-font-weight:700;
-}
+.event{margin-bottom:14px;}
 
 .status{
-margin-top:10px;
 color:#9fb0cf;
+margin-top:6px;
 }
 </style>
 </head>
@@ -82,219 +74,144 @@ color:#9fb0cf;
 </div>
 
 <div class="card">
-<h1 id="title">Macallan 1990 Cask</h1>
-<div class="sub" id="subtitle">Cask Tracking & Asset Overview</div>
+<h1 id="title"></h1>
+<div class="sub" id="subtitle"></div>
 
 <div class="grid">
+
 <div class="mini">
-<div class="label" id="l1"></div>
-<div class="value">MAC1990-001</div>
+<div class="label">Cask ID</div>
+<div class="value" id="caskId"></div>
 </div>
 
 <div class="mini">
-<div class="label" id="l2"></div>
-<div class="value">Macallan</div>
+<div class="label">Distillery</div>
+<div class="value" id="distillery"></div>
 </div>
 
 <div class="mini">
-<div class="label" id="l3"></div>
-<div class="value">1990</div>
+<div class="label">Vintage</div>
+<div class="value" id="vintage"></div>
 </div>
 
 <div class="mini">
-<div class="label" id="l4"></div>
-<div class="value">Sherry Cask</div>
+<div class="label">Cask Type</div>
+<div class="value" id="caskType"></div>
 </div>
 
 <div class="mini">
-<div class="label" id="l5"></div>
-<div class="value">51.5%</div>
+<div class="label">ABV</div>
+<div class="value" id="abv"></div>
 </div>
 
 <div class="mini">
-<div class="label" id="l6"></div>
-<div class="value">285</div>
+<div class="label">Estimated Bottles</div>
+<div class="value" id="bottles"></div>
 </div>
+
 </div>
 </div>
 
 <div class="card">
-<h2 id="storageTitle"></h2>
+<h2>Storage</h2>
 <div class="grid">
 <div class="mini">
-<div class="label" id="l7"></div>
-<div class="value">Scotland Bonded Warehouse</div>
+<div class="label">Warehouse</div>
+<div class="value">Scotland Bonded</div>
 </div>
 <div class="mini">
-<div class="label" id="l8"></div>
+<div class="label">Region</div>
 <div class="value">Speyside</div>
 </div>
 <div class="mini">
-<div class="label" id="l9"></div>
-<div class="value">In Storage</div>
+<div class="label">Status</div>
+<div class="value">Aging</div>
 </div>
 </div>
 </div>
 
 <div class="card">
-<h2 id="timelineTitle"></h2>
+<h2>Timeline</h2>
+
 <div class="timeline">
 
 <div class="event">
-<div class="event-title">1990</div>
-<div class="status" id="t1"></div>
+<div class="value">Distilled</div>
+<div class="status" id="year"></div>
 </div>
 
 <div class="event">
-<div class="event-title">2005</div>
-<div class="status" id="t2"></div>
+<div class="value">Re-racked</div>
+<div class="status">Mid-life maturation</div>
 </div>
 
 <div class="event">
-<div class="event-title">2024</div>
-<div class="status" id="t3"></div>
+<div class="value">Selected by HAGIMI</div>
+<div class="status">2024</div>
 </div>
 
 <div class="event">
-<div class="event-title">2025</div>
-<div class="status" id="t4"></div>
+<div class="value">Tokenized</div>
+<div class="status">2025</div>
 </div>
 
 </div>
 </div>
 
 <div class="card">
-<h2 id="statusTitle"></h2>
-<div class="status" id="s1"></div>
-<div class="status" id="s2"></div>
-<div class="status" id="s3"></div>
+<h2>Status</h2>
+<div class="status">✔ Aging in progress</div>
+<div class="status">✔ Market demand increasing</div>
+<div class="status">✔ Asset-backed token linked</div>
 </div>
 
 <div class="card">
-<h2 id="tokenTitle"></h2>
+<h2>Token</h2>
+
 <div class="grid">
 <div class="mini">
-<div class="label" id="l10"></div>
-<div class="value">MAC1990</div>
+<div class="label">Token ID</div>
+<div class="value" id="tokenId"></div>
 </div>
+
 <div class="mini">
-<div class="label" id="l11"></div>
-<div class="value">100,000,000</div>
-</div>
+<div class="label">Total Supply</div>
+<div class="value" id="supply"></div>
 </div>
 </div>
 
 </div>
 
+</div>
+
+<script src="projects.js"></script>
 <script>
 
-let lang = localStorage.getItem("hagimi_lang") || "en";
+const params = new URLSearchParams(window.location.search);
+const project = getProjectById(params.get("project"));
 
-const t = {
-en:{
-subtitle:"Cask Tracking & Asset Overview",
-l1:"Cask ID",
-l2:"Distillery",
-l3:"Vintage",
-l4:"Cask Type",
-l5:"ABV",
-l6:"Estimated Bottles",
+document.getElementById("title").innerText = project.name;
+document.getElementById("subtitle").innerText = "Asset Tracking & Verification";
 
-storageTitle:"Storage Information",
-l7:"Warehouse",
-l8:"Region",
-l9:"Status",
+document.getElementById("caskId").innerText = project.id.toUpperCase()+"-001";
+document.getElementById("distillery").innerText = project.distillery;
+document.getElementById("vintage").innerText = project.vintage;
+document.getElementById("caskType").innerText = project.caskType;
+document.getElementById("abv").innerText = project.abv;
+document.getElementById("bottles").innerText = project.estimatedBottles;
 
-timelineTitle:"Cask Timeline",
-t1:"Distilled",
-t2:"Re-racked",
-t3:"Selected by HAGIMI",
-t4:"Tokenized",
+document.getElementById("year").innerText = project.vintage;
 
-statusTitle:"Current Status",
-s1:"Aging in progress",
-s2:"Estimated bottles: 285",
-s3:"Market interest: High",
-
-tokenTitle:"Token Link",
-l10:"Token ID",
-l11:"Total Supply"
-},
-zh:{
-subtitle:"酒桶追踪与资产概览",
-l1:"酒桶编号",
-l2:"酒厂",
-l3:"年份",
-l4:"桶型",
-l5:"酒精度",
-l6:"预计瓶数",
-
-storageTitle:"存储信息",
-l7:"仓库",
-l8:"产区",
-l9:"状态",
-
-timelineTitle:"时间轴",
-t1:"蒸馏完成",
-t2:"换桶",
-t3:"被HAGIMI选中",
-t4:"Token化",
-
-statusTitle:"当前状态",
-s1:"持续陈年中",
-s2:"预计瓶数：285",
-s3:"市场关注度：高",
-
-tokenTitle:"Token关联",
-l10:"Token编号",
-l11:"总发行量"
-}
-};
-
-function apply(){
-let tr=t[lang];
-
-document.getElementById("subtitle").innerText=tr.subtitle;
-
-document.getElementById("l1").innerText=tr.l1;
-document.getElementById("l2").innerText=tr.l2;
-document.getElementById("l3").innerText=tr.l3;
-document.getElementById("l4").innerText=tr.l4;
-document.getElementById("l5").innerText=tr.l5;
-document.getElementById("l6").innerText=tr.l6;
-
-document.getElementById("storageTitle").innerText=tr.storageTitle;
-document.getElementById("l7").innerText=tr.l7;
-document.getElementById("l8").innerText=tr.l8;
-document.getElementById("l9").innerText=tr.l9;
-
-document.getElementById("timelineTitle").innerText=tr.timelineTitle;
-document.getElementById("t1").innerText=tr.t1;
-document.getElementById("t2").innerText=tr.t2;
-document.getElementById("t3").innerText=tr.t3;
-document.getElementById("t4").innerText=tr.t4;
-
-document.getElementById("statusTitle").innerText=tr.statusTitle;
-document.getElementById("s1").innerText=tr.s1;
-document.getElementById("s2").innerText=tr.s2;
-document.getElementById("s3").innerText=tr.s3;
-
-document.getElementById("tokenTitle").innerText=tr.tokenTitle;
-document.getElementById("l10").innerText=tr.l10;
-document.getElementById("l11").innerText=tr.l11;
-}
-
-function toggleLang(){
-lang=lang==="en"?"zh":"en";
-localStorage.setItem("hagimi_lang",lang);
-apply();
-}
+document.getElementById("tokenId").innerText = project.id.toUpperCase();
+document.getElementById("supply").innerText = project.tokenSupply.toLocaleString();
 
 function goBack(){
 location.href="marketplace.html";
 }
 
-apply();
+function toggleLang(){
+alert("双语已统一使用主系统语言（此页可后续增强）");
+}
 
 </script>
 
