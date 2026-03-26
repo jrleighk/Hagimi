@@ -1,410 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HAGIMI Token Launch</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAGIMI Token Launch</title>
 
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="HAGIMI Token" />
-  <meta name="theme-color" content="#0f172a" />
+<style>
+body{
+margin:0;
+background:linear-gradient(180deg,#08111f,#0f172a);
+color:#e5eefc;
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+}
+.container{max-width:900px;margin:auto;padding:20px;}
+.card{
+background:#111b2e;
+padding:22px;
+border-radius:20px;
+}
+h1{margin:0 0 10px;font-size:28px;}
+.sub{color:#9fb0cf;margin-bottom:14px;}
 
-  <style>
-    body {
-      margin: 0;
-      background:
-        radial-gradient(circle at top left, rgba(59,130,246,0.18), transparent 28%),
-        radial-gradient(circle at top right, rgba(14,165,233,0.16), transparent 24%),
-        linear-gradient(180deg, #08111f 0%, #0b1220 45%, #0f172a 100%);
-      color: #e5eefc;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      min-height: 100vh;
-    }
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.mini{background:#1e293b;padding:12px;border-radius:12px;}
+.label{font-size:12px;color:#9fb0cf;}
+.value{font-size:20px;font-weight:800;}
 
-    .container {
-      max-width: 880px;
-      margin: auto;
-      padding: 20px;
-    }
+input,textarea{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #334155;
+background:#0b1220;
+color:#fff;
+}
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
+button{
+width:100%;
+margin-top:10px;
+padding:14px;
+border-radius:12px;
+border:none;
+font-weight:700;
+cursor:pointer;
+}
 
-    .back-btn {
-      padding: 10px 14px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      background: rgba(255,255,255,0.08);
-      color: #e5eefc;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-    }
+.primary{background:#5fa8ff;color:#08111f;}
+.secondary{background:#1e293b;color:#fff;}
 
-    .card {
-      background: rgba(17, 27, 46, 0.92);
-      border-radius: 22px;
-      padding: 22px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      border: 1px solid rgba(148, 163, 184, 0.18);
-    }
+.bar{height:10px;background:#1e293b;border-radius:999px;margin:12px 0;}
+.fill{height:100%;background:#5fa8ff;width:0%;}
 
-    h1 {
-      margin: 0 0 10px;
-      font-size: 32px;
-    }
-
-    .sub {
-      color: #9fb0cf;
-      margin-bottom: 20px;
-      line-height: 1.5;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      margin: 18px 0;
-    }
-
-    .mini-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(148, 163, 184, 0.15);
-      border-radius: 16px;
-      padding: 14px;
-    }
-
-    .mini-title {
-      color: #9fb0cf;
-      font-size: 12px;
-      margin-bottom: 6px;
-    }
-
-    .mini-value {
-      font-size: 22px;
-      font-weight: 800;
-    }
-
-    .bar {
-      height: 12px;
-      background: #1e293b;
-      border-radius: 999px;
-      overflow: hidden;
-      margin: 14px 0 18px;
-    }
-
-    .fill {
-      height: 100%;
-      background: linear-gradient(90deg, #5fa8ff, #7dd3fc);
-      width: 0%;
-      transition: width 0.25s ease;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 14px;
-      margin-top: 4px;
-      border-radius: 14px;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      background: rgba(255,255,255,0.04);
-      color: #e5eefc;
-      font-size: 16px;
-      outline: none;
-    }
-
-    input::placeholder, textarea::placeholder {
-      color: #94a3b8;
-    }
-
-    textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
-
-    button.buy, button.secondary {
-      width: 100%;
-      margin-top: 12px;
-      padding: 15px;
-      border: none;
-      border-radius: 14px;
-      font-weight: 800;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button.buy {
-      background: linear-gradient(135deg, #5fa8ff, #7dd3fc);
-      color: #08111f;
-    }
-
-    button.secondary {
-      background: rgba(255,255,255,0.08);
-      color: #e5eefc;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-    }
-
-    .note {
-      margin-top: 15px;
-      font-size: 12px;
-      color: #9fb0cf;
-      line-height: 1.5;
-    }
-
-    .status {
-      margin-top: 12px;
-      color: #cbd5e1;
-      min-height: 20px;
-      font-size: 14px;
-    }
-
-    .story {
-      color: #cbd5e1;
-      line-height: 1.6;
-      margin-top: 10px;
-      margin-bottom: 14px;
-    }
-
-    .form-wrap {
-      margin-top: 22px;
-      padding-top: 18px;
-      border-top: 1px solid rgba(148, 163, 184, 0.18);
-    }
-
-    .form-title {
-      font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .form-sub {
-      color: #9fb0cf;
-      margin-bottom: 14px;
-      line-height: 1.6;
-    }
-
-    @media (max-width: 720px) {
-      h1 {
-        font-size: 24px;
-      }
-
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .container {
-        padding: 14px;
-      }
-
-      .card {
-        padding: 18px;
-      }
-    }
-  </style>
+.topbar{display:flex;justify-content:space-between;margin-bottom:12px;}
+</style>
 </head>
+
 <body>
 
 <div class="container">
-  <div class="topbar">
-    <button class="back-btn" onclick="goBack()">← Back to Marketplace</button>
-  </div>
 
-  <div class="card">
-    <h1 id="projectName">Project</h1>
-    <div id="projectSub" class="sub"></div>
-    <div id="projectStory" class="story"></div>
+<div class="topbar">
+<button onclick="goBack()">←</button>
+<button onclick="toggleLang()" id="langBtn">中文 / EN</button>
+</div>
 
-    <div class="grid">
-      <div class="mini-card">
-        <div class="mini-title">Total Value</div>
-        <div class="mini-value" id="totalValue">£0</div>
-      </div>
+<div class="card">
 
-      <div class="mini-card">
-        <div class="mini-title">Token Supply</div>
-        <div class="mini-value" id="tokenSupply">0</div>
-      </div>
+<h1 id="title"></h1>
+<div class="sub" id="sub"></div>
 
-      <div class="mini-card">
-        <div class="mini-title">Price per Token</div>
-        <div class="mini-value"><span id="price">£1.00</span></div>
-      </div>
+<div class="grid">
+<div class="mini"><div class="label" id="l1"></div><div class="value" id="v1"></div></div>
+<div class="mini"><div class="label" id="l2"></div><div class="value" id="v2"></div></div>
+<div class="mini"><div class="label" id="l3"></div><div class="value" id="price"></div></div>
+<div class="mini"><div class="label" id="l4"></div><div class="value" id="sold"></div></div>
+</div>
 
-      <div class="mini-card">
-        <div class="mini-title">Sale Ends In</div>
-        <div class="mini-value"><span id="timer">05:00</span></div>
-      </div>
+<div class="bar"><div id="fill" class="fill"></div></div>
 
-      <div class="mini-card">
-        <div class="mini-title">Sold</div>
-        <div class="mini-value"><span id="sold">0</span></div>
-      </div>
+<input id="amount" placeholder="">
+<button class="primary" onclick="buy()" id="buyBtn"></button>
+<button class="secondary" onclick="scrollToForm()" id="reqBtn"></button>
 
-      <div class="mini-card">
-        <div class="mini-title">Available</div>
-        <div class="mini-value"><span id="available">0</span></div>
-      </div>
+<div id="status"></div>
 
-      <div class="mini-card">
-        <div class="mini-title">Suitability</div>
-        <div class="mini-value"><span id="suitabilityScore">0</span>/10</div>
-      </div>
+<hr>
 
-      <div class="mini-card">
-        <div class="mini-title">Classification</div>
-        <div class="mini-value" id="suitabilityLabel">-</div>
-      </div>
-    </div>
+<h3 id="formTitle"></h3>
 
-    <div class="bar">
-      <div id="fill" class="fill"></div>
-    </div>
+<input id="name" placeholder="">
+<input id="contact" placeholder="">
+<input id="qty" placeholder="">
+<textarea id="notes" placeholder=""></textarea>
 
-    <input id="amount" type="number" placeholder="Enter token amount" min="1">
-    <button class="buy" onclick="buy()">Buy Tokens</button>
-    <button class="secondary" onclick="scrollToAllocation()">Request Allocation</button>
+<button class="primary" onclick="submit()" id="submitBtn"></button>
 
-    <div id="status" class="status"></div>
+<div id="formStatus"></div>
 
-    <div class="note">
-      Demo only. No real transaction. This page is for presentation and product demonstration purposes only.
-    </div>
-
-    <div class="form-wrap" id="allocationSection">
-      <div class="form-title">Request Allocation</div>
-      <div class="form-sub">
-        Submit your interest for this asset. This is a non-binding indication of interest for internal review only.
-      </div>
-
-      <input id="fullName" placeholder="Your full name">
-      <input id="contact" placeholder="WhatsApp / WeChat / Email">
-      <input id="requestedAmount" type="number" placeholder="Requested token amount">
-      <textarea id="notes" placeholder="Notes / preferred structure / questions"></textarea>
-
-      <button class="buy" onclick="submitAllocation()">Submit Request</button>
-      <div id="allocationStatus" class="status"></div>
-    </div>
-  </div>
+</div>
 </div>
 
 <script src="projects.js"></script>
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const projectId = params.get("project");
-  const project = getProjectById(projectId);
 
-  let total = project.tokenSupply;
-  let sold = project.sold;
-  let price = calculateTokenPrice(project);
-  let time = 300;
+let lang = localStorage.getItem("hagimi_lang") || "en";
 
-  function goBack() {
-    window.location.href = "marketplace.html";
-  }
+const t = {
+en:{
+l1:"Total Value",
+l2:"Token Supply",
+l3:"Price",
+l4:"Sold",
+buy:"Buy Tokens",
+req:"Request Allocation",
+name:"Your Name",
+contact:"Contact",
+qty:"Amount",
+notes:"Notes",
+submit:"Submit",
+formTitle:"Request Allocation"
+},
+zh:{
+l1:"总价值",
+l2:"Token总量",
+l3:"价格",
+l4:"已售",
+buy:"购买Token",
+req:"登记认购",
+name:"姓名",
+contact:"联系方式",
+qty:"认购数量",
+notes:"备注",
+submit:"提交",
+formTitle:"认购登记"
+}
+};
 
-  function scrollToAllocation() {
-    document.getElementById("allocationSection").scrollIntoView({ behavior: "smooth" });
-  }
+function apply(){
+let tr=t[lang];
 
-  function renderProject() {
-    document.getElementById("projectName").innerText = project.name;
-    document.getElementById("projectSub").innerText =
-      `${project.distillery} · ${project.vintage} · ${project.caskType} · ${project.abv} · ${project.estimatedBottles} bottles · ${project.targetMarket}`;
-    document.getElementById("projectStory").innerText = project.story;
-    document.getElementById("totalValue").innerText = formatCurrencyGBP(project.totalValue);
-    document.getElementById("tokenSupply").innerText = project.tokenSupply.toLocaleString();
-    document.getElementById("suitabilityScore").innerText = project.suitabilityScore;
-    document.getElementById("suitabilityLabel").innerText = project.suitabilityLabel;
-  }
+document.getElementById("l1").innerText=tr.l1;
+document.getElementById("l2").innerText=tr.l2;
+document.getElementById("l3").innerText=tr.l3;
+document.getElementById("l4").innerText=tr.l4;
 
-  function updateUI() {
-    document.getElementById("sold").innerText = sold.toLocaleString();
-    document.getElementById("available").innerText = (total - sold).toLocaleString();
+document.getElementById("buyBtn").innerText=tr.buy;
+document.getElementById("reqBtn").innerText=tr.req;
 
-    const percent = (sold / total) * 100;
-    document.getElementById("fill").style.width = percent + "%";
+document.getElementById("name").placeholder=tr.name;
+document.getElementById("contact").placeholder=tr.contact;
+document.getElementById("qty").placeholder=tr.qty;
+document.getElementById("notes").placeholder=tr.notes;
 
-    price = 1 + (percent / 100) * 0.6;
-    document.getElementById("price").innerText = "£" + price.toFixed(2);
-  }
+document.getElementById("submitBtn").innerText=tr.submit;
+document.getElementById("formTitle").innerText=tr.formTitle;
+}
 
-  function buy() {
-    const amountInput = document.getElementById("amount");
-    const status = document.getElementById("status");
-    let amount = parseInt(amountInput.value, 10);
+function toggleLang(){
+lang=lang==="en"?"zh":"en";
+localStorage.setItem("hagimi_lang",lang);
+apply();
+}
 
-    if (!amount || amount <= 0) {
-      status.innerText = "Please enter a valid token amount.";
-      return;
-    }
+const p=new URLSearchParams(location.search);
+const project=getProjectById(p.get("project"));
 
-    if (sold + amount > total) {
-      status.innerText = "Not enough tokens available.";
-      return;
-    }
+document.getElementById("title").innerText=project.name;
+document.getElementById("sub").innerText=project.story;
+document.getElementById("v1").innerText="£"+project.totalValue;
+document.getElementById("v2").innerText=project.tokenSupply;
 
-    if (amount > 10000) {
-      status.innerText = "Whale detected. Large allocation request recorded.";
-    } else {
-      status.innerText = "Demo purchase completed successfully.";
-    }
+let sold=project.sold;
+let total=project.tokenSupply;
 
-    sold += amount;
-    amountInput.value = "";
-    updateUI();
-  }
+function update(){
+document.getElementById("sold").innerText=sold;
+document.getElementById("price").innerText="£"+(1+(sold/total)*0.6).toFixed(2);
+document.getElementById("fill").style.width=(sold/total*100)+"%";
+}
 
-  function submitAllocation() {
-    const name = document.getElementById("fullName").value.trim();
-    const contact = document.getElementById("contact").value.trim();
-    const requestedAmount = document.getElementById("requestedAmount").value.trim();
-    const notes = document.getElementById("notes").value.trim();
-    const status = document.getElementById("allocationStatus");
+function buy(){
+let a=parseInt(document.getElementById("amount").value);
+if(!a)return;
+sold+=a;
+update();
+}
 
-    if (!name || !contact || !requestedAmount) {
-      status.innerText = "Please complete name, contact, and requested amount.";
-      return;
-    }
+function scrollToForm(){
+window.scrollTo({top:1000,behavior:"smooth"});
+}
 
-    const allocationRequests = JSON.parse(localStorage.getItem("hagimi_allocation_requests") || "[]");
+function submit(){
+document.getElementById("formStatus").innerText="Submitted (Demo)";
+}
 
-    allocationRequests.push({
-      projectId: project.id,
-      projectName: project.name,
-      name,
-      contact,
-      requestedAmount,
-      notes,
-      submittedAt: new Date().toLocaleString()
-    });
+function goBack(){
+location.href="marketplace.html";
+}
 
-    localStorage.setItem("hagimi_allocation_requests", JSON.stringify(allocationRequests));
+apply();
+update();
 
-    status.innerText = "Allocation request submitted successfully.";
-
-    document.getElementById("fullName").value = "";
-    document.getElementById("contact").value = "";
-    document.getElementById("requestedAmount").value = "";
-    document.getElementById("notes").value = "";
-  }
-
-  setInterval(() => {
-    if (time > 0) {
-      time--;
-      let min = Math.floor(time / 60);
-      let sec = time % 60;
-      document.getElementById("timer").innerText =
-        min + ":" + (sec < 10 ? "0" : "") + sec;
-    }
-  }, 1000);
-
-  renderProject();
-  updateUI();
 </script>
 
 </body>
