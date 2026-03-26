@@ -243,19 +243,20 @@
       <div class="brand">
         <img class="brand-icon" src="hagimi-icon.png" alt="HAGIMI icon" />
         <div>
-          <h1>HAGIMI Marketplace</h1>
-          <div class="sub">Curated whisky-backed token launch demos for high-quality asset opportunities</div>
+          <h1 id="pageTitle">HAGIMI Marketplace</h1>
+          <div class="sub" id="pageSub">Curated whisky-backed token launch demos for high-quality asset opportunities</div>
         </div>
       </div>
 
       <div class="nav-actions">
-        <a class="btn" href="index.html">Back to HAGIMI</a>
+        <a class="btn" href="index.html" id="btnBack">Back to HAGIMI</a>
+        <button class="btn" onclick="toggleLanguage()" id="btnLang">中文 / EN</button>
       </div>
     </div>
 
     <div class="hero">
-      <h2>Whisky Asset Launch Board</h2>
-      <p>
+      <h2 id="heroTitle">Whisky Asset Launch Board</h2>
+      <p id="heroText">
         This marketplace presents structured token launch demos for selected whisky assets.
         Each project combines whisky fundamentals, token supply logic, suitability scoring,
         and narrative positioning for future liquidity modeling.
@@ -268,8 +269,65 @@
   <script src="projects.js"></script>
   <script>
     const grid = document.getElementById("projectGrid");
+    const languageKey = "hagimi_lang";
+    let currentLang = localStorage.getItem(languageKey) || "en";
+
+    const translations = {
+      en: {
+        pageTitle: "HAGIMI Marketplace",
+        pageSub: "Curated whisky-backed token launch demos for high-quality asset opportunities",
+        btnBack: "Back to HAGIMI",
+        btnLang: "中文 / EN",
+        heroTitle: "Whisky Asset Launch Board",
+        heroText: "This marketplace presents structured token launch demos for selected whisky assets. Each project combines whisky fundamentals, token supply logic, suitability scoring, and narrative positioning for future liquidity modeling.",
+        estimatedValue: "Estimated Value",
+        tokenPrice: "Token Price",
+        sold: "Sold",
+        available: "Available",
+        suitability: "Suitability",
+        targetMarket: "Target Market",
+        soldPercentage: "Sold Percentage",
+        viewLaunch: "View Launch",
+        requestAllocation: "Request Allocation"
+      },
+      zh: {
+        pageTitle: "HAGIMI 市场",
+        pageSub: "精选威士忌资产 Token 发售演示项目，面向高质量资产机会",
+        btnBack: "返回 HAGIMI",
+        btnLang: "中文 / EN",
+        heroTitle: "威士忌资产发行平台",
+        heroText: "本页面展示精选威士忌资产的 Token 发售演示模型。每个项目都结合了威士忌基本面、Token 供给逻辑、适配评分，以及未来流动性叙事。",
+        estimatedValue: "估值",
+        tokenPrice: "Token价格",
+        sold: "已售",
+        available: "可用",
+        suitability: "适配度",
+        targetMarket: "目标市场",
+        soldPercentage: "已售比例",
+        viewLaunch: "查看发售",
+        requestAllocation: "登记认购"
+      }
+    };
+
+    function toggleLanguage() {
+      currentLang = currentLang === "en" ? "zh" : "en";
+      localStorage.setItem(languageKey, currentLang);
+      applyLanguage();
+      renderProjects();
+    }
+
+    function applyLanguage() {
+      const t = translations[currentLang];
+      document.getElementById("pageTitle").innerText = t.pageTitle;
+      document.getElementById("pageSub").innerText = t.pageSub;
+      document.getElementById("btnBack").innerText = t.btnBack;
+      document.getElementById("btnLang").innerText = t.btnLang;
+      document.getElementById("heroTitle").innerText = t.heroTitle;
+      document.getElementById("heroText").innerText = t.heroText;
+    }
 
     function renderProjects() {
+      const t = translations[currentLang];
       grid.innerHTML = "";
 
       projects.forEach(project => {
@@ -294,27 +352,27 @@
 
           <div class="stats">
             <div class="stat">
-              <div class="stat-label">Estimated Value</div>
+              <div class="stat-label">${t.estimatedValue}</div>
               <div class="stat-value">${formatCurrencyGBP(project.totalValue)}</div>
             </div>
             <div class="stat">
-              <div class="stat-label">Token Price</div>
+              <div class="stat-label">${t.tokenPrice}</div>
               <div class="stat-value">£${tokenPrice.toFixed(2)}</div>
             </div>
             <div class="stat">
-              <div class="stat-label">Sold</div>
+              <div class="stat-label">${t.sold}</div>
               <div class="stat-value">${project.sold.toLocaleString()}</div>
             </div>
             <div class="stat">
-              <div class="stat-label">Available</div>
+              <div class="stat-label">${t.available}</div>
               <div class="stat-value">${available.toLocaleString()}</div>
             </div>
             <div class="stat">
-              <div class="stat-label">Suitability</div>
+              <div class="stat-label">${t.suitability}</div>
               <div class="stat-value">${project.suitabilityScore}/10</div>
             </div>
             <div class="stat">
-              <div class="stat-label">Target Market</div>
+              <div class="stat-label">${t.targetMarket}</div>
               <div class="stat-value" style="font-size:14px">${project.targetMarket}</div>
             </div>
           </div>
@@ -323,13 +381,13 @@
             <div class="fill" style="width:${soldPercent}%"></div>
           </div>
 
-          <div class="meta">Sold Percentage: ${soldPercent}%</div>
+          <div class="meta">${t.soldPercentage}: ${soldPercent}%</div>
 
           <div class="story">${project.story}</div>
 
           <div class="card-actions">
-            <a class="btn btn-primary" href="token.html?project=${project.id}">View Launch</a>
-            <a class="btn" href="${getAllocationLink(project.id)}">Request Allocation</a>
+            <a class="btn btn-primary" href="token.html?project=${project.id}">${t.viewLaunch}</a>
+            <a class="btn" href="${getAllocationLink(project.id)}">${t.requestAllocation}</a>
           </div>
         `;
 
@@ -337,6 +395,7 @@
       });
     }
 
+    applyLanguage();
     renderProjects();
   </script>
 </body>
