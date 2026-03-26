@@ -1,1 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HAGIMI Token Launch</title>
 
+  <style>
+    body {
+      margin: 0;
+      background: #0b1220;
+      color: #e5eefc;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: #111b2e;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+    }
+
+    .stat {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    .bar {
+      height: 10px;
+      background: #1e293b;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .fill {
+      height: 100%;
+      background: #5fa8ff;
+      width: 0%;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #5fa8ff;
+      color: #08111f;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #9fb0cf;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Macallan 1990 Cask</h1>
+
+    <div class="stat">Total Value: £327,750</div>
+    <div class="stat">Token Supply: 327,750</div>
+    <div class="stat">Price per Token: £1</div>
+
+    <div class="stat">Sold: <span id="sold">120000</span></div>
+    <div class="stat">Available: <span id="available">207750</span></div>
+
+    <div class="bar">
+      <div id="fill" class="fill"></div>
+    </div>
+
+    <input id="amount" placeholder="Enter token amount">
+
+    <button onclick="buy()">Buy Tokens</button>
+
+    <div class="note">
+      Demo only. No real transaction.
+    </div>
+  </div>
+</div>
+
+<script>
+  let total = 327750;
+  let sold = 120000;
+
+  function updateUI() {
+    document.getElementById("sold").innerText = sold;
+    document.getElementById("available").innerText = total - sold;
+
+    let percent = (sold / total) * 100;
+    document.getElementById("fill").style.width = percent + "%";
+  }
+
+  function buy() {
+    let amount = parseInt(document.getElementById("amount").value);
+
+    if (!amount || amount <= 0) {
+      alert("Enter valid amount");
+      return;
+    }
+
+    if (sold + amount > total) {
+      alert("Not enough tokens available");
+      return;
+    }
+
+    sold += amount;
+    updateUI();
+  }
+
+  updateUI();
+</script>
+
+</body>
+</html>
