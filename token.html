@@ -106,7 +106,7 @@
       transition: width 0.25s ease;
     }
 
-    input {
+    input, select, textarea {
       width: 100%;
       padding: 14px;
       margin-top: 4px;
@@ -118,21 +118,35 @@
       outline: none;
     }
 
-    input::placeholder {
+    input::placeholder, textarea::placeholder {
       color: #94a3b8;
     }
 
-    button.buy {
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    button.buy, button.secondary {
       width: 100%;
       margin-top: 12px;
       padding: 15px;
       border: none;
       border-radius: 14px;
-      background: linear-gradient(135deg, #5fa8ff, #7dd3fc);
-      color: #08111f;
       font-weight: 800;
       font-size: 16px;
       cursor: pointer;
+    }
+
+    button.buy {
+      background: linear-gradient(135deg, #5fa8ff, #7dd3fc);
+      color: #08111f;
+    }
+
+    button.secondary {
+      background: rgba(255,255,255,0.08);
+      color: #e5eefc;
+      border: 1px solid rgba(148, 163, 184, 0.18);
     }
 
     .note {
@@ -154,6 +168,24 @@
       line-height: 1.6;
       margin-top: 10px;
       margin-bottom: 14px;
+    }
+
+    .form-wrap {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    .form-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .form-sub {
+      color: #9fb0cf;
+      margin-bottom: 14px;
+      line-height: 1.6;
     }
 
     @media (max-width: 720px) {
@@ -234,13 +266,28 @@
     </div>
 
     <input id="amount" type="number" placeholder="Enter token amount" min="1">
-
     <button class="buy" onclick="buy()">Buy Tokens</button>
+    <button class="secondary" onclick="scrollToAllocation()">Request Allocation</button>
 
     <div id="status" class="status"></div>
 
     <div class="note">
       Demo only. No real transaction. This page is for presentation and product demonstration purposes only.
+    </div>
+
+    <div class="form-wrap" id="allocationSection">
+      <div class="form-title">Request Allocation</div>
+      <div class="form-sub">
+        Submit your interest for this asset. This is a non-binding indication of interest for internal review only.
+      </div>
+
+      <input id="fullName" placeholder="Your full name">
+      <input id="contact" placeholder="WhatsApp / WeChat / Email">
+      <input id="requestedAmount" type="number" placeholder="Requested token amount">
+      <textarea id="notes" placeholder="Notes / preferred structure / questions"></textarea>
+
+      <button class="buy" onclick="submitAllocation()">Submit Request</button>
+      <div id="allocationStatus" class="status"></div>
     </div>
   </div>
 </div>
@@ -258,6 +305,10 @@
 
   function goBack() {
     window.location.href = "marketplace.html";
+  }
+
+  function scrollToAllocation() {
+    document.getElementById("allocationSection").scrollIntoView({ behavior: "smooth" });
   }
 
   function renderProject() {
@@ -306,6 +357,40 @@
     sold += amount;
     amountInput.value = "";
     updateUI();
+  }
+
+  function submitAllocation() {
+    const name = document.getElementById("fullName").value.trim();
+    const contact = document.getElementById("contact").value.trim();
+    const requestedAmount = document.getElementById("requestedAmount").value.trim();
+    const notes = document.getElementById("notes").value.trim();
+    const status = document.getElementById("allocationStatus");
+
+    if (!name || !contact || !requestedAmount) {
+      status.innerText = "Please complete name, contact, and requested amount.";
+      return;
+    }
+
+    const allocationRequests = JSON.parse(localStorage.getItem("hagimi_allocation_requests") || "[]");
+
+    allocationRequests.push({
+      projectId: project.id,
+      projectName: project.name,
+      name,
+      contact,
+      requestedAmount,
+      notes,
+      submittedAt: new Date().toLocaleString()
+    });
+
+    localStorage.setItem("hagimi_allocation_requests", JSON.stringify(allocationRequests));
+
+    status.innerText = "Allocation request submitted successfully.";
+
+    document.getElementById("fullName").value = "";
+    document.getElementById("contact").value = "";
+    document.getElementById("requestedAmount").value = "";
+    document.getElementById("notes").value = "";
   }
 
   setInterval(() => {
