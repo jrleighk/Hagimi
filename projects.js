@@ -67,3 +67,7 @@ function calculateTokenPrice(project) {
   const percentSold = project.sold / project.tokenSupply;
   return 1 + percentSold * 0.6;
 }
+
+function getAllocationLink(projectId) {
+  return `allocation.html?project=${encodeURIComponent(projectId)}`;
+}
