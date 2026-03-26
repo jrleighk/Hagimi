@@ -1,183 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HAGIMI Allocation Request</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAGIMI Allocation</title>
 
-  <meta name="theme-color" content="#0f172a" />
-  <link rel="apple-touch-icon" href="hagimi-icon.png" />
-  <link rel="icon" type="image/png" href="hagimi-icon.png" />
+<style>
+body{
+margin:0;
+background:linear-gradient(180deg,#08111f,#0f172a);
+color:#e5eefc;
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+}
 
-  <style>
-    body {
-      margin: 0;
-      background:
-        radial-gradient(circle at top left, rgba(59,130,246,0.18), transparent 28%),
-        radial-gradient(circle at top right, rgba(14,165,233,0.16), transparent 24%),
-        linear-gradient(180deg, #08111f 0%, #0b1220 45%, #0f172a 100%);
-      color: #e5eefc;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      min-height: 100vh;
-    }
+.container{
+max-width:700px;
+margin:auto;
+padding:20px;
+}
 
-    .container {
-      max-width: 760px;
-      margin: auto;
-      padding: 20px;
-    }
+.card{
+background:#111b2e;
+padding:22px;
+border-radius:20px;
+}
 
-    .card {
-      background: rgba(17, 27, 46, 0.92);
-      border-radius: 22px;
-      padding: 22px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      border: 1px solid rgba(148, 163, 184, 0.18);
-    }
+h1{margin:0 0 10px;font-size:26px;}
+.sub{color:#9fb0cf;margin-bottom:14px;}
 
-    h1 {
-      margin: 0 0 10px;
-      font-size: 30px;
-    }
+input,textarea{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #334155;
+background:#0b1220;
+color:#fff;
+}
 
-    .sub {
-      color: #9fb0cf;
-      line-height: 1.6;
-      margin-bottom: 18px;
-    }
+textarea{min-height:100px;}
 
-    .project-box {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(148, 163, 184, 0.15);
-      border-radius: 16px;
-      padding: 14px;
-      margin-bottom: 18px;
-    }
+button{
+width:100%;
+margin-top:12px;
+padding:14px;
+border:none;
+border-radius:12px;
+font-weight:700;
+cursor:pointer;
+}
 
-    .project-label {
-      color: #9fb0cf;
-      font-size: 12px;
-      margin-bottom: 4px;
-    }
+.primary{background:#5fa8ff;color:#08111f;}
+.secondary{background:#1e293b;color:#fff;}
 
-    .project-value {
-      font-size: 22px;
-      font-weight: 800;
-    }
+.topbar{
+display:flex;
+justify-content:space-between;
+margin-bottom:12px;
+}
 
-    input, textarea {
-      width: 100%;
-      padding: 14px;
-      margin-top: 10px;
-      border-radius: 14px;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      background: rgba(255,255,255,0.04);
-      color: #e5eefc;
-      font-size: 16px;
-      outline: none;
-    }
-
-    textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
-
-    button {
-      width: 100%;
-      margin-top: 14px;
-      padding: 15px;
-      border: none;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #5fa8ff, #7dd3fc);
-      color: #08111f;
-      font-weight: 800;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .secondary {
-      background: rgba(255,255,255,0.08);
-      color: #e5eefc;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-    }
-
-    .status {
-      margin-top: 12px;
-      min-height: 20px;
-      color: #cbd5e1;
-    }
-  </style>
+.status{
+margin-top:10px;
+color:#cbd5e1;
+}
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <div class="card">
-      <h1>Request Allocation</h1>
-      <div class="sub">
-        Submit your interest for this whisky-backed asset. This is a non-binding indication of interest for internal review only.
-      </div>
 
-      <div class="project-box">
-        <div class="project-label">Selected Project</div>
-        <div class="project-value" id="projectName">Project</div>
-      </div>
+<div class="container">
 
-      <input id="fullName" placeholder="Your full name">
-      <input id="contact" placeholder="WhatsApp / WeChat / Email">
-      <input id="requestedAmount" type="number" placeholder="Requested token amount">
-      <textarea id="notes" placeholder="Notes / preferred structure / questions"></textarea>
+<div class="topbar">
+<button onclick="goBack()">←</button>
+<button onclick="toggleLang()" id="langBtn">中文 / EN</button>
+</div>
 
-      <button onclick="submitAllocation()">Submit Request</button>
-      <button class="secondary" onclick="goBack()">Back to Marketplace</button>
+<div class="card">
 
-      <div id="status" class="status"></div>
-    </div>
-  </div>
+<h1 id="title"></h1>
+<div class="sub" id="subtitle"></div>
 
-  <script src="projects.js"></script>
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const projectId = params.get("project");
-    const project = getProjectById(projectId);
+<input id="name" placeholder="">
+<input id="contact" placeholder="">
+<input id="amount" placeholder="">
+<textarea id="notes" placeholder=""></textarea>
 
-    document.getElementById("projectName").innerText = project.name;
+<button class="primary" onclick="submit()" id="submitBtn"></button>
+<button class="secondary" onclick="goBack()" id="backBtn"></button>
 
-    function submitAllocation() {
-      const name = document.getElementById("fullName").value.trim();
-      const contact = document.getElementById("contact").value.trim();
-      const requestedAmount = document.getElementById("requestedAmount").value.trim();
-      const notes = document.getElementById("notes").value.trim();
-      const status = document.getElementById("status");
+<div id="status" class="status"></div>
 
-      if (!name || !contact || !requestedAmount) {
-        status.innerText = "Please complete name, contact, and requested amount.";
-        return;
-      }
+</div>
+</div>
 
-      const allocationRequests = JSON.parse(localStorage.getItem("hagimi_allocation_requests") || "[]");
+<script src="projects.js"></script>
+<script>
 
-      allocationRequests.push({
-        projectId: project.id,
-        projectName: project.name,
-        name,
-        contact,
-        requestedAmount,
-        notes,
-        submittedAt: new Date().toLocaleString()
-      });
+const webhookUrl = "YOUR_MAKE_WEBHOOK_URL_HERE";
 
-      localStorage.setItem("hagimi_allocation_requests", JSON.stringify(allocationRequests));
+let lang = localStorage.getItem("hagimi_lang") || "en";
 
-      status.innerText = "Allocation request submitted successfully.";
+const t = {
+en:{
+title:"Request Allocation",
+sub:"Submit your interest for this whisky asset.",
+name:"Your Name",
+contact:"WhatsApp / WeChat / Email",
+amount:"Requested Amount",
+notes:"Notes",
+submit:"Submit Request",
+back:"Back",
+success:"Submitted successfully",
+error:"Submission failed"
+},
+zh:{
+title:"认购登记",
+sub:"提交你的认购意向",
+name:"姓名",
+contact:"联系方式（微信/电话/邮箱）",
+amount:"认购数量",
+notes:"备注",
+submit:"提交",
+back:"返回",
+success:"提交成功",
+error:"提交失败"
+}
+};
 
-      document.getElementById("fullName").value = "";
-      document.getElementById("contact").value = "";
-      document.getElementById("requestedAmount").value = "";
-      document.getElementById("notes").value = "";
-    }
+function apply(){
+let tr=t[lang];
 
-    function goBack() {
-      window.location.href = "marketplace.html";
-    }
-  </script>
+document.getElementById("title").innerText=tr.title;
+document.getElementById("subtitle").innerText=tr.sub;
+
+document.getElementById("name").placeholder=tr.name;
+document.getElementById("contact").placeholder=tr.contact;
+document.getElementById("amount").placeholder=tr.amount;
+document.getElementById("notes").placeholder=tr.notes;
+
+document.getElementById("submitBtn").innerText=tr.submit;
+document.getElementById("backBtn").innerText=tr.back;
+}
+
+function toggleLang(){
+lang=lang==="en"?"zh":"en";
+localStorage.setItem("hagimi_lang",lang);
+apply();
+}
+
+const params = new URLSearchParams(window.location.search);
+const project = getProjectById(params.get("project"));
+
+async function submit(){
+
+const name = document.getElementById("name").value.trim();
+const contact = document.getElementById("contact").value.trim();
+const amount = document.getElementById("amount").value.trim();
+const notes = document.getElementById("notes").value.trim();
+
+const status = document.getElementById("status");
+
+if(!name || !contact || !amount){
+status.innerText="Please fill required fields";
+return;
+}
+
+status.innerText="Submitting...";
+
+try{
+
+await fetch(webhookUrl,{
+method:"POST",
+headers:{ "Content-Type":"application/json" },
+body:JSON.stringify({
+project_id:project.id,
+project_name:project.name,
+name,
+contact,
+requested_amount:amount,
+notes
+})
+});
+
+status.innerText = t[lang].success;
+
+document.getElementById("name").value="";
+document.getElementById("contact").value="";
+document.getElementById("amount").value="";
+document.getElementById("notes").value="";
+
+}catch(e){
+status.innerText = t[lang].error;
+}
+
+}
+
+function goBack(){
+location.href="marketplace.html";
+}
+
+apply();
+
+</script>
+
 </body>
 </html>
