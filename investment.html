@@ -4,15 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HAGIMI Investment Decision</title>
-
   <meta name="theme-color" content="#0f172a" />
   <link rel="apple-touch-icon" href="hagimi-icon.png" />
   <link rel="icon" type="image/png" href="hagimi-icon.png" />
-
   <style>
     :root {
-      --bg: #0b1220;
-      --panel: rgba(15, 23, 42, 0.88);
       --text: #e5eefc;
       --muted: #9fb0cf;
       --border: rgba(148, 163, 184, 0.18);
@@ -25,9 +21,7 @@
       --bad: #f87171;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     html, body {
       margin: 0;
@@ -111,9 +105,7 @@
       transition: 0.18s ease;
     }
 
-    .btn:hover {
-      background: rgba(255,255,255,0.08);
-    }
+    .btn:hover { background: rgba(255,255,255,0.08); }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -211,9 +203,7 @@
       font-weight: 700;
     }
 
-    .full {
-      grid-column: 1 / -1;
-    }
+    .full { grid-column: 1 / -1; }
 
     input, textarea {
       width: 100%;
@@ -267,41 +257,11 @@
       margin-bottom: 14px;
     }
 
-    .result-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .result-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px;
-    }
-
-    .result-card.full {
-      grid-column: 1 / -1;
-    }
-
-    .result-title {
-      font-size: 14px;
-      font-weight: 800;
-      margin-bottom: 8px;
-      color: #dce9ff;
-    }
-
-    .result-body {
-      color: var(--text);
-      line-height: 1.7;
-      white-space: pre-wrap;
-      font-size: 14px;
-    }
-
     .pill-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
+      margin-bottom: 14px;
     }
 
     .pill {
@@ -316,6 +276,35 @@
     .pill.good { color: var(--good); }
     .pill.warn { color: var(--warn); }
     .pill.bad { color: var(--bad); }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .result-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .result-card.full { grid-column: 1 / -1; }
+
+    .result-title {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #dce9ff;
+    }
+
+    .result-body {
+      color: var(--text);
+      line-height: 1.7;
+      white-space: pre-wrap;
+      font-size: 14px;
+    }
 
     .json-box {
       min-height: 160px;
@@ -338,14 +327,12 @@
       }
 
       .field-grid,
-      .result-grid,
-      .mini-grid {
+      .mini-grid,
+      .result-grid {
         grid-template-columns: 1fr;
       }
 
-      .result-card.full {
-        grid-column: auto;
-      }
+      .result-card.full { grid-column: auto; }
     }
   </style>
 </head>
@@ -368,17 +355,13 @@
 
     <div class="hero">
       <h2 id="heroTitle">Whisky Investment Decision Engine</h2>
-      <p id="heroText">
-        Use this page to compare cask strategies, estimate revenue, profit, ROI, annualized return, and generate a structured recommendation for partners or investors.
-      </p>
+      <p id="heroText">Use this page to compare cask strategies, estimate revenue, profit, ROI, annualized return, and generate a structured recommendation for partners or investors.</p>
     </div>
 
     <div class="layout">
       <div class="panel">
         <h3 id="inputTitle">Input Parameters</h3>
-        <p class="panel-sub" id="inputSub">
-          Fill in the key cask details below, or use the example button to auto-generate a professional investment analysis request.
-        </p>
+        <p class="panel-sub" id="inputSub">Fill in the key cask details below, or use the example button to auto-generate a professional investment analysis request.</p>
 
         <div class="mini-grid">
           <div class="mini-card">
@@ -387,11 +370,11 @@
           </div>
           <div class="mini-card">
             <div class="mini-label" id="mini2Label">Output Style</div>
-            <div class="mini-value" id="mini2Value">Structured</div>
+            <div class="mini-value" id="mini2Value">JSON UI</div>
           </div>
           <div class="mini-card">
-            <div class="mini-label" id="mini3Label">Language</div>
-            <div class="mini-value" id="mini3Value">Bilingual</div>
+            <div class="mini-label" id="mini3Label">Decision Style</div>
+            <div class="mini-value" id="mini3Value">Investor Grade</div>
           </div>
         </div>
 
@@ -408,12 +391,12 @@
 
           <div class="field">
             <label id="labelAbv" for="abv">ABV</label>
-            <input id="abv" placeholder="51.9%, 52.5%, 51.2%">
+            <input id="abv" placeholder="51.5%">
           </div>
 
           <div class="field">
             <label id="labelBottles" for="bottles">Estimated Bottles</label>
-            <input id="bottles" placeholder="313, 323, 285">
+            <input id="bottles" placeholder="285">
           </div>
 
           <div class="field">
@@ -423,17 +406,17 @@
 
           <div class="field">
             <label id="labelCaskCost" for="caskCost">Cask Cost</label>
-            <input id="caskCost" placeholder="5164500 RMB, 5329500 RMB, 4702500 RMB">
+            <input id="caskCost" placeholder="4702500 RMB">
           </div>
 
           <div class="field full">
             <label id="labelBottlingPlan" for="bottlingPlan">Target Bottling Strategy</label>
-            <textarea id="bottlingPlan" placeholder="Example: Cask 1 bottled at 38 years, Cask 2 bottled at 40 years, Cask 3 bottled at 45 years."></textarea>
+            <textarea id="bottlingPlan" placeholder="Bottle at 40 years"></textarea>
           </div>
 
           <div class="field full">
             <label id="labelExtraNotes" for="extraNotes">Extra Notes</label>
-            <textarea id="extraNotes" placeholder="Add assumptions, expected price growth, holding period, target market, or comparison notes."></textarea>
+            <textarea id="extraNotes" placeholder="Add assumptions, expected price growth, target market, or comparison notes."></textarea>
           </div>
         </div>
 
@@ -444,23 +427,26 @@
           <button class="btn" onclick="clearForm()" id="btnClear">Clear</button>
         </div>
 
-        <div class="hint" id="hintText">
-          Tip: the result will be turned into summary cards automatically.
-        </div>
-
+        <div class="hint" id="hintText">Tip: the result will be automatically cleaned and rendered into structured summary cards.</div>
         <div id="status" class="status"></div>
       </div>
 
       <div class="panel">
         <h3 id="outputTitle">Structured Output</h3>
-        <p class="panel-sub" id="outputSub">
-          The AI result will be cleaned, parsed, and shown as a readable investment summary.
-        </p>
+        <p class="panel-sub" id="outputSub">The returned content will be cleaned, parsed, and shown as an investment summary.</p>
 
         <div class="results-toolbar">
           <button class="btn" onclick="copyRenderedOutput()" id="btnCopy">Copy Summary</button>
           <button class="btn" onclick="exportRenderedOutput()" id="btnExport">Export Summary</button>
           <button class="btn" onclick="toggleRawJson()" id="btnRaw">Show Raw JSON</button>
+        </div>
+
+        <div class="pill-row">
+          <div class="pill" id="pillRevenue">Revenue: -</div>
+          <div class="pill" id="pillProfit">Profit: -</div>
+          <div class="pill" id="pillROI">ROI: -</div>
+          <div class="pill" id="pillAnnualized">Annualized: -</div>
+          <div class="pill" id="pillRisk">Risk: -</div>
         </div>
 
         <div class="result-grid">
@@ -470,7 +456,7 @@
           </div>
 
           <div class="result-card">
-            <div class="result-title" id="sectionProfit">Profit</div>
+            <div class="result-title" id="sectionProfit">Profit Estimate</div>
             <div class="result-body" id="profitEstimate">-</div>
           </div>
 
@@ -523,9 +509,9 @@
         mini1Label: "Analysis Focus",
         mini1Value: "ROI",
         mini2Label: "Output Style",
-        mini2Value: "Structured",
-        mini3Label: "Language",
-        mini3Value: "Bilingual",
+        mini2Value: "JSON UI",
+        mini3Label: "Decision Style",
+        mini3Value: "Investor Grade",
         labelDistillery: "Distillery",
         labelVintage: "Vintage",
         labelAbv: "ABV",
@@ -538,15 +524,15 @@
         btnBuild: "Build Prompt",
         btnAnalyze: "Run Analysis",
         btnClear: "Clear",
-        hintText: "Tip: the result will be turned into summary cards automatically.",
+        hintText: "Tip: the result will be automatically cleaned and rendered into structured summary cards.",
         outputTitle: "Structured Output",
-        outputSub: "The AI result will be cleaned, parsed, and shown as a readable investment summary.",
+        outputSub: "The returned content will be cleaned, parsed, and shown as an investment summary.",
         btnCopy: "Copy Summary",
         btnExport: "Export Summary",
         btnRaw: "Show Raw JSON",
         btnRawHide: "Hide Raw JSON",
         sectionRevenue: "Revenue Estimate",
-        sectionProfit: "Profit",
+        sectionProfit: "Profit Estimate",
         sectionROI: "ROI",
         sectionAnnualized: "Annualized Return",
         sectionRisk: "Risk Level",
@@ -561,6 +547,10 @@
         exported: "Summary exported.",
         nothingToExport: "There is no rendered summary to export.",
         rawEmpty: "No raw JSON yet.",
+        revenueShort: "Revenue",
+        profitShort: "Profit",
+        annualizedShort: "Annualized",
+        riskShort: "Risk",
         promptDistillery: "Distillery",
         promptVintage: "Vintage",
         promptAbv: "ABV",
@@ -570,7 +560,7 @@
         promptBottlingPlan: "Target Bottling Strategy",
         promptExtraNotes: "Extra Notes",
         builtPrefix: "Please analyze the following whisky investment opportunity in structured JSON format.\n\nInput Parameters:\n",
-        builtMiddle: "\n\nPlease provide revenue estimate, profit, ROI, annualized return, risk level, and recommendation in both English and Chinese."
+        builtMiddle: "\n\nPlease provide bilingual revenue estimate, profit estimate, ROI, annualized return, risk level, and recommendation."
       },
       zh: {
         pageTitle: "HAGIMI 投资决策",
@@ -583,10 +573,10 @@
         inputSub: "填写关键酒桶信息，或使用示例按钮自动生成专业投资分析请求。",
         mini1Label: "分析重点",
         mini1Value: "ROI",
-        mini2Label: "输出风格",
-        mini2Value: "结构化",
-        mini3Label: "语言",
-        mini3Value: "双语",
+        mini2Label: "输出格式",
+        mini2Value: "JSON 界面",
+        mini3Label: "决策风格",
+        mini3Value: "投资人级",
         labelDistillery: "酒厂",
         labelVintage: "年份",
         labelAbv: "酒精度",
@@ -599,9 +589,9 @@
         btnBuild: "生成提示词",
         btnAnalyze: "开始分析",
         btnClear: "清空",
-        hintText: "提示：结果会自动转成摘要卡片。",
+        hintText: "提示：结果会自动清洗并渲染成结构化摘要卡片。",
         outputTitle: "结构化输出",
-        outputSub: "AI 结果会自动清洗、解析，并展示为可读的投资摘要。",
+        outputSub: "返回内容会自动清洗、解析，并展示为投资摘要。",
         btnCopy: "复制摘要",
         btnExport: "导出摘要",
         btnRaw: "显示原始 JSON",
@@ -622,6 +612,10 @@
         exported: "摘要已导出。",
         nothingToExport: "目前没有可导出的摘要。",
         rawEmpty: "目前没有原始 JSON。",
+        revenueShort: "收入",
+        profitShort: "利润",
+        annualizedShort: "年化",
+        riskShort: "风险",
         promptDistillery: "酒厂",
         promptVintage: "年份",
         promptAbv: "酒精度",
@@ -631,7 +625,7 @@
         promptBottlingPlan: "目标装瓶策略",
         promptExtraNotes: "补充说明",
         builtPrefix: "请以结构化 JSON 格式分析以下威士忌投资机会。\n\n输入参数：\n",
-        builtMiddle: "\n\n请提供中英双语的预计收入、利润、ROI、年化回报、风险等级与投资建议。"
+        builtMiddle: "\n\n请提供中英双语的预计收入、预计利润、ROI、年化回报、风险等级与投资建议。"
       }
     };
 
@@ -645,6 +639,25 @@
       return currentLang === "zh"
         ? (obj.chinese || obj.zh || obj.english || obj.en || "-")
         : (obj.english || obj.en || obj.chinese || obj.zh || "-");
+    }
+
+    function cleanIncomingText(text) {
+      let cleaned = String(text || "").trim();
+
+      cleaned = cleaned
+        .replace(/^```json\s*/i, "")
+        .replace(/^```\s*/i, "")
+        .replace(/\s*```$/i, "")
+        .trim();
+
+      const firstBrace = cleaned.indexOf("{");
+      const lastBrace = cleaned.lastIndexOf("}");
+
+      if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+        cleaned = cleaned.slice(firstBrace, lastBrace + 1);
+      }
+
+      return cleaned.trim();
     }
 
     function applyLanguage() {
@@ -703,20 +716,20 @@
     function fillExample() {
       if (currentLang === "en") {
         $("distillery").value = "Macallan";
-        $("vintage").value = "1990";
-        $("abv").value = "51.5%";
-        $("bottles").value = "285";
-        $("bottlePrice").value = "16500 RMB";
-        $("caskCost").value = "4702500 RMB";
+        $("vintage").value = "1987";
+        $("abv").value = "45.1%";
+        $("bottles").value = "233";
+        $("bottlePrice").value = "37000";
+        $("caskCost").value = "8621000";
         $("bottlingPlan").value = "Bottle at 40 years";
         $("extraNotes").value = "Please provide structured investment analysis.";
       } else {
         $("distillery").value = "麦卡伦";
-        $("vintage").value = "1990";
-        $("abv").value = "51.5%";
-        $("bottles").value = "285";
-        $("bottlePrice").value = "16500 人民币";
-        $("caskCost").value = "4702500 人民币";
+        $("vintage").value = "1987";
+        $("abv").value = "45.1%";
+        $("bottles").value = "233";
+        $("bottlePrice").value = "37000";
+        $("caskCost").value = "8621000";
         $("bottlingPlan").value = "40年装瓶";
         $("extraNotes").value = "请提供结构化投资分析。";
       }
@@ -774,13 +787,7 @@
         });
 
         const text = await response.text();
-
-        const cleaned = text
-          .replace(/^```json\s*/i, "")
-          .replace(/^```\s*/i, "")
-          .replace(/\s*```$/i, "")
-          .trim();
-
+        const cleaned = cleanIncomingText(text);
         const parsed = JSON.parse(cleaned);
 
         latestJson = parsed;
@@ -794,22 +801,41 @@
     }
 
     function renderStructured(data) {
-      const analysis = data.investment_analysis || {};
+      const analysis = data.investment_analysis || data;
 
-      $("revenueEstimate").innerText = getBiText(analysis.revenue_estimate);
-      $("profitEstimate").innerText = getBiText(analysis.profit);
-      $("roiValue").innerText = getBiText(analysis.roi);
-      $("annualizedReturn").innerText = getBiText(analysis.annualized_return);
-      $("riskLevel").innerText = getBiText(analysis.risk_level);
-      $("recommendationText").innerText = getBiText(analysis.recommendation);
+      const revenue = getBiText(analysis.revenue_estimate);
+      const profit = getBiText(analysis.profit_estimate || analysis.profit);
+      const roi = getBiText(analysis.roi);
+      const annualized = getBiText(analysis.annualized_return);
+      const risk = getBiText(analysis.risk_level);
+      const recommendation = getBiText(analysis.recommendation);
+
+      $("revenueEstimate").innerText = revenue;
+      $("profitEstimate").innerText = profit;
+      $("roiValue").innerText = roi;
+      $("annualizedReturn").innerText = annualized;
+      $("riskLevel").innerText = risk;
+      $("recommendationText").innerText = recommendation;
+
+      $("pillRevenue").innerText = `${translations[currentLang].revenueShort}: ${revenue}`;
+      $("pillProfit").innerText = `${translations[currentLang].profitShort}: ${profit}`;
+      $("pillROI").innerText = `ROI: ${roi}`;
+      $("pillAnnualized").innerText = `${translations[currentLang].annualizedShort}: ${annualized}`;
+      $("pillRisk").innerText = `${translations[currentLang].riskShort}: ${risk}`;
+
+      $("pillRisk").className = "pill";
+      const riskText = String(risk).toLowerCase();
+      if (riskText.includes("low") || riskText.includes("低")) $("pillRisk").classList.add("good");
+      else if (riskText.includes("medium") || riskText.includes("moderate") || riskText.includes("中")) $("pillRisk").classList.add("warn");
+      else if (riskText.includes("high") || riskText.includes("高")) $("pillRisk").classList.add("bad");
 
       latestRenderedText = [
-        `${translations[currentLang].sectionRevenue}: ${getBiText(analysis.revenue_estimate)}`,
-        `${translations[currentLang].sectionProfit}: ${getBiText(analysis.profit)}`,
-        `${translations[currentLang].sectionROI}: ${getBiText(analysis.roi)}`,
-        `${translations[currentLang].sectionAnnualized}: ${getBiText(analysis.annualized_return)}`,
-        `${translations[currentLang].sectionRisk}: ${getBiText(analysis.risk_level)}`,
-        `${translations[currentLang].sectionRecommendation}: ${getBiText(analysis.recommendation)}`
+        `${translations[currentLang].sectionRevenue}: ${revenue}`,
+        `${translations[currentLang].sectionProfit}: ${profit}`,
+        `${translations[currentLang].sectionROI}: ${roi}`,
+        `${translations[currentLang].sectionAnnualized}: ${annualized}`,
+        `${translations[currentLang].sectionRisk}: ${risk}`,
+        `${translations[currentLang].sectionRecommendation}: ${recommendation}`
       ].join("\n\n");
     }
 
@@ -822,12 +848,21 @@
       $("caskCost").value = "";
       $("bottlingPlan").value = "";
       $("extraNotes").value = "";
+
       $("revenueEstimate").innerText = "-";
       $("profitEstimate").innerText = "-";
       $("roiValue").innerText = "-";
       $("annualizedReturn").innerText = "-";
       $("riskLevel").innerText = "-";
       $("recommendationText").innerText = "-";
+
+      $("pillRevenue").innerText = `${translations[currentLang].revenueShort}: -`;
+      $("pillProfit").innerText = `${translations[currentLang].profitShort}: -`;
+      $("pillROI").innerText = `ROI: -`;
+      $("pillAnnualized").innerText = `${translations[currentLang].annualizedShort}: -`;
+      $("pillRisk").innerText = `${translations[currentLang].riskShort}: -`;
+      $("pillRisk").className = "pill";
+
       latestPrompt = "";
       latestJson = null;
       latestRenderedText = "";
