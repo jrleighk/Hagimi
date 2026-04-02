@@ -634,12 +634,30 @@
     }
 
     function getBiText(obj) {
-      if (!obj) return "-";
-      if (typeof obj === "string") return obj;
-      return currentLang === "zh"
-        ? (obj.chinese || obj.zh || obj.english || obj.en || "-")
-        : (obj.english || obj.en || obj.chinese || obj.zh || "-");
-    }
+  if (!obj) return "-";
+  if (typeof obj === "string") return obj;
+
+  const zh =
+    obj.zh ||
+    obj.chinese ||
+    obj.cn ||
+    obj.text_zh ||
+    obj.value_zh;
+
+  const en =
+    obj.en ||
+    obj.english ||
+    obj.eng ||
+    obj.text_en ||
+    obj.value_en;
+
+  const fallback =
+    Object.values(obj).find(v => typeof v === "string") || "-";
+
+  return currentLang === "zh"
+    ? (zh || en || fallback)
+    : (en || zh || fallback);
+}
 
     function cleanIncomingText(text) {
       let cleaned = String(text || "").trim();
@@ -803,12 +821,40 @@
     function renderStructured(data) {
       const analysis = data.investment_analysis || data;
 
-      const revenue = getBiText(analysis.revenue_estimate);
-      const profit = getBiText(analysis.profit_estimate || analysis.profit);
-      const roi = getBiText(analysis.roi);
-      const annualized = getBiText(analysis.annualized_return);
-      const risk = getBiText(analysis.risk_level);
-      const recommendation = getBiText(analysis.recommendation);
+      const revenue = getBiText(
+  analysis.revenue_estimate ||
+  analysis.revenue ||
+  analysis.estimated_revenue
+);
+
+const profit = getBiText(
+  analysis.profit_estimate ||
+  analysis.profit ||
+  analysis.estimated_profit
+);
+
+const roi = getBiText(
+  analysis.roi ||
+  analysis.return_on_investment
+);
+
+const annualized = getBiText(
+  analysis.annualized_return ||
+  analysis.annual_return ||
+  analysis.irr
+);
+
+const risk = getBiText(
+  analysis.risk_level ||
+  analysis.risk ||
+  analysis.risk_rating
+);
+
+const recommendation = getBiText(
+  analysis.recommendation ||
+  analysis.final_recommendation ||
+  analysis.investment_recommendation
+);
 
       $("revenueEstimate").innerText = revenue;
       $("profitEstimate").innerText = profit;
