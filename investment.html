@@ -675,6 +675,9 @@ function clearForm() {
 function toggleRawJson() {
   rawVisible = !rawVisible;
   $("rawJsonBox").style.display = rawVisible ? "block" : "none";
+  $("btnRaw").innerText = currentLang === "zh"
+    ? (rawVisible ? "隐藏原始 JSON" : "显示原始 JSON")
+    : (rawVisible ? "Hide Raw JSON" : "Show Raw JSON");
 }
 
 async function copyRenderedOutput() {
@@ -691,6 +694,100 @@ function exportRenderedOutput() {
   a.download = "hagimi.txt";
   a.click();
 }
+
+function toggleLanguage() {
+  currentLang = currentLang === "en" ? "zh" : "en";
+  localStorage.setItem(languageKey, currentLang);
+  applyLanguage();
+}
+
+function applyLanguage() {
+  if (currentLang === "zh") {
+
+    $("pageTitle").innerText = "HAGIMI 投资决策";
+    $("pageSub").innerText = "高端威士忌三档情景投资分析引擎";
+    $("heroTitle").innerText = "高端酒桶定价与投资引擎";
+    $("heroText").innerText = "本页面使用三档定价模型比较威士忌酒桶机会：保守、市场、高端。适用于商业决策、投资沟通。";
+
+    $("btnBack").innerText = "返回 HAGIMI";
+    $("btnLang").innerText = "中文 / EN";
+
+    $("inputTitle").innerText = "输入参数";
+    $("inputSub").innerText = "填写你的酒桶信息，或使用示例测试引擎。";
+
+    $("mini1Label").innerText = "分析重点";
+    $("mini1Value").innerText = "定价";
+    $("mini2Label").innerText = "模型类型";
+    $("mini2Value").innerText = "三档";
+    $("mini3Label").innerText = "目标用途";
+    $("mini3Value").innerText = "投资人级";
+
+    $("labelDistillery").innerText = "酒厂";
+    $("labelVintage").innerText = "年份";
+    $("labelAbv").innerText = "酒精度";
+    $("labelBottles").innerText = "预计瓶数";
+    $("labelBottlePrice").innerText = "单瓶参考价 / 当前参考";
+    $("labelCaskCost").innerText = "整桶成本";
+    $("labelBottlingPlan").innerText = "目标装瓶策略";
+    $("labelExtraNotes").innerText = "补充说明";
+
+    $("btnExample").innerText = "示例";
+    $("btnBuild").innerText = "生成提示词";
+    $("btnAnalyze").innerText = "开始分析";
+    $("btnClear").innerText = "清空";
+
+  } else {
+
+    $("btnLang").innerText = "中文 / EN";
+
+    $("pageTitle").innerText = "HAGIMI Investment Decision";
+    $("pageSub").innerText = "Premium whisky pricing engine with conservative, market, and premium scenario modeling";
+    $("heroTitle").innerText = "Premium Cask Pricing & Investment Engine";
+    $("heroText").innerText = "This page compares whisky cask opportunities using a 3-tier pricing framework: Conservative, Market, and Premium. It is designed for commercial decision-making, investor communication, and collector-market positioning.";
+
+    $("btnBack").innerText = "Back to HAGIMI";
+    $("btnLang").innerText = "中文 / EN";
+
+    $("inputTitle").innerText = "Input Parameters";
+    $("inputSub").innerText = "Fill in your cask information below, or use the example to test the pricing engine.";
+
+    $("mini1Label").innerText = "Analysis Focus";
+    $("mini1Value").innerText = "Pricing";
+    $("mini2Label").innerText = "Scenario Model";
+    $("mini2Value").innerText = "3-Tier";
+    $("mini3Label").innerText = "Target Use";
+    $("mini3Value").innerText = "Investor Grade";
+
+    $("labelDistillery").innerText = "Distillery";
+    $("labelVintage").innerText = "Vintage";
+    $("labelAbv").innerText = "ABV";
+    $("labelBottles").innerText = "Estimated Bottles";
+    $("labelBottlePrice").innerText = "Bottle Floor Price / Current Reference";
+    $("labelCaskCost").innerText = "Cask Cost";
+    $("labelBottlingPlan").innerText = "Target Bottling Strategy";
+    $("labelExtraNotes").innerText = "Extra Notes";
+
+    $("btnExample").innerText = "Use Example";
+    $("btnBuild").innerText = "Build Prompt";
+    $("btnAnalyze").innerText = "Run Analysis";
+    $("btnClear").innerText = "Clear";
+
+    $("hintText").innerText = "Tip: this version expects 3 pricing scenarios from Make: Conservative, Market, and Premium.";
+
+    $("outputTitle").innerText = "Scenario Output";
+    $("outputSub").innerText = "AI output will be cleaned, parsed, and displayed as three pricing scenarios plus final risk and recommendation.";
+
+    $("btnCopy").innerText = "Copy Summary";
+    $("btnExport").innerText = "Export Summary";
+    $("btnRaw").innerText = rawVisible ? "Hide Raw JSON" : "Show Raw JSON";
+
+    $("titleConservative").innerText = "Conservative";
+    $("titleMarket").innerText = "Market";
+    $("titlePremium").innerText = "Premium";
+  }
+}
+
+applyLanguage();
 </script>
 </body>
 </html>
