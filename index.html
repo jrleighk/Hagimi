@@ -353,6 +353,7 @@
         <button class="btn-secondary" onclick="fillExample()" id="btnExample">Use example</button>
         <button class="btn-secondary" onclick="openTokenPage()" id="btnToken">Token Launch</button>
         <button class="btn-secondary" onclick="openMarketplacePage()" id="btnMarketplace">Marketplace</button>
+        <button class="btn-secondary" onclick="openInvestmentPage()" id="btnInvestment">Investment Decision</button>
         <button class="btn-secondary" onclick="copyLastReply()" id="btnCopy">Copy last reply</button>
         <button class="btn-secondary" onclick="exportHistory()" id="btnExport">Export history</button>
         <button class="btn-secondary" onclick="clearChat()" id="btnClear">Clear chat</button>
@@ -384,7 +385,7 @@
 
   <script>
     const webhookUrl = "https://hook.eu1.make.com/q7aux9niyxc179nk1vjj9fuyr9o7wg86?msg=";
-    const storageKey = "hagimi_chat_history_v7";
+    const storageKey = "hagimi_chat_history_v8";
     const languageKey = "hagimi_lang";
 
     const chatEl = document.getElementById("chat");
@@ -403,6 +404,7 @@
         example: "Use example",
         token: "Token Launch",
         marketplace: "Marketplace",
+        investment: "Investment Decision",
         copy: "Copy last reply",
         export: "Export history",
         clear: "Clear chat",
@@ -430,6 +432,7 @@
         example: "示例",
         token: "Token发售",
         marketplace: "市场",
+        investment: "投资决策",
         copy: "复制上一条回复",
         export: "导出记录",
         clear: "清空聊天",
@@ -468,6 +471,7 @@
       document.getElementById("btnExample").innerText = t.example;
       document.getElementById("btnToken").innerText = t.token;
       document.getElementById("btnMarketplace").innerText = t.marketplace;
+      document.getElementById("btnInvestment").innerText = t.investment;
       document.getElementById("btnCopy").innerText = t.copy;
       document.getElementById("btnExport").innerText = t.export;
       document.getElementById("btnClear").innerText = t.clear;
@@ -488,6 +492,10 @@
 
     function openMarketplacePage() {
       window.location.href = "marketplace.html";
+    }
+
+    function openInvestmentPage() {
+      window.location.href = "investment.html";
     }
 
     function getHistory() {
