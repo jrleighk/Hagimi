@@ -22,9 +22,7 @@
       --bad: #f87171;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     html, body {
       margin: 0;
@@ -366,6 +364,7 @@
       .result-grid {
         grid-template-columns: 1fr;
       }
+
       .result-card.full {
         grid-column: auto;
       }
@@ -465,8 +464,9 @@
 
         <div class="hint" id="hintText">Tip: this version expects 3 pricing scenarios from Make: Conservative, Market, and Premium.</div>
         <div id="status" class="status"></div>
-    </div>
-<div class="panel">
+      </div>
+
+      <div class="panel">
         <h3 id="outputTitle">Scenario Output</h3>
         <p class="panel-sub" id="outputSub">
           AI output will be cleaned, parsed, and displayed as three pricing scenarios plus final risk and recommendation.
@@ -485,10 +485,7 @@
           <div class="pill" id="pillRisk">Risk: -</div>
         </div>
 
-        <!-- 三档模型 -->
         <div class="scenario-grid">
-
-          <!-- Conservative -->
           <div class="scenario-card">
             <div class="scenario-title" id="titleConservative">Conservative</div>
             <div class="scenario-line">Price/Bottle: <span id="conservativePrice">-</span></div>
@@ -498,7 +495,6 @@
             <div class="scenario-line">Annual: <span id="conservativeAnnual">-</span></div>
           </div>
 
-          <!-- Market -->
           <div class="scenario-card">
             <div class="scenario-title" id="titleMarket">Market</div>
             <div class="scenario-line">Price/Bottle: <span id="marketPrice">-</span></div>
@@ -508,7 +504,6 @@
             <div class="scenario-line">Annual: <span id="marketAnnual">-</span></div>
           </div>
 
-          <!-- Premium -->
           <div class="scenario-card">
             <div class="scenario-title" id="titlePremium">Premium</div>
             <div class="scenario-line">Price/Bottle: <span id="premiumPrice">-</span></div>
@@ -517,10 +512,8 @@
             <div class="scenario-line">ROI: <span id="premiumROI">-</span></div>
             <div class="scenario-line">Annual: <span id="premiumAnnual">-</span></div>
           </div>
-
         </div>
 
-        <!-- 风险 + 建议 -->
         <div class="result-grid">
           <div class="result-card">
             <div class="result-title">Risk Level</div>
@@ -533,498 +526,171 @@
           </div>
         </div>
 
-        <!-- 原始JSON -->
         <div id="rawJsonBox" class="json-box"></div>
-
       </div>
     </div>
-  </div>  <script>
-    const webhookUrl = "https://hook.eu1.make.com/q7aux9niyxc179nk1vjj9fuyr9o7wg86?msg=";
-    const languageKey = "hagimi_lang";
+  </div></div>
+</div>
+</div>
 
-    let currentLang = localStorage.getItem(languageKey) || "en";
-    let latestPrompt = "";
-    let latestRenderedText = "";
-    let latestJson = null;
-    let rawVisible = false;
+<script>
+const webhookUrl = "https://hook.eu1.make.com/q7aux9niyxc179nk1vjj9fuyr9o7wg86?msg=";
+const languageKey = "hagimi_lang";
 
-    const translations = {
-      en: {
-        pageTitle: "HAGIMI Investment Decision",
-        pageSub: "Premium whisky pricing engine with conservative, market, and premium scenario modeling",
-        btnBack: "Back to HAGIMI",
-        btnLang: "中文 / EN",
-        heroTitle: "Premium Cask Pricing & Investment Engine",
-        heroText: "This page compares whisky cask opportunities using a 3-tier pricing framework: Conservative, Market, and Premium. It is designed for commercial decision-making, investor communication, and collector-market positioning.",
-        inputTitle: "Input Parameters",
-        inputSub: "Fill in your cask information below, or use the example to test the pricing engine.",
-        mini1Label: "Analysis Focus",
-        mini1Value: "Pricing",
-        mini2Label: "Scenario Model",
-        mini2Value: "3-Tier",
-        mini3Label: "Target Use",
-        mini3Value: "Investor Grade",
-        labelDistillery: "Distillery",
-        labelVintage: "Vintage",
-        labelAbv: "ABV",
-        labelBottles: "Estimated Bottles",
-        labelBottlePrice: "Bottle Floor Price / Current Reference",
-        labelCaskCost: "Cask Cost",
-        labelBottlingPlan: "Target Bottling Strategy",
-        labelExtraNotes: "Extra Notes",
-        btnExample: "Use Example",
-        btnBuild: "Build Prompt",
-        btnAnalyze: "Run Analysis",
-        btnClear: "Clear",
-        hintText: "Tip: this version expects 3 pricing scenarios from Make: Conservative, Market, and Premium.",
-        outputTitle: "Scenario Output",
-        outputSub: "AI output will be cleaned, parsed, and displayed as three pricing scenarios plus final risk and recommendation.",
-        btnCopy: "Copy Summary",
-        btnExport: "Export Summary",
-        btnRaw: "Show Raw JSON",
-        btnRawHide: "Hide Raw JSON",
-        titleConservative: "Conservative",
-        titleMarket: "Market",
-        titlePremium: "Premium",
-        riskText: "Risk",
-        required: "Please complete the key fields first.",
-        buildingDone: "Prompt built successfully.",
-        running: "Running scenario analysis...",
-        completed: "Analysis completed.",
-        failed: "Request failed, or the returned content is not valid JSON.",
-        copied: "Summary copied.",
-        copyFail: "Copy failed. Please copy manually.",
-        exported: "Summary exported.",
-        nothingToExport: "There is no rendered summary to export.",
-        rawEmpty: "No raw JSON yet.",
-        conservativeShort: "Conservative",
-        marketShort: "Market",
-        premiumShort: "Premium",
-        riskShort: "Risk",
-        promptDistillery: "Distillery",
-        promptVintage: "Vintage",
-        promptAbv: "ABV",
-        promptBottles: "Estimated Bottles",
-        promptBottlePrice: "Bottle Floor Price / Current Reference",
-        promptCaskCost: "Cask Cost",
-        promptBottlingPlan: "Target Bottling Strategy",
-        promptExtraNotes: "Extra Notes",
-        builtPrefix: "Please analyze the following whisky investment opportunity using a 3-tier pricing model in structured JSON format.\n\nInput Parameters:\n",
-        builtMiddle: "\n\nReturn three pricing scenarios: Conservative, Market, Premium. For each scenario, include price per bottle, revenue, profit, ROI, and annualized return. Also include bilingual risk level and recommendation."
-      },
-      zh: {
-        pageTitle: "HAGIMI 投资决策",
-        pageSub: "高端威士忌三档定价引擎：保守、市场、高端",
-        btnBack: "返回 HAGIMI",
-        btnLang: "中文 / EN",
-        heroTitle: "高端酒桶定价与投资引擎",
-        heroText: "本页面使用三档定价模型比较威士忌酒桶机会：保守、市场、高端。适用于商业决策、投资人沟通与收藏市场定位。",
-        inputTitle: "输入参数",
-        inputSub: "填写你的酒桶信息，或使用示例按钮测试定价引擎。",
-        mini1Label: "分析重点",
-        mini1Value: "定价",
-        mini2Label: "模型类型",
-        mini2Value: "三档",
-        mini3Label: "目标用途",
-        mini3Value: "投资人级",
-        labelDistillery: "酒厂",
-        labelVintage: "年份",
-        labelAbv: "酒精度",
-        labelBottles: "预计瓶数",
-        labelBottlePrice: "单瓶参考价 / 当前参考",
-        labelCaskCost: "整桶成本",
-        labelBottlingPlan: "目标装瓶策略",
-        labelExtraNotes: "补充说明",
-        btnExample: "示例",
-        btnBuild: "生成提示词",
-        btnAnalyze: "开始分析",
-        btnClear: "清空",
-        hintText: "提示：这个版本要求 Make 返回三档价格模型：保守、市场、高端。",
-        outputTitle: "情景输出",
-        outputSub: "AI 输出会自动清洗、解析，并展示为三档价格情景及最终风险与建议。",
-        btnCopy: "复制摘要",
-        btnExport: "导出摘要",
-        btnRaw: "显示原始 JSON",
-        btnRawHide: "隐藏原始 JSON",
-        titleConservative: "保守",
-        titleMarket: "市场",
-        titlePremium: "高端",
-        riskText: "风险",
-        required: "请先填写关键字段。",
-        buildingDone: "提示词已生成。",
-        running: "正在进行情景分析...",
-        completed: "分析完成。",
-        failed: "请求失败，或返回内容不是有效 JSON。",
-        copied: "摘要已复制。",
-        copyFail: "复制失败，请手动复制。",
-        exported: "摘要已导出。",
-        nothingToExport: "目前没有可导出的摘要。",
-        rawEmpty: "目前没有原始 JSON。",
-        conservativeShort: "保守",
-        marketShort: "市场",
-        premiumShort: "高端",
-        riskShort: "风险",
-        promptDistillery: "酒厂",
-        promptVintage: "年份",
-        promptAbv: "酒精度",
-        promptBottles: "预计瓶数",
-        promptBottlePrice: "单瓶参考价 / 当前参考",
-        promptCaskCost: "整桶成本",
-        promptBottlingPlan: "目标装瓶策略",
-        promptExtraNotes: "补充说明",
-        builtPrefix: "请以三档定价模型和结构化 JSON 格式分析以下威士忌投资机会。\n\n输入参数：\n",
-        builtMiddle: "\n\n请返回三档情景：保守、市场、高端。每个情景都包含每瓶价格、总收入、总利润、ROI、年化回报。同时提供中英双语的风险等级与投资建议。"
-      }
-    };
+let currentLang = localStorage.getItem(languageKey) || "en";
+let latestPrompt = "";
+let latestRenderedText = "";
+let latestJson = null;
+let rawVisible = false;
 
-    function $(id) {
-      return document.getElementById(id);
-    }
+function $(id) {
+  return document.getElementById(id);
+}
 
-    function getBiText(obj) {
-      if (!obj) return "-";
-      if (typeof obj === "string") return obj;
+/* ✅ 核心修复：单行 prompt（彻底解决 JSON 报错） */
+function buildPrompt() {
+  const distillery = $("distillery").value.trim().replace(/\s+/g, " ");
+  const vintage = $("vintage").value.trim().replace(/\s+/g, " ");
+  const abv = $("abv").value.trim().replace(/\s+/g, " ");
+  const bottles = $("bottles").value.trim().replace(/\s+/g, " ");
+  const bottlePrice = $("bottlePrice").value.trim().replace(/\s+/g, " ");
+  const caskCost = $("caskCost").value.trim().replace(/\s+/g, " ");
+  const bottlingPlan = $("bottlingPlan").value.trim().replace(/\s+/g, " ");
+  const extraNotes = $("extraNotes").value.trim().replace(/\s+/g, " ");
 
-      const zh =
-        obj.zh ||
-        obj.chinese ||
-        obj.cn ||
-        obj.text_zh ||
-        obj.value_zh ||
-        obj.valueChinese;
+  if (!distillery || !vintage || !bottlingPlan) {
+    $("status").innerText = "Please complete required fields";
+    return;
+  }
 
-      const en =
-        obj.en ||
-        obj.english ||
-        obj.eng ||
-        obj.text_en ||
-        obj.value_en ||
-        obj.valueEnglish;
+  latestPrompt =
+    `Distillery: ${distillery}; ` +
+    `Vintage: ${vintage}; ` +
+    `ABV: ${abv}; ` +
+    `Estimated Bottles: ${bottles}; ` +
+    `Bottle Price Reference: ${bottlePrice}; ` +
+    `Cask Cost: ${caskCost}; ` +
+    `Bottling Plan: ${bottlingPlan}; ` +
+    `Extra Notes: ${extraNotes}; ` +
+    `Return ONLY valid JSON with this structure: {"investment_analysis":{"pricing_scenarios":{"conservative":{"price_per_bottle":"","revenue":"","profit":"","roi":"","annualized_return":""},"market":{"price_per_bottle":"","revenue":"","profit":"","roi":"","annualized_return":""},"premium":{"price_per_bottle":"","revenue":"","profit":"","roi":"","annualized_return":""}},"risk_level":"","recommendation":""}}`;
 
-      const fallback =
-        Object.values(obj).find(v => typeof v === "string" && v.trim() !== "") || "-";
+  $("status").innerText = "Prompt built";
+}
 
-      return currentLang === "zh"
-        ? (zh || en || fallback)
-        : (en || zh || fallback);
-    }
+/* ✅ 清洗返回 */
+function cleanIncomingText(text) {
+  let cleaned = String(text || "").trim();
 
-    function cleanIncomingText(text) {
-      let cleaned = String(text || "").trim();
+  cleaned = cleaned
+    .replace(/^```json\s*/i, "")
+    .replace(/^```\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
 
-      cleaned = cleaned
-        .replace(/^```json\s*/i, "")
-        .replace(/^```\s*/i, "")
-        .replace(/\s*```$/i, "")
-        .trim();
+  const first = cleaned.indexOf("{");
+  const last = cleaned.lastIndexOf("}");
 
-      const firstBrace = cleaned.indexOf("{");
-      const lastBrace = cleaned.lastIndexOf("}");
+  if (first !== -1 && last !== -1) {
+    cleaned = cleaned.slice(first, last + 1);
+  }
 
-      if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
-        cleaned = cleaned.slice(firstBrace, lastBrace + 1);
-      }
+  return cleaned;
+}
 
-      return cleaned.trim();
-    }
+/* ✅ 请求 Make */
+async function runAnalysis() {
+  if (!latestPrompt) buildPrompt();
 
-    function applyLanguage() {
-      const t = translations[currentLang];
+  $("status").innerText = "Running...";
 
-      $("pageTitle").innerText = t.pageTitle;
-      $("pageSub").innerText = t.pageSub;
-      $("btnBack").innerText = t.btnBack;
-      $("btnLang").innerText = t.btnLang;
-      $("heroTitle").innerText = t.heroTitle;
-      $("heroText").innerText = t.heroText;
-      $("inputTitle").innerText = t.inputTitle;
-      $("inputSub").innerText = t.inputSub;
-      $("mini1Label").innerText = t.mini1Label;
-      $("mini1Value").innerText = t.mini1Value;
-      $("mini2Label").innerText = t.mini2Label;
-      $("mini2Value").innerText = t.mini2Value;
-      $("mini3Label").innerText = t.mini3Label;
-      $("mini3Value").innerText = t.mini3Value;
-      $("labelDistillery").innerText = t.labelDistillery;
-      $("labelVintage").innerText = t.labelVintage;
-      $("labelAbv").innerText = t.labelAbv;
-      $("labelBottles").innerText = t.labelBottles;
-      $("labelBottlePrice").innerText = t.labelBottlePrice;
-      $("labelCaskCost").innerText = t.labelCaskCost;
-      $("labelBottlingPlan").innerText = t.labelBottlingPlan;
-      $("labelExtraNotes").innerText = t.labelExtraNotes;
-      $("btnExample").innerText = t.btnExample;
-      $("btnBuild").innerText = t.btnBuild;
-      $("btnAnalyze").innerText = t.btnAnalyze;
-      $("btnClear").innerText = t.btnClear;
-      $("hintText").innerText = t.hintText;
-      $("outputTitle").innerText = t.outputTitle;
-      $("outputSub").innerText = t.outputSub;
-      $("btnCopy").innerText = t.btnCopy;
-      $("btnExport").innerText = t.btnExport;
-      $("btnRaw").innerText = rawVisible ? t.btnRawHide : t.btnRaw;
-      $("titleConservative").innerText = t.titleConservative;
-      $("titleMarket").innerText = t.titleMarket;
-      $("titlePremium").innerText = t.titlePremium;
+  try {
+    const res = await fetch(webhookUrl + encodeURIComponent(latestPrompt));
+    const text = await res.text();
 
-      if (latestJson) {
-        renderStructured(latestJson);
-      }
-    }
+    const cleaned = cleanIncomingText(text);
+    const parsed = JSON.parse(cleaned);
 
-    function toggleLanguage() {
-      currentLang = currentLang === "en" ? "zh" : "en";
-      localStorage.setItem(languageKey, currentLang);
-      applyLanguage();
-    }
+    latestJson = parsed;
+    renderStructured(parsed);
 
-    function fillExample() {
-      if (currentLang === "en") {
-        $("distillery").value = "Macallan";
-        $("vintage").value = "1987";
-        $("abv").value = "45.1%";
-        $("bottles").value = "233";
-        $("bottlePrice").value = "37000 RMB";
-        $("caskCost").value = "8621000 RMB";
-        $("bottlingPlan").value = "Bottle at 40 years";
-        $("extraNotes").value = "Use premium Asia collector market logic. Compare quick-sale, standard, and collector scenarios.";
-      } else {
-        $("distillery").value = "麦卡伦";
-        $("vintage").value = "1987";
-        $("abv").value = "45.1%";
-        $("bottles").value = "233";
-        $("bottlePrice").value = "37000 人民币";
-        $("caskCost").value = "8621000 人民币";
-        $("bottlingPlan").value = "40年装瓶";
-        $("extraNotes").value = "请使用亚洲高端收藏市场逻辑，对比快速出售、标准市场和收藏级慢出三种情景。";
-      }
-    }
+    $("rawJsonBox").textContent = JSON.stringify(parsed, null, 2);
+    $("status").innerText = "Done";
 
-    function buildPrompt() {
-      const t = translations[currentLang];
+  } catch (e) {
+    console.error(e);
+    $("status").innerText = "请求失败 / Invalid JSON";
+  }
+}
 
-      const distillery = $("distillery").value.trim();
-      const vintage = $("vintage").value.trim();
-      const abv = $("abv").value.trim();
-      const bottles = $("bottles").value.trim();
-      const bottlePrice = $("bottlePrice").value.trim();
-      const caskCost = $("caskCost").value.trim();
-      const bottlingPlan = $("bottlingPlan").value.trim();
-      const extraNotes = $("extraNotes").value.trim();
+/* ✅ 渲染 */
+function renderStructured(data) {
+  const analysis = data.investment_analysis || data;
+  const s = analysis.pricing_scenarios || {};
 
-      if (!distillery || !vintage || !bottlingPlan) {
-        $("status").innerText = t.required;
-        return;
-      }
+  function v(o, k) {
+    return o && o[k] ? o[k] : "-";
+  }
 
-      latestPrompt =
-        t.builtPrefix +
-        `${t.promptDistillery}: ${distillery}\n` +
-        `${t.promptVintage}: ${vintage}\n` +
-        `${t.promptAbv}: ${abv}\n` +
-        `${t.promptBottles}: ${bottles}\n` +
-        `${t.promptBottlePrice}: ${bottlePrice}\n` +
-        `${t.promptCaskCost}: ${caskCost}\n` +
-        `${t.promptBottlingPlan}: ${bottlingPlan}\n` +
-        `${t.promptExtraNotes}: ${extraNotes}` +
-        t.builtMiddle;
+  function fill(prefix, obj) {
+    $(prefix+"Price").innerText = v(obj,"price_per_bottle");
+    $(prefix+"Revenue").innerText = v(obj,"revenue");
+    $(prefix+"Profit").innerText = v(obj,"profit");
+    $(prefix+"ROI").innerText = v(obj,"roi");
+    $(prefix+"Annual").innerText = v(obj,"annualized_return");
+  }
 
-      $("status").innerText = t.buildingDone;
-    }
+  fill("conservative", s.conservative);
+  fill("market", s.market);
+  fill("premium", s.premium);
 
-    async function runAnalysis() {
-      const t = translations[currentLang];
+  const risk = analysis.risk_level || "-";
+  const rec = analysis.recommendation || "-";
 
-      if (!latestPrompt) {
-        buildPrompt();
-      }
+  $("riskLevel").innerText = risk;
+  $("recommendationText").innerText = rec;
 
-      if (!latestPrompt) {
-        $("status").innerText = t.required;
-        return;
-      }
+  $("pillConservative").innerText = "Conservative: " + v(s.conservative,"roi");
+  $("pillMarket").innerText = "Market: " + v(s.market,"roi");
+  $("pillPremium").innerText = "Premium: " + v(s.premium,"roi");
+  $("pillRisk").innerText = "Risk: " + risk;
 
-      $("status").innerText = t.running;
+  latestRenderedText = JSON.stringify(data, null, 2);
+}
 
-      try {
-        const response = await fetch(webhookUrl + encodeURIComponent(latestPrompt), {
-          method: "GET"
-        });
+/* 其他 */
+function fillExample() {
+  $("distillery").value = "Macallan";
+  $("vintage").value = "1990";
+  $("abv").value = "51.5%";
+  $("bottles").value = "285";
+  $("bottlePrice").value = "37000 RMB";
+  $("caskCost").value = "8621000 RMB";
+  $("bottlingPlan").value = "Bottle at 40 years";
+}
 
-        const text = await response.text();
-        const cleaned = cleanIncomingText(text);
-        const parsed = JSON.parse(cleaned);
+function clearForm() {
+  document.querySelectorAll("input,textarea").forEach(i=>i.value="");
+}
 
-        latestJson = parsed;
-        renderStructured(parsed);
-        $("rawJsonBox").textContent = JSON.stringify(parsed, null, 2);
-        $("status").innerText = t.completed;
-      } catch (error) {
-        $("status").innerText = t.failed;
-        console.error(error);
-      }
-    }
+function toggleRawJson() {
+  rawVisible = !rawVisible;
+  $("rawJsonBox").style.display = rawVisible ? "block" : "none";
+}
 
-    function renderStructured(data) {
-      const analysis = data.investment_analysis || data;
-      const scenarios = analysis.pricing_scenarios || {};
+async function copyRenderedOutput() {
+  if (!latestRenderedText) return;
+  await navigator.clipboard.writeText(latestRenderedText);
+}
 
-      function getVal(obj, key) {
-        if (!obj) return "-";
-        return obj[key] || "-";
-      }
-
-      function renderScenario(prefix, scenario) {
-        if (!scenario) {
-          $(prefix + "Price").innerText = "-";
-          $(prefix + "Revenue").innerText = "-";
-          $(prefix + "Profit").innerText = "-";
-          $(prefix + "ROI").innerText = "-";
-          $(prefix + "Annual").innerText = "-";
-          return;
-        }
-
-        $(prefix + "Price").innerText = getVal(scenario, "price_per_bottle");
-        $(prefix + "Revenue").innerText = getVal(scenario, "revenue");
-        $(prefix + "Profit").innerText = getVal(scenario, "profit");
-        $(prefix + "ROI").innerText = getVal(scenario, "roi");
-        $(prefix + "Annual").innerText = getVal(scenario, "annualized_return");
-      }
-
-      renderScenario("conservative", scenarios.conservative);
-      renderScenario("market", scenarios.market);
-      renderScenario("premium", scenarios.premium);
-
-      const risk = getBiText(
-        analysis.risk_level ||
-        analysis.risk ||
-        analysis.risk_rating
-      );
-
-      const recommendation = getBiText(
-        analysis.recommendation ||
-        analysis.final_recommendation ||
-        analysis.investment_recommendation
-      );
-
-      $("riskLevel").innerText = risk;
-      $("recommendationText").innerText = recommendation;
-
-      $("pillConservative").innerText = `${translations[currentLang].conservativeShort}: ${getVal(scenarios.conservative, "roi")}`;
-      $("pillMarket").innerText = `${translations[currentLang].marketShort}: ${getVal(scenarios.market, "roi")}`;
-      $("pillPremium").innerText = `${translations[currentLang].premiumShort}: ${getVal(scenarios.premium, "roi")}`;
-      $("pillRisk").innerText = `${translations[currentLang].riskShort}: ${risk}`;
-
-      $("pillRisk").className = "pill";
-      const riskText = String(risk).toLowerCase();
-      if (riskText.includes("low") || riskText.includes("低")) $("pillRisk").classList.add("good");
-      else if (riskText.includes("medium") || riskText.includes("moderate") || riskText.includes("中")) $("pillRisk").classList.add("warn");
-      else if (riskText.includes("high") || riskText.includes("高")) $("pillRisk").classList.add("bad");
-
-      latestRenderedText = [
-        `${translations[currentLang].titleConservative}`,
-        `Price/Bottle: ${getVal(scenarios.conservative, "price_per_bottle")}`,
-        `Revenue: ${getVal(scenarios.conservative, "revenue")}`,
-        `Profit: ${getVal(scenarios.conservative, "profit")}`,
-        `ROI: ${getVal(scenarios.conservative, "roi")}`,
-        `Annualized: ${getVal(scenarios.conservative, "annualized_return")}`,
-
-        "",
-        `${translations[currentLang].titleMarket}`,
-        `Price/Bottle: ${getVal(scenarios.market, "price_per_bottle")}`,
-        `Revenue: ${getVal(scenarios.market, "revenue")}`,
-        `Profit: ${getVal(scenarios.market, "profit")}`,
-        `ROI: ${getVal(scenarios.market, "roi")}`,
-        `Annualized: ${getVal(scenarios.market, "annualized_return")}`,
-
-        "",
-        `${translations[currentLang].titlePremium}`,
-        `Price/Bottle: ${getVal(scenarios.premium, "price_per_bottle")}`,
-        `Revenue: ${getVal(scenarios.premium, "revenue")}`,
-        `Profit: ${getVal(scenarios.premium, "profit")}`,
-        `ROI: ${getVal(scenarios.premium, "roi")}`,
-        `Annualized: ${getVal(scenarios.premium, "annualized_return")}`,
-
-        "",
-        `${translations[currentLang].riskText}: ${risk}`,
-        `Recommendation: ${recommendation}`
-      ].join("\n");
-    }
-
-    function clearForm() {
-      $("distillery").value = "";
-      $("vintage").value = "";
-      $("abv").value = "";
-      $("bottles").value = "";
-      $("bottlePrice").value = "";
-      $("caskCost").value = "";
-      $("bottlingPlan").value = "";
-      $("extraNotes").value = "";
-
-      [
-        "conservativePrice","conservativeRevenue","conservativeProfit","conservativeROI","conservativeAnnual",
-        "marketPrice","marketRevenue","marketProfit","marketROI","marketAnnual",
-        "premiumPrice","premiumRevenue","premiumProfit","premiumROI","premiumAnnual",
-        "riskLevel","recommendationText"
-      ].forEach(id => $(id).innerText = "-");
-
-      $("pillConservative").innerText = `${translations[currentLang].conservativeShort}: -`;
-      $("pillMarket").innerText = `${translations[currentLang].marketShort}: -`;
-      $("pillPremium").innerText = `${translations[currentLang].premiumShort}: -`;
-      $("pillRisk").innerText = `${translations[currentLang].riskShort}: -`;
-      $("pillRisk").className = "pill";
-
-      latestPrompt = "";
-      latestJson = null;
-      latestRenderedText = "";
-      $("rawJsonBox").textContent = "";
-      $("status").innerText = "";
-    }
-
-    async function copyRenderedOutput() {
-      const t = translations[currentLang];
-      if (!latestRenderedText) {
-        $("status").innerText = t.nothingToExport;
-        return;
-      }
-
-      try {
-        await navigator.clipboard.writeText(latestRenderedText);
-        $("status").innerText = t.copied;
-      } catch (error) {
-        $("status").innerText = t.copyFail;
-      }
-    }
-
-    function exportRenderedOutput() {
-      const t = translations[currentLang];
-      if (!latestRenderedText) {
-        $("status").innerText = t.nothingToExport;
-        return;
-      }
-
-      const blob = new Blob([latestRenderedText], { type: "text/plain;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "hagimi-pricing-scenarios.txt";
-      a.click();
-      URL.revokeObjectURL(url);
-      $("status").innerText = t.exported;
-    }
-
-    function toggleRawJson() {
-      rawVisible = !rawVisible;
-      $("rawJsonBox").style.display = rawVisible ? "block" : "none";
-      $("btnRaw").innerText = rawVisible ? translations[currentLang].btnRawHide : translations[currentLang].btnRaw;
-
-      if (!latestJson) {
-        $("rawJsonBox").textContent = translations[currentLang].rawEmpty;
-      }
-    }
-
-    applyLanguage();
-    clearForm();
-  </script>
+function exportRenderedOutput() {
+  if (!latestRenderedText) return;
+  const blob = new Blob([latestRenderedText]);
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "hagimi.txt";
+  a.click();
+}
+</script>
 </body>
 </html>
