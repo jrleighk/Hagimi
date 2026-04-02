@@ -1,219 +1,615 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HAGIMI Cask Tracking</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HAGIMI Cask Tracking</title>
 
-<style>
-body{
-margin:0;
-background:linear-gradient(180deg,#05080f,#0f172a);
-color:#e5eefc;
-font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-}
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="apple-touch-icon" href="hagimi-icon.png" />
+  <link rel="icon" type="image/png" href="hagimi-icon.png" />
 
-.container{
-max-width:900px;
-margin:auto;
-padding:20px;
-}
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: rgba(15, 23, 42, 0.88);
+      --text: #e5eefc;
+      --muted: #9fb0cf;
+      --border: rgba(148, 163, 184, 0.18);
+      --accent: #5fa8ff;
+      --accent-2: #7dd3fc;
+      --card: rgba(17, 27, 46, 0.92);
+      --shadow: 0 16px 40px rgba(0,0,0,0.28);
+    }
 
-.topbar{
-display:flex;
-justify-content:space-between;
-margin-bottom:12px;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-.card{
-background:rgba(17,27,46,0.9);
-padding:22px;
-border-radius:20px;
-margin-bottom:16px;
-}
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(59,130,246,0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(14,165,233,0.16), transparent 24%),
+        linear-gradient(180deg, #08111f 0%, #0b1220 45%, #0f172a 100%);
+    }
 
-h1{margin:0 0 8px;font-size:28px;}
-.sub{color:#9fb0cf;margin-bottom:14px;}
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 18px;
+    }
 
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-}
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(10, 17, 31, 0.72);
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
 
-.mini{
-background:#1e293b;
-padding:12px;
-border-radius:12px;
-}
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
 
-.label{font-size:12px;color:#9fb0cf;}
-.value{font-size:18px;font-weight:800;}
+    .brand-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      background: #0f172a;
+    }
 
-.timeline{
-border-left:2px solid #5fa8ff;
-padding-left:16px;
-}
+    .brand-text h1 {
+      margin: 0;
+      font-size: 30px;
+      letter-spacing: -0.03em;
+    }
 
-.event{margin-bottom:14px;}
+    .brand-text p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
 
-.status{
-color:#9fb0cf;
-margin-top:6px;
-}
-</style>
+    .nav-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: 0.18s ease;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .hero {
+      border: 1px solid var(--border);
+      background: rgba(17, 27, 46, 0.72);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .hero h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 860px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .panel {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .panel-sub {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .info-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .info-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .info-value {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .status-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .status-item {
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .timeline {
+      position: relative;
+      margin-top: 8px;
+      padding-left: 26px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 4px;
+      bottom: 4px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent), rgba(125, 211, 252, 0.2));
+      border-radius: 999px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 0 0 18px 0;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -22px;
+      top: 5px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(95, 168, 255, 0.15);
+    }
+
+    .timeline-year {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .timeline-desc {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .dual-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 980px) {
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .dual-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-text h1 {
+        font-size: 24px;
+      }
+
+      .hero h2 {
+        font-size: 24px;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <img class="brand-icon" src="hagimi-icon.png" alt="HAGIMI icon" />
+        <div class="brand-text">
+          <h1 id="pageTitle">HAGIMI Cask Tracking</h1>
+          <p id="pageSub">Asset tracking, verification, storage overview, and token linkage</p>
+        </div>
+      </div>
 
-<div class="container">
+      <div class="nav-actions">
+        <a class="btn" href="marketplace.html" id="btnBack">Back to Marketplace</a>
+        <button class="btn" onclick="toggleLanguage()" id="btnLang">中文 / EN</button>
+      </div>
+    </div>
 
-<div class="topbar">
-<button onclick="goBack()">←</button>
-<button onclick="toggleLang()" id="langBtn">中文 / EN</button>
-</div>
+    <div class="hero">
+      <h2 id="heroTitle">Cask Identity & Verification</h2>
+      <p id="heroText">
+        This page provides a structured view of the cask’s identity, storage profile, timeline, current status, and token linkage to strengthen credibility and investor confidence.
+      </p>
+    </div>
 
-<div class="card">
-<h1 id="title"></h1>
-<div class="sub" id="subtitle"></div>
+    <div class="layout">
+      <div class="panel">
+        <h3 id="panelOverviewTitle">Cask Overview</h3>
+        <p class="panel-sub" id="panelOverviewSub">
+          Core asset data for the selected cask opportunity.
+        </p>
 
-<div class="grid">
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label" id="labelCaskId">Cask ID</div>
+            <div class="info-value" id="caskId">-</div>
+          </div>
 
-<div class="mini">
-<div class="label">Cask ID</div>
-<div class="value" id="caskId"></div>
-</div>
+          <div class="info-card">
+            <div class="info-label" id="labelDistillery">Distillery</div>
+            <div class="info-value" id="distillery">-</div>
+          </div>
 
-<div class="mini">
-<div class="label">Distillery</div>
-<div class="value" id="distillery"></div>
-</div>
+          <div class="info-card">
+            <div class="info-label" id="labelVintage">Vintage</div>
+            <div class="info-value" id="vintage">-</div>
+          </div>
 
-<div class="mini">
-<div class="label">Vintage</div>
-<div class="value" id="vintage"></div>
-</div>
+          <div class="info-card">
+            <div class="info-label" id="labelCaskType">Cask Type</div>
+            <div class="info-value" id="caskType">-</div>
+          </div>
 
-<div class="mini">
-<div class="label">Cask Type</div>
-<div class="value" id="caskType"></div>
-</div>
+          <div class="info-card">
+            <div class="info-label" id="labelAbv">ABV</div>
+            <div class="info-value" id="abv">-</div>
+          </div>
 
-<div class="mini">
-<div class="label">ABV</div>
-<div class="value" id="abv"></div>
-</div>
+          <div class="info-card">
+            <div class="info-label" id="labelBottles">Estimated Bottles</div>
+            <div class="info-value" id="bottles">-</div>
+          </div>
+        </div>
+      </div>
 
-<div class="mini">
-<div class="label">Estimated Bottles</div>
-<div class="value" id="bottles"></div>
-</div>
+      <div class="dual-grid">
+        <div class="panel">
+          <h3 id="panelStorageTitle">Storage Information</h3>
+          <p class="panel-sub" id="panelStorageSub">
+            Bonded warehouse and current holding condition.
+          </p>
 
-</div>
-</div>
+          <div class="info-grid" style="grid-template-columns: 1fr;">
+            <div class="info-card">
+              <div class="info-label" id="labelWarehouse">Warehouse</div>
+              <div class="info-value" id="warehouse">Scotland Bonded Warehouse</div>
+            </div>
 
-<div class="card">
-<h2>Storage</h2>
-<div class="grid">
-<div class="mini">
-<div class="label">Warehouse</div>
-<div class="value">Scotland Bonded</div>
-</div>
-<div class="mini">
-<div class="label">Region</div>
-<div class="value">Speyside</div>
-</div>
-<div class="mini">
-<div class="label">Status</div>
-<div class="value">Aging</div>
-</div>
-</div>
-</div>
+            <div class="info-card">
+              <div class="info-label" id="labelRegion">Region</div>
+              <div class="info-value" id="region">Speyside</div>
+            </div>
 
-<div class="card">
-<h2>Timeline</h2>
+            <div class="info-card">
+              <div class="info-label" id="labelStorageStatus">Status</div>
+              <div class="info-value" id="storageStatus">In Storage</div>
+            </div>
+          </div>
+        </div>
 
-<div class="timeline">
+        <div class="panel">
+          <h3 id="panelTokenTitle">Token Linkage</h3>
+          <p class="panel-sub" id="panelTokenSub">
+            Relationship between the physical cask and its tokenized structure.
+          </p>
 
-<div class="event">
-<div class="value">Distilled</div>
-<div class="status" id="year"></div>
-</div>
+          <div class="info-grid" style="grid-template-columns: 1fr;">
+            <div class="info-card">
+              <div class="info-label" id="labelTokenId">Token ID</div>
+              <div class="info-value" id="tokenId">-</div>
+            </div>
 
-<div class="event">
-<div class="value">Re-racked</div>
-<div class="status">Mid-life maturation</div>
-</div>
+            <div class="info-card">
+              <div class="info-label" id="labelSupply">Total Supply</div>
+              <div class="info-value" id="tokenSupply">-</div>
+            </div>
 
-<div class="event">
-<div class="value">Selected by HAGIMI</div>
-<div class="status">2024</div>
-</div>
+            <div class="info-card">
+              <div class="info-label" id="labelLinkedProject">Linked Project</div>
+              <div class="info-value" id="linkedProject">-</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<div class="event">
-<div class="value">Tokenized</div>
-<div class="status">2025</div>
-</div>
+      <div class="dual-grid">
+        <div class="panel">
+          <h3 id="panelTimelineTitle">Cask Timeline</h3>
+          <p class="panel-sub" id="panelTimelineSub">
+            Key milestones from distillation to tokenization.
+          </p>
 
-</div>
-</div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-year" id="year1">1990</div>
+              <div class="timeline-desc" id="desc1">Distilled</div>
+            </div>
 
-<div class="card">
-<h2>Status</h2>
-<div class="status">✔ Aging in progress</div>
-<div class="status">✔ Market demand increasing</div>
-<div class="status">✔ Asset-backed token linked</div>
-</div>
+            <div class="timeline-item">
+              <div class="timeline-year" id="year2">2005</div>
+              <div class="timeline-desc" id="desc2">Re-racked / mid-life cask management</div>
+            </div>
 
-<div class="card">
-<h2>Token</h2>
+            <div class="timeline-item">
+              <div class="timeline-year" id="year3">2024</div>
+              <div class="timeline-desc" id="desc3">Selected by HAGIMI</div>
+            </div>
 
-<div class="grid">
-<div class="mini">
-<div class="label">Token ID</div>
-<div class="value" id="tokenId"></div>
-</div>
+            <div class="timeline-item">
+              <div class="timeline-year" id="year4">2025</div>
+              <div class="timeline-desc" id="desc4">Tokenized for structured market presentation</div>
+            </div>
+          </div>
+        </div>
 
-<div class="mini">
-<div class="label">Total Supply</div>
-<div class="value" id="supply"></div>
-</div>
-</div>
+        <div class="panel">
+          <h3 id="panelStatusTitle">Current Status</h3>
+          <p class="panel-sub" id="panelStatusSub">
+            Current condition and investor-facing status indicators.
+          </p>
 
-</div>
+          <div class="status-list">
+            <div class="status-item" id="status1">✔ Aging in progress</div>
+            <div class="status-item" id="status2">✔ Estimated bottles aligned with current planning</div>
+            <div class="status-item" id="status3">✔ Asset-backed token linked to project structure</div>
+            <div class="status-item" id="status4">✔ Suitable for tracking, launch, and investor presentation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-</div>
+  <script src="projects.js"></script>
+  <script>
+    const languageKey = "hagimi_lang";
+    let currentLang = localStorage.getItem(languageKey) || "en";
 
-<script src="projects.js"></script>
-<script>
+    const params = new URLSearchParams(window.location.search);
+    const projectId = params.get("project");
+    const project = typeof getProjectById === "function" ? getProjectById(projectId) : null;
 
-const params = new URLSearchParams(window.location.search);
-const project = getProjectById(params.get("project"));
+    const translations = {
+      en: {
+        pageTitle: "HAGIMI Cask Tracking",
+        pageSub: "Asset tracking, verification, storage overview, and token linkage",
+        btnBack: "Back to Marketplace",
+        btnLang: "中文 / EN",
+        heroTitle: "Cask Identity & Verification",
+        heroText: "This page provides a structured view of the cask’s identity, storage profile, timeline, current status, and token linkage to strengthen credibility and investor confidence.",
+        panelOverviewTitle: "Cask Overview",
+        panelOverviewSub: "Core asset data for the selected cask opportunity.",
+        panelStorageTitle: "Storage Information",
+        panelStorageSub: "Bonded warehouse and current holding condition.",
+        panelTokenTitle: "Token Linkage",
+        panelTokenSub: "Relationship between the physical cask and its tokenized structure.",
+        panelTimelineTitle: "Cask Timeline",
+        panelTimelineSub: "Key milestones from distillation to tokenization.",
+        panelStatusTitle: "Current Status",
+        panelStatusSub: "Current condition and investor-facing status indicators.",
+        labelCaskId: "Cask ID",
+        labelDistillery: "Distillery",
+        labelVintage: "Vintage",
+        labelCaskType: "Cask Type",
+        labelAbv: "ABV",
+        labelBottles: "Estimated Bottles",
+        labelWarehouse: "Warehouse",
+        labelRegion: "Region",
+        labelStorageStatus: "Status",
+        labelTokenId: "Token ID",
+        labelSupply: "Total Supply",
+        labelLinkedProject: "Linked Project",
+        warehouse: "Scotland Bonded Warehouse",
+        region: "Speyside",
+        storageStatus: "In Storage",
+        desc1: "Distilled",
+        desc2: "Re-racked / mid-life cask management",
+        desc3: "Selected by HAGIMI",
+        desc4: "Tokenized for structured market presentation",
+        status1: "✔ Aging in progress",
+        status2: "✔ Estimated bottles aligned with current planning",
+        status3: "✔ Asset-backed token linked to project structure",
+        status4: "✔ Suitable for tracking, launch, and investor presentation"
+      },
+      zh: {
+        pageTitle: "HAGIMI 酒桶追踪",
+        pageSub: "资产追踪、验证、仓储概览与 Token 关联",
+        btnBack: "返回市场",
+        btnLang: "中文 / EN",
+        heroTitle: "酒桶身份与验证",
+        heroText: "本页面用于展示酒桶身份、仓储信息、时间轴、当前状态与 Token 关联关系，以提升可信度与投资人信任。",
+        panelOverviewTitle: "酒桶概览",
+        panelOverviewSub: "所选酒桶机会的核心资产信息。",
+        panelStorageTitle: "存储信息",
+        panelStorageSub: "保税仓储与当前持有状态。",
+        panelTokenTitle: "Token 关联",
+        panelTokenSub: "实体酒桶与其 Token 化结构之间的关系。",
+        panelTimelineTitle: "酒桶时间轴",
+        panelTimelineSub: "从蒸馏到 Token 化的关键节点。",
+        panelStatusTitle: "当前状态",
+        panelStatusSub: "当前状况与面向投资人的状态指标。",
+        labelCaskId: "酒桶编号",
+        labelDistillery: "酒厂",
+        labelVintage: "年份",
+        labelCaskType: "桶型",
+        labelAbv: "酒精度",
+        labelBottles: "预计瓶数",
+        labelWarehouse: "仓库",
+        labelRegion: "产区",
+        labelStorageStatus: "状态",
+        labelTokenId: "Token 编号",
+        labelSupply: "总发行量",
+        labelLinkedProject: "关联项目",
+        warehouse: "苏格兰保税仓",
+        region: "斯佩塞",
+        storageStatus: "在库陈年中",
+        desc1: "蒸馏完成",
+        desc2: "中期换桶 / 熟成管理",
+        desc3: "被 HAGIMI 选中",
+        desc4: "完成 Token 化展示结构",
+        status1: "✔ 持续陈年中",
+        status2: "✔ 预计瓶数与当前规划一致",
+        status3: "✔ 资产支持型 Token 已关联项目结构",
+        status4: "✔ 适合用于追踪、发行与投资人展示"
+      }
+    };
 
-document.getElementById("title").innerText = project.name;
-document.getElementById("subtitle").innerText = "Asset Tracking & Verification";
+    function $(id) {
+      return document.getElementById(id);
+    }
 
-document.getElementById("caskId").innerText = project.id.toUpperCase()+"-001";
-document.getElementById("distillery").innerText = project.distillery;
-document.getElementById("vintage").innerText = project.vintage;
-document.getElementById("caskType").innerText = project.caskType;
-document.getElementById("abv").innerText = project.abv;
-document.getElementById("bottles").innerText = project.estimatedBottles;
+    function applyLanguage() {
+      const t = translations[currentLang];
 
-document.getElementById("year").innerText = project.vintage;
+      $("pageTitle").innerText = t.pageTitle;
+      $("pageSub").innerText = t.pageSub;
+      $("btnBack").innerText = t.btnBack;
+      $("btnLang").innerText = t.btnLang;
+      $("heroTitle").innerText = t.heroTitle;
+      $("heroText").innerText = t.heroText;
+      $("panelOverviewTitle").innerText = t.panelOverviewTitle;
+      $("panelOverviewSub").innerText = t.panelOverviewSub;
+      $("panelStorageTitle").innerText = t.panelStorageTitle;
+      $("panelStorageSub").innerText = t.panelStorageSub;
+      $("panelTokenTitle").innerText = t.panelTokenTitle;
+      $("panelTokenSub").innerText = t.panelTokenSub;
+      $("panelTimelineTitle").innerText = t.panelTimelineTitle;
+      $("panelTimelineSub").innerText = t.panelTimelineSub;
+      $("panelStatusTitle").innerText = t.panelStatusTitle;
+      $("panelStatusSub").innerText = t.panelStatusSub;
 
-document.getElementById("tokenId").innerText = project.id.toUpperCase();
-document.getElementById("supply").innerText = project.tokenSupply.toLocaleString();
+      $("labelCaskId").innerText = t.labelCaskId;
+      $("labelDistillery").innerText = t.labelDistillery;
+      $("labelVintage").innerText = t.labelVintage;
+      $("labelCaskType").innerText = t.labelCaskType;
+      $("labelAbv").innerText = t.labelAbv;
+      $("labelBottles").innerText = t.labelBottles;
+      $("labelWarehouse").innerText = t.labelWarehouse;
+      $("labelRegion").innerText = t.labelRegion;
+      $("labelStorageStatus").innerText = t.labelStorageStatus;
+      $("labelTokenId").innerText = t.labelTokenId;
+      $("labelSupply").innerText = t.labelSupply;
+      $("labelLinkedProject").innerText = t.labelLinkedProject;
 
-function goBack(){
-location.href="marketplace.html";
-}
+      $("warehouse").innerText = t.warehouse;
+      $("region").innerText = t.region;
+      $("storageStatus").innerText = t.storageStatus;
 
-function toggleLang(){
-alert("双语已统一使用主系统语言（此页可后续增强）");
-}
+      $("desc1").innerText = t.desc1;
+      $("desc2").innerText = t.desc2;
+      $("desc3").innerText = t.desc3;
+      $("desc4").innerText = t.desc4;
 
-</script>
+      $("status1").innerText = t.status1;
+      $("status2").innerText = t.status2;
+      $("status3").innerText = t.status3;
+      $("status4").innerText = t.status4;
+    }
 
+    function toggleLanguage() {
+      currentLang = currentLang === "en" ? "zh" : "en";
+      localStorage.setItem(languageKey, currentLang);
+      applyLanguage();
+    }
+
+    function populateProject() {
+      if (!project) return;
+
+      $("caskId").innerText = `${String(project.id).toUpperCase()}-001`;
+      $("distillery").innerText = project.distillery || "-";
+      $("vintage").innerText = project.vintage || "-";
+      $("caskType").innerText = project.caskType || "-";
+      $("abv").innerText = project.abv || "-";
+      $("bottles").innerText = (project.estimatedBottles ?? "-").toString();
+      $("tokenId").innerText = String(project.id).toUpperCase();
+      $("tokenSupply").innerText = Number(project.tokenSupply || 0).toLocaleString();
+      $("linkedProject").innerText = project.name || "-";
+
+      $("year1").innerText = project.vintage || "1990";
+    }
+
+    applyLanguage();
+    populateProject();
+  </script>
 </body>
 </html>
