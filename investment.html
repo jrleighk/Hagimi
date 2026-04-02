@@ -20,6 +20,9 @@
       --accent-2: #7dd3fc;
       --card: rgba(17, 27, 46, 0.92);
       --shadow: 0 16px 40px rgba(0,0,0,0.28);
+      --success: #22c55e;
+      --warn: #f59e0b;
+      --danger: #ef4444;
     }
 
     * {
@@ -39,7 +42,7 @@
     }
 
     .container {
-      max-width: 1160px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 18px;
     }
@@ -141,7 +144,7 @@
 
     .layout {
       display: grid;
-      grid-template-columns: 1.02fr 0.98fr;
+      grid-template-columns: 0.95fr 1.05fr;
       gap: 18px;
     }
 
@@ -250,13 +253,93 @@
       line-height: 1.6;
     }
 
-    .output-wrap {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
+    .status {
+      min-height: 20px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
     }
 
-    .output-box {
+    .results {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .result-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .result-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .result-body {
+      color: var(--text);
+      line-height: 1.75;
+      white-space: pre-wrap;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .summary-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .summary-box-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .summary-box-value {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .badge-success {
+      background: rgba(34,197,94,0.14);
+      color: #86efac;
+      border: 1px solid rgba(34,197,94,0.28);
+    }
+
+    .badge-warn {
+      background: rgba(245,158,11,0.14);
+      color: #fcd34d;
+      border: 1px solid rgba(245,158,11,0.28);
+    }
+
+    .badge-danger {
+      background: rgba(239,68,68,0.14);
+      color: #fca5a5;
+      border: 1px solid rgba(239,68,68,0.28);
+    }
+
+    .placeholder-box {
       min-height: 560px;
       border: 1px solid var(--border);
       border-radius: 16px;
@@ -265,14 +348,7 @@
       white-space: pre-wrap;
       line-height: 1.75;
       font-size: 15px;
-      overflow: auto;
-    }
-
-    .status {
-      min-height: 20px;
-      margin-top: 12px;
       color: var(--muted);
-      font-size: 13px;
     }
 
     @media (max-width: 980px) {
@@ -287,6 +363,16 @@
       .mini-grid {
         grid-template-columns: 1fr;
       }
+
+      .summary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -297,7 +383,7 @@
         <img class="brand-icon" src="hagimi-icon.png" alt="HAGIMI icon" />
         <div class="brand-text">
           <h1 id="pageTitle">HAGIMI Investment Decision</h1>
-          <p id="pageSub">Professional whisky cask investment analysis, ROI comparison, and bottling strategy decision support</p>
+          <p id="pageSub">Structured whisky investment analysis with ROI, verdict, buyer fit, and token suitability</p>
         </div>
       </div>
 
@@ -308,9 +394,9 @@
     </div>
 
     <div class="hero">
-      <h2 id="heroTitle">Whisky Investment Decision Engine</h2>
+      <h2 id="heroTitle">Structured Investment Decision Engine</h2>
       <p id="heroText">
-        Use this page to compare cask strategies, estimate revenue, profit, ROI, annualized return, and produce a structured recommendation suitable for partners or investors.
+        This page transforms AI output into a structured investor-facing analysis panel, including financial logic, market fit, negotiation guidance, and token suitability.
       </p>
     </div>
 
@@ -318,7 +404,7 @@
       <div class="panel">
         <h3 id="inputTitle">Input Parameters</h3>
         <p class="panel-sub" id="inputSub">
-          Fill in the key cask details below, or use the example button to auto-generate a professional investment analysis prompt.
+          Fill in the details below, or use the example button to test the structured analysis engine.
         </p>
 
         <div class="mini-grid">
@@ -327,12 +413,12 @@
             <div class="mini-value" id="mini1Value">ROI</div>
           </div>
           <div class="mini-card">
-            <div class="mini-label" id="mini2Label">Output Style</div>
-            <div class="mini-value" id="mini2Value">Investor Grade</div>
+            <div class="mini-label" id="mini2Label">Output Format</div>
+            <div class="mini-value" id="mini2Value">JSON UI</div>
           </div>
           <div class="mini-card">
-            <div class="mini-label" id="mini3Label">Language</div>
-            <div class="mini-value" id="mini3Value">Bilingual</div>
+            <div class="mini-label" id="mini3Label">Decision Style</div>
+            <div class="mini-value" id="mini3Value">Investor Grade</div>
           </div>
         </div>
 
@@ -374,7 +460,7 @@
 
           <div class="field full">
             <label id="labelExtraNotes" for="extraNotes">Extra Notes</label>
-            <textarea id="extraNotes" placeholder="Add assumptions, expected price growth, holding period, target market, or comparison notes."></textarea>
+            <textarea id="extraNotes" placeholder="Add assumptions, growth expectations, target market, or comparison notes."></textarea>
           </div>
         </div>
 
@@ -386,22 +472,26 @@
         </div>
 
         <div class="hint" id="hintText">
-          Tip: the output should include profit, ROI, annualized return, risk level, and a final investment recommendation.
+          Tip: this version expects structured JSON output from Make and will automatically render it into investor-facing sections.
         </div>
       </div>
 
-      <div class="panel output-wrap">
-        <h3 id="outputTitle">Analysis Output</h3>
+      <div class="panel">
+        <h3 id="outputTitle">Structured Analysis Output</h3>
         <p class="panel-sub" id="outputSub">
-          Your generated prompt or final AI investment analysis will appear here.
+          The returned JSON will be parsed and displayed as a decision dashboard instead of raw text.
         </p>
 
-        <div id="output" class="output-box"></div>
+        <div id="outputArea">
+          <div id="placeholder" class="placeholder-box"></div>
+          <div id="results" class="results" style="display:none;"></div>
+        </div>
+
         <div id="status" class="status"></div>
 
         <div class="actions">
-          <button class="btn" onclick="copyOutput()" id="btnCopy">Copy Output</button>
-          <button class="btn" onclick="exportOutput()" id="btnExport">Export</button>
+          <button class="btn" onclick="copyOutput()" id="btnCopy">Copy Raw JSON</button>
+          <button class="btn" onclick="exportOutput()" id="btnExport">Export Raw JSON</button>
         </div>
       </div>
     </div>
@@ -411,26 +501,27 @@
     const webhookUrl = "https://hook.eu1.make.com/q7aux9niyxc179nk1vjj9fuyr9o7wg86?msg=";
     const languageKey = "hagimi_lang";
     let currentLang = localStorage.getItem(languageKey) || "en";
-    let latestOutput = "";
+    let latestRawOutput = "";
+    let latestParsed = null;
 
     const translations = {
       en: {
         pageTitle: "HAGIMI Investment Decision",
-        pageSub: "Professional whisky cask investment analysis, ROI comparison, and bottling strategy decision support",
+        pageSub: "Structured whisky investment analysis with ROI, verdict, buyer fit, and token suitability",
         btnBack: "Back to HAGIMI",
         btnLang: "中文 / EN",
-        heroTitle: "Whisky Investment Decision Engine",
-        heroText: "Use this page to compare cask strategies, estimate revenue, profit, ROI, annualized return, and produce a structured recommendation suitable for partners or investors.",
+        heroTitle: "Structured Investment Decision Engine",
+        heroText: "This page transforms AI output into a structured investor-facing analysis panel, including financial logic, market fit, negotiation guidance, and token suitability.",
         inputTitle: "Input Parameters",
-        inputSub: "Fill in the key cask details below, or use the example button to auto-generate a professional investment analysis prompt.",
-        outputTitle: "Analysis Output",
-        outputSub: "Your generated prompt or final AI investment analysis will appear here.",
+        inputSub: "Fill in the details below, or use the example button to test the structured analysis engine.",
+        outputTitle: "Structured Analysis Output",
+        outputSub: "The returned JSON will be parsed and displayed as a decision dashboard instead of raw text.",
         mini1Label: "Analysis Focus",
         mini1Value: "ROI",
-        mini2Label: "Output Style",
-        mini2Value: "Investor Grade",
-        mini3Label: "Language",
-        mini3Value: "Bilingual",
+        mini2Label: "Output Format",
+        mini2Value: "JSON UI",
+        mini3Label: "Decision Style",
+        mini3Value: "Investor Grade",
         labelDistillery: "Distillery",
         labelVintage: "Vintage",
         labelAbv: "ABV",
@@ -443,21 +534,41 @@
         btnBuild: "Build Prompt",
         btnAnalyze: "Run Analysis",
         btnClear: "Clear",
-        btnCopy: "Copy Output",
-        btnExport: "Export",
-        hintText: "Tip: the output should include profit, ROI, annualized return, risk level, and a final investment recommendation.",
-        outputEmpty: "Your structured investment prompt or AI result will appear here...",
-        copied: "Output copied.",
-        copyFail: "Copy failed. Please copy manually.",
-        exported: "Output exported.",
-        nothingToExport: "There is no output to export yet.",
-        buildingDone: "Prompt built successfully.",
-        running: "Running investment analysis...",
+        btnCopy: "Copy Raw JSON",
+        btnExport: "Export Raw JSON",
+        hintText: "Tip: this version expects structured JSON output from Make and will automatically render it into investor-facing sections.",
+        placeholder: "Structured results will appear here after analysis...",
+        built: "Prompt built successfully.",
+        running: "Running structured analysis...",
         completed: "Analysis completed.",
-        failed: "Request failed. Please check your network or Make scenario status.",
+        failed: "Request failed. Please check your network, Make scenario, or JSON format.",
+        invalidJson: "The response was received, but it was not valid JSON.",
         required: "Please complete the key fields first.",
-        builtPrefix: "You are HAGIMI, a professional advisor focused on investment analysis for old and rare Scotch whisky casks.\n\nPlease analyze the following opportunity and provide a clear investor-grade decision report.\n\nInput Parameters:\n",
-        builtMiddle: "\n\nRequired Output:\n1. Summarize the opportunity\n2. Estimate revenue, profit, ROI, and annualized return\n3. Compare different bottling-year strategies\n4. Assign a risk rating\n5. Provide a final investment recommendation\n",
+        copied: "Raw JSON copied.",
+        copyFail: "Copy failed. Please copy manually.",
+        exported: "Raw JSON exported.",
+        nothingToExport: "There is no output to export yet.",
+        assetSummary: "Asset Summary",
+        costStructure: "Cost Structure",
+        marketPricing: "Market Pricing by Region",
+        profitAnalysis: "Profit Analysis",
+        salesStrategy: "Sales Strategy",
+        clientMessage: "Client-Facing Sales Message",
+        buyerFit: "Buyer Fit",
+        negotiationAngle: "Negotiation Angle",
+        nextAction: "Next Action",
+        tokenModel: "Tokenization Model",
+        investmentDecision: "Investment Decision",
+        verdict: "Deal Verdict",
+        urgency: "Urgency Level",
+        tokenScore: "Token Suitability Score",
+        revenueEstimate: "Revenue Estimate",
+        profitEstimate: "Profit Estimate",
+        roi: "ROI",
+        annualizedReturn: "Annualized Return",
+        riskLevel: "Risk Level",
+        finalRecommendation: "Final Recommendation",
+        builtPrefix: "Please analyze the following whisky investment opportunity in a structured investor-grade format.\n\nInput Parameters:\n",
         promptDistillery: "Distillery",
         promptVintage: "Vintage",
         promptAbv: "ABV",
@@ -469,21 +580,21 @@
       },
       zh: {
         pageTitle: "HAGIMI 投资决策",
-        pageSub: "专业威士忌酒桶投资分析、ROI 比较与装瓶策略决策支持",
+        pageSub: "结构化威士忌投资分析，包含 ROI、交易判断、买家匹配与 Token 适配度",
         btnBack: "返回 HAGIMI",
         btnLang: "中文 / EN",
-        heroTitle: "威士忌投资决策引擎",
-        heroText: "使用本页面比较不同酒桶策略，估算收入、利润、ROI、年化回报，并生成适合合伙人与投资人阅读的结构化建议。",
+        heroTitle: "结构化投资决策引擎",
+        heroText: "本页面会把 AI 返回结果从原始 JSON 自动转换为面向投资人的分析面板，包括财务逻辑、市场匹配、谈判建议与 Token 适配度。",
         inputTitle: "输入参数",
-        inputSub: "填写下面的关键酒桶信息，或使用示例按钮自动生成专业投资分析提示词。",
-        outputTitle: "分析输出",
-        outputSub: "你生成的提示词或最终 AI 投资分析结果会显示在这里。",
+        inputSub: "填写下面的内容，或使用示例按钮测试结构化分析引擎。",
+        outputTitle: "结构化分析输出",
+        outputSub: "返回的 JSON 会被自动解析并展示为决策面板，而不是原始文本。",
         mini1Label: "分析重点",
         mini1Value: "ROI",
-        mini2Label: "输出风格",
-        mini2Value: "投资人级",
-        mini3Label: "语言",
-        mini3Value: "双语",
+        mini2Label: "输出格式",
+        mini2Value: "JSON 界面",
+        mini3Label: "决策风格",
+        mini3Value: "投资人级",
         labelDistillery: "酒厂",
         labelVintage: "年份",
         labelAbv: "酒精度",
@@ -496,21 +607,41 @@
         btnBuild: "生成提示词",
         btnAnalyze: "开始分析",
         btnClear: "清空",
-        btnCopy: "复制输出",
-        btnExport: "导出",
-        hintText: "提示：输出结果应包含利润、ROI、年化回报、风险等级，以及最终投资建议。",
-        outputEmpty: "结构化投资提示词或 AI 分析结果会显示在这里...",
-        copied: "已复制输出。",
-        copyFail: "复制失败，请手动复制。",
-        exported: "已导出内容。",
-        nothingToExport: "目前没有可导出的内容。",
-        buildingDone: "提示词已生成。",
-        running: "正在进行投资分析...",
+        btnCopy: "复制原始 JSON",
+        btnExport: "导出原始 JSON",
+        hintText: "提示：这个版本要求 Make 返回结构化 JSON，并会自动渲染成投资人可读的分析模块。",
+        placeholder: "分析后，结构化结果会显示在这里...",
+        built: "提示词已生成。",
+        running: "正在进行结构化分析...",
         completed: "分析完成。",
-        failed: "请求失败，请检查网络或 Make 场景状态。",
+        failed: "请求失败，请检查网络、Make 场景或 JSON 格式。",
+        invalidJson: "已收到返回结果，但不是有效 JSON。",
         required: "请先填写关键字段。",
-        builtPrefix: "你是 HAGIMI，一名专注于高年份苏格兰威士忌酒桶投资分析的专业顾问。\n\n请基于以下输入，输出一份适合投资人与合伙人阅读的专业投资决策报告。\n\n输入参数：\n",
-        builtMiddle: "\n\n输出要求：\n1. 概括机会点\n2. 估算收入、利润、ROI 与年化回报\n3. 比较不同装瓶年份策略\n4. 给出风险等级\n5. 给出最终投资建议\n",
+        copied: "已复制原始 JSON。",
+        copyFail: "复制失败，请手动复制。",
+        exported: "已导出原始 JSON。",
+        nothingToExport: "目前没有可导出的内容。",
+        assetSummary: "资产概述",
+        costStructure: "成本结构",
+        marketPricing: "区域市场定价",
+        profitAnalysis: "利润分析",
+        salesStrategy: "销售策略",
+        clientMessage: "面向客户的销售话术",
+        buyerFit: "买家匹配",
+        negotiationAngle: "谈判角度",
+        nextAction: "下一步行动",
+        tokenModel: "Token 化模型",
+        investmentDecision: "投资决策",
+        verdict: "交易判断",
+        urgency: "紧迫程度",
+        tokenScore: "Token 适配度",
+        revenueEstimate: "预计收入",
+        profitEstimate: "预计利润",
+        roi: "ROI",
+        annualizedReturn: "年化回报",
+        riskLevel: "风险等级",
+        finalRecommendation: "最终建议",
+        builtPrefix: "请以结构化投资人级格式分析以下威士忌投资机会。\n\n输入参数：\n",
         promptDistillery: "酒厂",
         promptVintage: "年份",
         promptAbv: "酒精度",
@@ -571,11 +702,13 @@
         ? "Example: Cask 1 bottled at 38 years, Cask 2 bottled at 40 years, Cask 3 bottled at 45 years."
         : "例如：第一桶38年装瓶，第二桶40年装瓶，第三桶45年装瓶。";
       $("extraNotes").placeholder = currentLang === "en"
-        ? "Add assumptions, expected price growth, holding period, target market, or comparison notes."
-        : "填写假设条件、预估价格增长、持有时间、目标市场或比较说明。";
+        ? "Add assumptions, growth expectations, target market, or comparison notes."
+        : "填写假设条件、增长预期、目标市场或比较说明。";
 
-      if (!latestOutput) {
-        $("output").innerText = t.outputEmpty;
+      if (!latestParsed) {
+        $("placeholder").innerText = t.placeholder;
+      } else {
+        renderStructured(latestParsed);
       }
     }
 
@@ -594,7 +727,7 @@
         $("bottlePrice").value = "16500 RMB";
         $("caskCost").value = "5164500 RMB, 5329500 RMB, 4702500 RMB";
         $("bottlingPlan").value = "Cask 1 bottled at 38 years. Cask 2 bottled at 40 years. Cask 3 bottled at 45 years.";
-        $("extraNotes").value = "Please compare the three casks from both investment return and market value perspectives, and identify the best option.";
+        $("extraNotes").value = "Please compare the three casks from profit, ROI, annualized return, risk level, and best bottling-year perspectives.";
       } else {
         $("distillery").value = "麦卡伦";
         $("vintage").value = "1990";
@@ -603,7 +736,7 @@
         $("bottlePrice").value = "16500 人民币";
         $("caskCost").value = "5164500 人民币、5329500 人民币、4702500 人民币";
         $("bottlingPlan").value = "第一桶：38年装瓶。第二桶：40年装瓶。第三桶：45年装瓶。";
-        $("extraNotes").value = "请从投资回报与市值角度比较这三桶，并给出优先级与最优建议。";
+        $("extraNotes").value = "请比较三桶从利润、ROI、年化回报、风险等级与最优装瓶年份角度的优先级。";
       }
     }
 
@@ -633,24 +766,26 @@
         `${t.promptBottlePrice}: ${bottlePrice}\n` +
         `${t.promptCaskCost}: ${caskCost}\n` +
         `${t.promptBottlingPlan}: ${bottlingPlan}\n` +
-        `${t.promptExtraNotes}: ${extraNotes}` +
-        t.builtMiddle;
+        `${t.promptExtraNotes}: ${extraNotes}`;
 
-      latestOutput = prompt;
-      $("output").innerText = prompt;
-      $("status").innerText = t.buildingDone;
+      latestRawOutput = prompt;
+      latestParsed = null;
+      $("results").style.display = "none";
+      $("placeholder").style.display = "block";
+      $("placeholder").innerText = prompt;
+      $("status").innerText = t.built;
     }
 
     async function runAnalysis() {
       const t = translations[currentLang];
 
-      const currentText = $("output").innerText.trim();
-      if (!currentText || currentText === t.outputEmpty) {
+      const currentText = $("placeholder").innerText.trim();
+      if (!currentText || currentText === t.placeholder) {
         buildPrompt();
       }
 
-      const prompt = $("output").innerText.trim();
-      if (!prompt || prompt === t.outputEmpty) {
+      const prompt = $("placeholder").innerText.trim();
+      if (!prompt || prompt === t.placeholder) {
         $("status").innerText = t.required;
         return;
       }
@@ -662,14 +797,195 @@
           method: "GET"
         });
 
-        const data = await response.text();
+        const raw = await response.text();
+        latestRawOutput = raw;
 
-        latestOutput = data;
-        $("output").innerText = data;
+        let parsed;
+        try {
+          parsed = JSON.parse(raw);
+        } catch (e) {
+          latestParsed = null;
+          $("results").style.display = "none";
+          $("placeholder").style.display = "block";
+          $("placeholder").innerText = raw;
+          $("status").innerText = t.invalidJson;
+          return;
+        }
+
+        latestParsed = parsed;
+        renderStructured(parsed);
         $("status").innerText = t.completed;
       } catch (error) {
         $("status").innerText = t.failed;
       }
+    }
+
+    function safeValue(obj, path, fallback = "-") {
+      try {
+        const parts = path.split(".");
+        let value = obj;
+        for (const part of parts) {
+          value = value[part];
+        }
+        if (value === undefined || value === null || value === "") return fallback;
+        return value;
+      } catch {
+        return fallback;
+      }
+    }
+
+    function langText(enVal, zhVal) {
+      return currentLang === "zh" ? (zhVal || enVal || "-") : (enVal || zhVal || "-");
+    }
+
+    function badgeClassForVerdict(verdict) {
+      if (verdict === "PUSH") return "badge-success";
+      if (verdict === "NEGOTIATE" || verdict === "HOLD") return "badge-warn";
+      return "badge-danger";
+    }
+
+    function badgeClassForUrgency(level) {
+      if (level === "High") return "badge-danger";
+      if (level === "Medium") return "badge-warn";
+      return "badge-success";
+    }
+
+    function renderStructured(data) {
+      const t = translations[currentLang];
+      const results = $("results");
+      const placeholder = $("placeholder");
+
+      const assetSummary = langText(safeValue(data, "asset_summary.en"), safeValue(data, "asset_summary.zh"));
+      const costStructure = langText(safeValue(data, "cost_structure.en"), safeValue(data, "cost_structure.zh"));
+      const marketPricing = langText(safeValue(data, "market_pricing_by_region.en"), safeValue(data, "market_pricing_by_region.zh"));
+      const profitAnalysis = langText(safeValue(data, "profit_analysis.en"), safeValue(data, "profit_analysis.zh"));
+      const salesStrategy = langText(safeValue(data, "sales_strategy.en"), safeValue(data, "sales_strategy.zh"));
+      const clientMessage = langText(safeValue(data, "client_facing_sales_message.en"), safeValue(data, "client_facing_sales_message.zh"));
+      const buyerFit = langText(safeValue(data, "buyer_fit.en"), safeValue(data, "buyer_fit.zh"));
+      const negotiationAngle = langText(safeValue(data, "negotiation_angle.en"), safeValue(data, "negotiation_angle.zh"));
+      const nextAction = langText(safeValue(data, "next_action.en"), safeValue(data, "next_action.zh"));
+      const tokenModel = langText(safeValue(data, "tokenization_model.en"), safeValue(data, "tokenization_model.zh"));
+
+      const finalRecommendation = currentLang === "zh"
+        ? safeValue(data, "investment_decision.final_recommendation_zh")
+        : safeValue(data, "investment_decision.final_recommendation_en");
+
+      const verdict = safeValue(data, "deal_verdict");
+      const urgency = safeValue(data, "urgency_level");
+      const tokenScore = safeValue(data, "token_suitability_score.score");
+      const tokenClassification = safeValue(data, "token_suitability_score.classification");
+      const tokenReason = currentLang === "zh"
+        ? safeValue(data, "token_suitability_score.reason_zh")
+        : safeValue(data, "token_suitability_score.reason_en");
+
+      const revenueEstimate = safeValue(data, "investment_decision.revenue_estimate");
+      const profitEstimate = safeValue(data, "investment_decision.profit_estimate");
+      const roi = safeValue(data, "investment_decision.roi");
+      const annualizedReturn = safeValue(data, "investment_decision.annualized_return");
+      const riskLevel = safeValue(data, "investment_decision.risk_level");
+
+      results.innerHTML = `
+        <div class="summary-grid">
+          <div class="summary-box">
+            <div class="summary-box-label">${t.verdict}</div>
+            <div class="summary-box-value"><span class="badge ${badgeClassForVerdict(verdict)}">${verdict}</span></div>
+          </div>
+          <div class="summary-box">
+            <div class="summary-box-label">${t.urgency}</div>
+            <div class="summary-box-value"><span class="badge ${badgeClassForUrgency(urgency)}">${urgency}</span></div>
+          </div>
+          <div class="summary-box">
+            <div class="summary-box-label">${t.tokenScore}</div>
+            <div class="summary-box-value">${tokenScore}/10</div>
+          </div>
+          <div class="summary-box">
+            <div class="summary-box-label">${t.riskLevel}</div>
+            <div class="summary-box-value">${riskLevel}</div>
+          </div>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-box">
+            <div class="summary-box-label">${t.revenueEstimate}</div>
+            <div class="summary-box-value">${revenueEstimate}</div>
+          </div>
+          <div class="summary-box">
+            <div class="summary-box-label">${t.profitEstimate}</div>
+            <div class="summary-box-value">${profitEstimate}</div>
+          </div>
+          <div class="summary-box">
+            <div class="summary-box-label">${t.roi}</div>
+            <div class="summary-box-value">${roi}</div>
+          </div>
+          <div class="summary-box">
+            <div class="summary-box-label">${t.annualizedReturn}</div>
+            <div class="summary-box-value">${annualizedReturn}</div>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-title">${t.assetSummary}</div>
+          <div class="result-body">${assetSummary}</div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-title">${t.costStructure}</div>
+          <div class="result-body">${costStructure}</div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-title">${t.marketPricing}</div>
+          <div class="result-body">${marketPricing}</div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-title">${t.profitAnalysis}</div>
+          <div class="result-body">${profitAnalysis}</div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-title">${t.salesStrategy}</div>
+          <div class="result-body">${salesStrategy}</div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-title">${t.clientMessage}</div>
+          <div class="result-body">${clientMessage}</div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-title">${t.buyerFit}</div>
+          <div class="result-body">${buyerFit}</div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-title">${t.negotiationAngle}</div>
+          <div class="result-body">${negotiationAngle}</div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-title">${t.nextAction}</div>
+          <div class="result-body">${nextAction}</div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-title">${t.tokenModel}</div>
+          <div class="result-body">${tokenModel}</div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-title">${t.tokenScore}</div>
+          <div class="result-body">${tokenClassification}\n${tokenReason}</div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-title">${t.investmentDecision}</div>
+          <div class="result-body">${t.finalRecommendation}：\n${finalRecommendation}</div>
+        </div>
+      `;
+
+      placeholder.style.display = "none";
+      results.style.display = "flex";
     }
 
     function clearForm() {
@@ -681,22 +997,23 @@
       $("caskCost").value = "";
       $("bottlingPlan").value = "";
       $("extraNotes").value = "";
-      latestOutput = "";
+      latestRawOutput = "";
+      latestParsed = null;
       $("status").innerText = "";
-      $("output").innerText = translations[currentLang].outputEmpty;
+      $("results").style.display = "none";
+      $("placeholder").style.display = "block";
+      $("placeholder").innerText = translations[currentLang].placeholder;
     }
 
     async function copyOutput() {
       const t = translations[currentLang];
-      const text = $("output").innerText.trim();
-
-      if (!text || text === t.outputEmpty) {
+      if (!latestRawOutput) {
         $("status").innerText = t.nothingToExport;
         return;
       }
 
       try {
-        await navigator.clipboard.writeText(text);
+        await navigator.clipboard.writeText(latestRawOutput);
         $("status").innerText = t.copied;
       } catch (error) {
         $("status").innerText = t.copyFail;
@@ -705,18 +1022,16 @@
 
     function exportOutput() {
       const t = translations[currentLang];
-      const text = $("output").innerText.trim();
-
-      if (!text || text === t.outputEmpty) {
+      if (!latestRawOutput) {
         $("status").innerText = t.nothingToExport;
         return;
       }
 
-      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      const blob = new Blob([latestRawOutput], { type: "application/json;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "hagimi-investment-decision.txt";
+      a.download = "hagimi-structured-output.json";
       a.click();
       URL.revokeObjectURL(url);
       $("status").innerText = t.exported;
