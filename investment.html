@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HAGIMI Investment Decision</title>
+
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="apple-touch-icon" href="hagimi-icon.png" />
+  <link rel="icon" type="image/png" href="hagimi-icon.png" />
+
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: rgba(15, 23, 42, 0.88);
+      --text: #e5eefc;
+      --muted: #9fb0cf;
+      --border: rgba(148, 163, 184, 0.18);
+      --accent: #5fa8ff;
+      --accent-2: #7dd3fc;
+      --card: rgba(17, 27, 46, 0.92);
+      --shadow: 0 16px 40px rgba(0,0,0,0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(59,130,246,0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(14,165,233,0.16), transparent 24%),
+        linear-gradient(180deg, #08111f 0%, #0b1220 45%, #0f172a 100%);
+    }
+
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(10, 17, 31, 0.72);
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      background: #0f172a;
+    }
+
+    .brand-text h1 {
+      margin: 0;
+      font-size: 30px;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-text p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: 0.18s ease;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #08111f;
+      border: none;
+    }
+
+    .hero {
+      border: 1px solid var(--border);
+      background: rgba(17, 27, 46, 0.72);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .hero h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 860px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 18px;
+    }
+
+    .panel {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .panel-sub {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .mini-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .mini-value {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      padding: 12px 14px;
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    input:focus, textarea:focus {
+      border-color: rgba(125, 211, 252, 0.55);
+      box-shadow: 0 0 0 4px rgba(125, 211, 252, 0.1);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .hint {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .output-wrap {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .output-box {
+      min-height: 560px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.025);
+      padding: 16px;
+      white-space: pre-wrap;
+      line-height: 1.75;
+      font-size: 15px;
+      overflow: auto;
+    }
+
+    .status {
+      min-height: 20px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .field-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <img class="brand-icon" src="hagimi-icon.png" alt="HAGIMI icon" />
+        <div class="brand-text">
+          <h1 id="pageTitle">HAGIMI Investment Decision</h1>
+          <p id="pageSub">Professional whisky cask investment analysis, ROI comparison, and bottling strategy decision support</p>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <a class="btn" href="index.html" id="btnBack">Back to HAGIMI</a>
+        <button class="btn" onclick="toggleLanguage()" id="btnLang">中文 / EN</button>
+      </div>
+    </div>
+
+    <div class="hero">
+      <h2 id="heroTitle">Whisky Investment Decision Engine</h2>
+      <p id="heroText">
+        Use this page to compare cask strategies, estimate revenue, profit, ROI, annualized return, and produce a structured recommendation suitable for partners or investors.
+      </p>
+    </div>
+
+    <div class="layout">
+      <div class="panel">
+        <h3 id="inputTitle">Input Parameters</h3>
+        <p class="panel-sub" id="inputSub">
+          Fill in the key cask details below, or use the example button to auto-generate a professional investment analysis prompt.
+        </p>
+
+        <div class="mini-grid">
+          <div class="mini-card">
+            <div class="mini-label" id="mini1Label">Analysis Focus</div>
+            <div class="mini-value" id="mini1Value">ROI</div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-label" id="mini2Label">Output Style</div>
+            <div class="mini-value" id="mini2Value">Investor Grade</div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-label" id="mini3Label">Language</div>
+            <div class="mini-value" id="mini3Value">Bilingual</div>
+          </div>
+        </div>
+
+        <div class="field-grid">
+          <div class="field">
+            <label id="labelDistillery" for="distillery">Distillery</label>
+            <input id="distillery" placeholder="Macallan">
+          </div>
+
+          <div class="field">
+            <label id="labelVintage" for="vintage">Vintage</label>
+            <input id="vintage" placeholder="1990">
+          </div>
+
+          <div class="field">
+            <label id="labelAbv" for="abv">ABV</label>
+            <input id="abv" placeholder="51.9%, 52.5%, 51.2%">
+          </div>
+
+          <div class="field">
+            <label id="labelBottles" for="bottles">Estimated Bottles</label>
+            <input id="bottles" placeholder="313, 323, 285">
+          </div>
+
+          <div class="field">
+            <label id="labelBottlePrice" for="bottlePrice">Bottle Floor Price</label>
+            <input id="bottlePrice" placeholder="16500 RMB">
+          </div>
+
+          <div class="field">
+            <label id="labelCaskCost" for="caskCost">Cask Cost</label>
+            <input id="caskCost" placeholder="5164500 RMB, 5329500 RMB, 4702500 RMB">
+          </div>
+
+          <div class="field full">
+            <label id="labelBottlingPlan" for="bottlingPlan">Target Bottling Strategy</label>
+            <textarea id="bottlingPlan" placeholder="Example: Cask 1 bottled at 38 years, Cask 2 bottled at 40 years, Cask 3 bottled at 45 years."></textarea>
+          </div>
+
+          <div class="field full">
+            <label id="labelExtraNotes" for="extraNotes">Extra Notes</label>
+            <textarea id="extraNotes" placeholder="Add assumptions, expected price growth, holding period, target market, or comparison notes."></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn" onclick="fillExample()" id="btnExample">Use Example</button>
+          <button class="btn" onclick="buildPrompt()" id="btnBuild">Build Prompt</button>
+          <button class="btn btn-primary" onclick="runAnalysis()" id="btnAnalyze">Run Analysis</button>
+          <button class="btn" onclick="clearForm()" id="btnClear">Clear</button>
+        </div>
+
+        <div class="hint" id="hintText">
+          Tip: the output should include profit, ROI, annualized return, risk level, and a final investment recommendation.
+        </div>
+      </div>
+
+      <div class="panel output-wrap">
+        <h3 id="outputTitle">Analysis Output</h3>
+        <p class="panel-sub" id="outputSub">
+          Your generated prompt or final AI investment analysis will appear here.
+        </p>
+
+        <div id="output" class="output-box"></div>
+        <div id="status" class="status"></div>
+
+        <div class="actions">
+          <button class="btn" onclick="copyOutput()" id="btnCopy">Copy Output</button>
+          <button class="btn" onclick="exportOutput()" id="btnExport">Export</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const webhookUrl = "https://hook.eu1.make.com/q7aux9niyxc179nk1vjj9fuyr9o7wg86?msg=";
+    const languageKey = "hagimi_lang";
+    let currentLang = localStorage.getItem(languageKey) || "en";
+    let latestOutput = "";
+
+    const translations = {
+      en: {
+        pageTitle: "HAGIMI Investment Decision",
+        pageSub: "Professional whisky cask investment analysis, ROI comparison, and bottling strategy decision support",
+        btnBack: "Back to HAGIMI",
+        btnLang: "中文 / EN",
+        heroTitle: "Whisky Investment Decision Engine",
+        heroText: "Use this page to compare cask strategies, estimate revenue, profit, ROI, annualized return, and produce a structured recommendation suitable for partners or investors.",
+        inputTitle: "Input Parameters",
+        inputSub: "Fill in the key cask details below, or use the example button to auto-generate a professional investment analysis prompt.",
+        outputTitle: "Analysis Output",
+        outputSub: "Your generated prompt or final AI investment analysis will appear here.",
+        mini1Label: "Analysis Focus",
+        mini1Value: "ROI",
+        mini2Label: "Output Style",
+        mini2Value: "Investor Grade",
+        mini3Label: "Language",
+        mini3Value: "Bilingual",
+        labelDistillery: "Distillery",
+        labelVintage: "Vintage",
+        labelAbv: "ABV",
+        labelBottles: "Estimated Bottles",
+        labelBottlePrice: "Bottle Floor Price",
+        labelCaskCost: "Cask Cost",
+        labelBottlingPlan: "Target Bottling Strategy",
+        labelExtraNotes: "Extra Notes",
+        btnExample: "Use Example",
+        btnBuild: "Build Prompt",
+        btnAnalyze: "Run Analysis",
+        btnClear: "Clear",
+        btnCopy: "Copy Output",
+        btnExport: "Export",
+        hintText: "Tip: the output should include profit, ROI, annualized return, risk level, and a final investment recommendation.",
+        outputEmpty: "Your structured investment prompt or AI result will appear here...",
+        copied: "Output copied.",
+        copyFail: "Copy failed. Please copy manually.",
+        exported: "Output exported.",
+        nothingToExport: "There is no output to export yet.",
+        buildingDone: "Prompt built successfully.",
+        running: "Running investment analysis...",
+        completed: "Analysis completed.",
+        failed: "Request failed. Please check your network or Make scenario status.",
+        required: "Please complete the key fields first.",
+        builtPrefix: "You are HAGIMI, a professional advisor focused on investment analysis for old and rare Scotch whisky casks.\n\nPlease analyze the following opportunity and provide a clear investor-grade decision report.\n\nInput Parameters:\n",
+        builtMiddle: "\n\nRequired Output:\n1. Summarize the opportunity\n2. Estimate revenue, profit, ROI, and annualized return\n3. Compare different bottling-year strategies\n4. Assign a risk rating\n5. Provide a final investment recommendation\n",
+        promptDistillery: "Distillery",
+        promptVintage: "Vintage",
+        promptAbv: "ABV",
+        promptBottles: "Estimated Bottles",
+        promptBottlePrice: "Bottle Floor Price",
+        promptCaskCost: "Cask Cost",
+        promptBottlingPlan: "Target Bottling Strategy",
+        promptExtraNotes: "Extra Notes"
+      },
+      zh: {
+        pageTitle: "HAGIMI 投资决策",
+        pageSub: "专业威士忌酒桶投资分析、ROI 比较与装瓶策略决策支持",
+        btnBack: "返回 HAGIMI",
+        btnLang: "中文 / EN",
+        heroTitle: "威士忌投资决策引擎",
+        heroText: "使用本页面比较不同酒桶策略，估算收入、利润、ROI、年化回报，并生成适合合伙人与投资人阅读的结构化建议。",
+        inputTitle: "输入参数",
+        inputSub: "填写下面的关键酒桶信息，或使用示例按钮自动生成专业投资分析提示词。",
+        outputTitle: "分析输出",
+        outputSub: "你生成的提示词或最终 AI 投资分析结果会显示在这里。",
+        mini1Label: "分析重点",
+        mini1Value: "ROI",
+        mini2Label: "输出风格",
+        mini2Value: "投资人级",
+        mini3Label: "语言",
+        mini3Value: "双语",
+        labelDistillery: "酒厂",
+        labelVintage: "年份",
+        labelAbv: "酒精度",
+        labelBottles: "预计瓶数",
+        labelBottlePrice: "单瓶底价",
+        labelCaskCost: "整桶成本",
+        labelBottlingPlan: "目标装瓶策略",
+        labelExtraNotes: "补充说明",
+        btnExample: "示例",
+        btnBuild: "生成提示词",
+        btnAnalyze: "开始分析",
+        btnClear: "清空",
+        btnCopy: "复制输出",
+        btnExport: "导出",
+        hintText: "提示：输出结果应包含利润、ROI、年化回报、风险等级，以及最终投资建议。",
+        outputEmpty: "结构化投资提示词或 AI 分析结果会显示在这里...",
+        copied: "已复制输出。",
+        copyFail: "复制失败，请手动复制。",
+        exported: "已导出内容。",
+        nothingToExport: "目前没有可导出的内容。",
+        buildingDone: "提示词已生成。",
+        running: "正在进行投资分析...",
+        completed: "分析完成。",
+        failed: "请求失败，请检查网络或 Make 场景状态。",
+        required: "请先填写关键字段。",
+        builtPrefix: "你是 HAGIMI，一名专注于高年份苏格兰威士忌酒桶投资分析的专业顾问。\n\n请基于以下输入，输出一份适合投资人与合伙人阅读的专业投资决策报告。\n\n输入参数：\n",
+        builtMiddle: "\n\n输出要求：\n1. 概括机会点\n2. 估算收入、利润、ROI 与年化回报\n3. 比较不同装瓶年份策略\n4. 给出风险等级\n5. 给出最终投资建议\n",
+        promptDistillery: "酒厂",
+        promptVintage: "年份",
+        promptAbv: "酒精度",
+        promptBottles: "预计瓶数",
+        promptBottlePrice: "单瓶底价",
+        promptCaskCost: "整桶成本",
+        promptBottlingPlan: "目标装瓶策略",
+        promptExtraNotes: "补充说明"
+      }
+    };
+
+    function $(id) {
+      return document.getElementById(id);
+    }
+
+    function applyLanguage() {
+      const t = translations[currentLang];
+
+      $("pageTitle").innerText = t.pageTitle;
+      $("pageSub").innerText = t.pageSub;
+      $("btnBack").innerText = t.btnBack;
+      $("btnLang").innerText = t.btnLang;
+      $("heroTitle").innerText = t.heroTitle;
+      $("heroText").innerText = t.heroText;
+      $("inputTitle").innerText = t.inputTitle;
+      $("inputSub").innerText = t.inputSub;
+      $("outputTitle").innerText = t.outputTitle;
+      $("outputSub").innerText = t.outputSub;
+      $("mini1Label").innerText = t.mini1Label;
+      $("mini1Value").innerText = t.mini1Value;
+      $("mini2Label").innerText = t.mini2Label;
+      $("mini2Value").innerText = t.mini2Value;
+      $("mini3Label").innerText = t.mini3Label;
+      $("mini3Value").innerText = t.mini3Value;
+      $("labelDistillery").innerText = t.labelDistillery;
+      $("labelVintage").innerText = t.labelVintage;
+      $("labelAbv").innerText = t.labelAbv;
+      $("labelBottles").innerText = t.labelBottles;
+      $("labelBottlePrice").innerText = t.labelBottlePrice;
+      $("labelCaskCost").innerText = t.labelCaskCost;
+      $("labelBottlingPlan").innerText = t.labelBottlingPlan;
+      $("labelExtraNotes").innerText = t.labelExtraNotes;
+      $("btnExample").innerText = t.btnExample;
+      $("btnBuild").innerText = t.btnBuild;
+      $("btnAnalyze").innerText = t.btnAnalyze;
+      $("btnClear").innerText = t.btnClear;
+      $("btnCopy").innerText = t.btnCopy;
+      $("btnExport").innerText = t.btnExport;
+      $("hintText").innerText = t.hintText;
+
+      $("distillery").placeholder = currentLang === "en" ? "Macallan" : "例如：麦卡伦";
+      $("vintage").placeholder = currentLang === "en" ? "1990" : "例如：1990";
+      $("abv").placeholder = currentLang === "en" ? "51.9%, 52.5%, 51.2%" : "例如：51.9%、52.5%、51.2%";
+      $("bottles").placeholder = currentLang === "en" ? "313, 323, 285" : "例如：313、323、285";
+      $("bottlePrice").placeholder = currentLang === "en" ? "16500 RMB" : "例如：16500 人民币";
+      $("caskCost").placeholder = currentLang === "en" ? "5164500 RMB, 5329500 RMB, 4702500 RMB" : "例如：5164500 人民币、5329500 人民币、4702500 人民币";
+      $("bottlingPlan").placeholder = currentLang === "en"
+        ? "Example: Cask 1 bottled at 38 years, Cask 2 bottled at 40 years, Cask 3 bottled at 45 years."
+        : "例如：第一桶38年装瓶，第二桶40年装瓶，第三桶45年装瓶。";
+      $("extraNotes").placeholder = currentLang === "en"
+        ? "Add assumptions, expected price growth, holding period, target market, or comparison notes."
+        : "填写假设条件、预估价格增长、持有时间、目标市场或比较说明。";
+
+      if (!latestOutput) {
+        $("output").innerText = t.outputEmpty;
+      }
+    }
+
+    function toggleLanguage() {
+      currentLang = currentLang === "en" ? "zh" : "en";
+      localStorage.setItem(languageKey, currentLang);
+      applyLanguage();
+    }
+
+    function fillExample() {
+      if (currentLang === "en") {
+        $("distillery").value = "Macallan";
+        $("vintage").value = "1990";
+        $("abv").value = "51.9%, 52.5%, 51.2%";
+        $("bottles").value = "313, 323, 285";
+        $("bottlePrice").value = "16500 RMB";
+        $("caskCost").value = "5164500 RMB, 5329500 RMB, 4702500 RMB";
+        $("bottlingPlan").value = "Cask 1 bottled at 38 years. Cask 2 bottled at 40 years. Cask 3 bottled at 45 years.";
+        $("extraNotes").value = "Please compare the three casks from both investment return and market value perspectives, and identify the best option.";
+      } else {
+        $("distillery").value = "麦卡伦";
+        $("vintage").value = "1990";
+        $("abv").value = "51.9%、52.5%、51.2%";
+        $("bottles").value = "313、323、285";
+        $("bottlePrice").value = "16500 人民币";
+        $("caskCost").value = "5164500 人民币、5329500 人民币、4702500 人民币";
+        $("bottlingPlan").value = "第一桶：38年装瓶。第二桶：40年装瓶。第三桶：45年装瓶。";
+        $("extraNotes").value = "请从投资回报与市值角度比较这三桶，并给出优先级与最优建议。";
+      }
+    }
+
+    function buildPrompt() {
+      const t = translations[currentLang];
+
+      const distillery = $("distillery").value.trim();
+      const vintage = $("vintage").value.trim();
+      const abv = $("abv").value.trim();
+      const bottles = $("bottles").value.trim();
+      const bottlePrice = $("bottlePrice").value.trim();
+      const caskCost = $("caskCost").value.trim();
+      const bottlingPlan = $("bottlingPlan").value.trim();
+      const extraNotes = $("extraNotes").value.trim();
+
+      if (!distillery || !vintage || !bottlingPlan) {
+        $("status").innerText = t.required;
+        return;
+      }
+
+      const prompt =
+        t.builtPrefix +
+        `${t.promptDistillery}: ${distillery}\n` +
+        `${t.promptVintage}: ${vintage}\n` +
+        `${t.promptAbv}: ${abv}\n` +
+        `${t.promptBottles}: ${bottles}\n` +
+        `${t.promptBottlePrice}: ${bottlePrice}\n` +
+        `${t.promptCaskCost}: ${caskCost}\n` +
+        `${t.promptBottlingPlan}: ${bottlingPlan}\n` +
+        `${t.promptExtraNotes}: ${extraNotes}` +
+        t.builtMiddle;
+
+      latestOutput = prompt;
+      $("output").innerText = prompt;
+      $("status").innerText = t.buildingDone;
+    }
+
+    async function runAnalysis() {
+      const t = translations[currentLang];
+
+      const currentText = $("output").innerText.trim();
+      if (!currentText || currentText === t.outputEmpty) {
+        buildPrompt();
+      }
+
+      const prompt = $("output").innerText.trim();
+      if (!prompt || prompt === t.outputEmpty) {
+        $("status").innerText = t.required;
+        return;
+      }
+
+      $("status").innerText = t.running;
+
+      try {
+        const response = await fetch(webhookUrl + encodeURIComponent(prompt), {
+          method: "GET"
+        });
+
+        const data = await response.text();
+
+        latestOutput = data;
+        $("output").innerText = data;
+        $("status").innerText = t.completed;
+      } catch (error) {
+        $("status").innerText = t.failed;
+      }
+    }
+
+    function clearForm() {
+      $("distillery").value = "";
+      $("vintage").value = "";
+      $("abv").value = "";
+      $("bottles").value = "";
+      $("bottlePrice").value = "";
+      $("caskCost").value = "";
+      $("bottlingPlan").value = "";
+      $("extraNotes").value = "";
+      latestOutput = "";
+      $("status").innerText = "";
+      $("output").innerText = translations[currentLang].outputEmpty;
+    }
+
+    async function copyOutput() {
+      const t = translations[currentLang];
+      const text = $("output").innerText.trim();
+
+      if (!text || text === t.outputEmpty) {
+        $("status").innerText = t.nothingToExport;
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(text);
+        $("status").innerText = t.copied;
+      } catch (error) {
+        $("status").innerText = t.copyFail;
+      }
+    }
+
+    function exportOutput() {
+      const t = translations[currentLang];
+      const text = $("output").innerText.trim();
+
+      if (!text || text === t.outputEmpty) {
+        $("status").innerText = t.nothingToExport;
+        return;
+      }
+
+      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "hagimi-investment-decision.txt";
+      a.click();
+      URL.revokeObjectURL(url);
+      $("status").innerText = t.exported;
+    }
+
+    applyLanguage();
+  </script>
+</body>
+</html>
