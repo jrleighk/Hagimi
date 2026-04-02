@@ -20,9 +20,9 @@
       --accent-2: #7dd3fc;
       --card: rgba(17, 27, 46, 0.92);
       --shadow: 0 16px 40px rgba(0,0,0,0.28);
-      --success: #22c55e;
-      --warn: #f59e0b;
-      --danger: #ef4444;
+      --good: #86efac;
+      --warn: #fbbf24;
+      --bad: #f87171;
     }
 
     * {
@@ -42,7 +42,7 @@
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1180px;
       margin: 0 auto;
       padding: 18px;
     }
@@ -139,7 +139,7 @@
       margin: 0;
       color: var(--muted);
       line-height: 1.7;
-      max-width: 860px;
+      max-width: 900px;
     }
 
     .layout {
@@ -260,10 +260,17 @@
       font-size: 13px;
     }
 
-    .results {
+    .results-toolbar {
       display: flex;
-      flex-direction: column;
-      gap: 14px;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
     }
 
     .result-card {
@@ -273,82 +280,56 @@
       padding: 14px;
     }
 
+    .result-card.full {
+      grid-column: 1 / -1;
+    }
+
     .result-title {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 800;
       margin-bottom: 8px;
+      color: #dce9ff;
     }
 
     .result-body {
       color: var(--text);
-      line-height: 1.75;
+      line-height: 1.7;
       white-space: pre-wrap;
+      font-size: 14px;
     }
 
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 14px;
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
-    .summary-box {
-      background: rgba(255,255,255,0.03);
+    .pill {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .pill.good { color: var(--good); }
+    .pill.warn { color: var(--warn); }
+    .pill.bad { color: var(--bad); }
+
+    .json-box {
+      min-height: 160px;
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 12px;
-    }
-
-    .summary-box-label {
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 4px;
-    }
-
-    .summary-box-value {
-      font-size: 18px;
-      font-weight: 800;
-      line-height: 1.4;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 800;
-      margin-right: 8px;
-      margin-bottom: 8px;
-    }
-
-    .badge-success {
-      background: rgba(34,197,94,0.14);
-      color: #86efac;
-      border: 1px solid rgba(34,197,94,0.28);
-    }
-
-    .badge-warn {
-      background: rgba(245,158,11,0.14);
-      color: #fcd34d;
-      border: 1px solid rgba(245,158,11,0.28);
-    }
-
-    .badge-danger {
-      background: rgba(239,68,68,0.14);
-      color: #fca5a5;
-      border: 1px solid rgba(239,68,68,0.28);
-    }
-
-    .placeholder-box {
-      min-height: 560px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: rgba(255,255,255,0.025);
-      padding: 16px;
+      background: rgba(255,255,255,0.02);
+      padding: 14px;
       white-space: pre-wrap;
-      line-height: 1.75;
-      font-size: 15px;
+      overflow: auto;
+      line-height: 1.6;
       color: var(--muted);
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
     }
 
     @media (max-width: 980px) {
@@ -356,22 +337,14 @@
         grid-template-columns: 1fr;
       }
 
-      .field-grid {
-        grid-template-columns: 1fr;
-      }
-
+      .field-grid,
+      .result-grid,
       .mini-grid {
         grid-template-columns: 1fr;
       }
 
-      .summary-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 680px) {
-      .summary-grid {
-        grid-template-columns: 1fr;
+      .result-card.full {
+        grid-column: auto;
       }
     }
   </style>
@@ -383,7 +356,7 @@
         <img class="brand-icon" src="hagimi-icon.png" alt="HAGIMI icon" />
         <div class="brand-text">
           <h1 id="pageTitle">HAGIMI Investment Decision</h1>
-          <p id="pageSub">Structured whisky investment analysis with ROI, verdict, buyer fit, and token suitability</p>
+          <p id="pageSub">Structured whisky investment analysis, ROI comparison, and investor-grade decision support</p>
         </div>
       </div>
 
@@ -394,9 +367,9 @@
     </div>
 
     <div class="hero">
-      <h2 id="heroTitle">Structured Investment Decision Engine</h2>
+      <h2 id="heroTitle">Whisky Investment Decision Engine</h2>
       <p id="heroText">
-        This page transforms AI output into a structured investor-facing analysis panel, including financial logic, market fit, negotiation guidance, and token suitability.
+        Use this page to compare cask strategies, estimate revenue, profit, ROI, annualized return, and generate a structured recommendation for partners or investors.
       </p>
     </div>
 
@@ -404,7 +377,7 @@
       <div class="panel">
         <h3 id="inputTitle">Input Parameters</h3>
         <p class="panel-sub" id="inputSub">
-          Fill in the details below, or use the example button to test the structured analysis engine.
+          Fill in the key cask details below, or use the example button to auto-generate a professional investment analysis request.
         </p>
 
         <div class="mini-grid">
@@ -413,12 +386,12 @@
             <div class="mini-value" id="mini1Value">ROI</div>
           </div>
           <div class="mini-card">
-            <div class="mini-label" id="mini2Label">Output Format</div>
-            <div class="mini-value" id="mini2Value">JSON UI</div>
+            <div class="mini-label" id="mini2Label">Output Style</div>
+            <div class="mini-value" id="mini2Value">Structured</div>
           </div>
           <div class="mini-card">
-            <div class="mini-label" id="mini3Label">Decision Style</div>
-            <div class="mini-value" id="mini3Value">Investor Grade</div>
+            <div class="mini-label" id="mini3Label">Language</div>
+            <div class="mini-value" id="mini3Value">Bilingual</div>
           </div>
         </div>
 
@@ -460,7 +433,7 @@
 
           <div class="field full">
             <label id="labelExtraNotes" for="extraNotes">Extra Notes</label>
-            <textarea id="extraNotes" placeholder="Add assumptions, growth expectations, target market, or comparison notes."></textarea>
+            <textarea id="extraNotes" placeholder="Add assumptions, expected price growth, holding period, target market, or comparison notes."></textarea>
           </div>
         </div>
 
@@ -472,27 +445,57 @@
         </div>
 
         <div class="hint" id="hintText">
-          Tip: this version expects structured JSON output from Make and will automatically render it into investor-facing sections.
-        </div>
-      </div>
-
-      <div class="panel">
-        <h3 id="outputTitle">Structured Analysis Output</h3>
-        <p class="panel-sub" id="outputSub">
-          The returned JSON will be parsed and displayed as a decision dashboard instead of raw text.
-        </p>
-
-        <div id="outputArea">
-          <div id="placeholder" class="placeholder-box"></div>
-          <div id="results" class="results" style="display:none;"></div>
+          Tip: the result will be turned into summary cards automatically.
         </div>
 
         <div id="status" class="status"></div>
+      </div>
 
-        <div class="actions">
-          <button class="btn" onclick="copyOutput()" id="btnCopy">Copy Raw JSON</button>
-          <button class="btn" onclick="exportOutput()" id="btnExport">Export Raw JSON</button>
+      <div class="panel">
+        <h3 id="outputTitle">Structured Output</h3>
+        <p class="panel-sub" id="outputSub">
+          The AI result will be cleaned, parsed, and shown as a readable investment summary.
+        </p>
+
+        <div class="results-toolbar">
+          <button class="btn" onclick="copyRenderedOutput()" id="btnCopy">Copy Summary</button>
+          <button class="btn" onclick="exportRenderedOutput()" id="btnExport">Export Summary</button>
+          <button class="btn" onclick="toggleRawJson()" id="btnRaw">Show Raw JSON</button>
         </div>
+
+        <div class="result-grid">
+          <div class="result-card">
+            <div class="result-title" id="sectionRevenue">Revenue Estimate</div>
+            <div class="result-body" id="revenueEstimate">-</div>
+          </div>
+
+          <div class="result-card">
+            <div class="result-title" id="sectionProfit">Profit</div>
+            <div class="result-body" id="profitEstimate">-</div>
+          </div>
+
+          <div class="result-card">
+            <div class="result-title" id="sectionROI">ROI</div>
+            <div class="result-body" id="roiValue">-</div>
+          </div>
+
+          <div class="result-card">
+            <div class="result-title" id="sectionAnnualized">Annualized Return</div>
+            <div class="result-body" id="annualizedReturn">-</div>
+          </div>
+
+          <div class="result-card">
+            <div class="result-title" id="sectionRisk">Risk Level</div>
+            <div class="result-body" id="riskLevel">-</div>
+          </div>
+
+          <div class="result-card full">
+            <div class="result-title" id="sectionRecommendation">Recommendation</div>
+            <div class="result-body" id="recommendationText">-</div>
+          </div>
+        </div>
+
+        <div id="rawJsonBox" class="json-box"></div>
       </div>
     </div>
   </div>
@@ -500,28 +503,29 @@
   <script>
     const webhookUrl = "https://hook.eu1.make.com/q7aux9niyxc179nk1vjj9fuyr9o7wg86?msg=";
     const languageKey = "hagimi_lang";
+
     let currentLang = localStorage.getItem(languageKey) || "en";
-    let latestRawOutput = "";
-    let latestParsed = null;
+    let latestPrompt = "";
+    let latestRenderedText = "";
+    let latestJson = null;
+    let rawVisible = false;
 
     const translations = {
       en: {
         pageTitle: "HAGIMI Investment Decision",
-        pageSub: "Structured whisky investment analysis with ROI, verdict, buyer fit, and token suitability",
+        pageSub: "Structured whisky investment analysis, ROI comparison, and investor-grade decision support",
         btnBack: "Back to HAGIMI",
         btnLang: "中文 / EN",
-        heroTitle: "Structured Investment Decision Engine",
-        heroText: "This page transforms AI output into a structured investor-facing analysis panel, including financial logic, market fit, negotiation guidance, and token suitability.",
+        heroTitle: "Whisky Investment Decision Engine",
+        heroText: "Use this page to compare cask strategies, estimate revenue, profit, ROI, annualized return, and generate a structured recommendation for partners or investors.",
         inputTitle: "Input Parameters",
-        inputSub: "Fill in the details below, or use the example button to test the structured analysis engine.",
-        outputTitle: "Structured Analysis Output",
-        outputSub: "The returned JSON will be parsed and displayed as a decision dashboard instead of raw text.",
+        inputSub: "Fill in the key cask details below, or use the example button to auto-generate a professional investment analysis request.",
         mini1Label: "Analysis Focus",
         mini1Value: "ROI",
-        mini2Label: "Output Format",
-        mini2Value: "JSON UI",
-        mini3Label: "Decision Style",
-        mini3Value: "Investor Grade",
+        mini2Label: "Output Style",
+        mini2Value: "Structured",
+        mini3Label: "Language",
+        mini3Value: "Bilingual",
         labelDistillery: "Distillery",
         labelVintage: "Vintage",
         labelAbv: "ABV",
@@ -534,41 +538,29 @@
         btnBuild: "Build Prompt",
         btnAnalyze: "Run Analysis",
         btnClear: "Clear",
-        btnCopy: "Copy Raw JSON",
-        btnExport: "Export Raw JSON",
-        hintText: "Tip: this version expects structured JSON output from Make and will automatically render it into investor-facing sections.",
-        placeholder: "Structured results will appear here after analysis...",
-        built: "Prompt built successfully.",
-        running: "Running structured analysis...",
-        completed: "Analysis completed.",
-        failed: "Request failed. Please check your network, Make scenario, or JSON format.",
-        invalidJson: "The response was received, but it was not valid JSON.",
+        hintText: "Tip: the result will be turned into summary cards automatically.",
+        outputTitle: "Structured Output",
+        outputSub: "The AI result will be cleaned, parsed, and shown as a readable investment summary.",
+        btnCopy: "Copy Summary",
+        btnExport: "Export Summary",
+        btnRaw: "Show Raw JSON",
+        btnRawHide: "Hide Raw JSON",
+        sectionRevenue: "Revenue Estimate",
+        sectionProfit: "Profit",
+        sectionROI: "ROI",
+        sectionAnnualized: "Annualized Return",
+        sectionRisk: "Risk Level",
+        sectionRecommendation: "Recommendation",
         required: "Please complete the key fields first.",
-        copied: "Raw JSON copied.",
+        buildingDone: "Prompt built successfully.",
+        running: "Running investment analysis...",
+        completed: "Analysis completed.",
+        failed: "Request failed, or the returned content is not valid JSON.",
+        copied: "Summary copied.",
         copyFail: "Copy failed. Please copy manually.",
-        exported: "Raw JSON exported.",
-        nothingToExport: "There is no output to export yet.",
-        assetSummary: "Asset Summary",
-        costStructure: "Cost Structure",
-        marketPricing: "Market Pricing by Region",
-        profitAnalysis: "Profit Analysis",
-        salesStrategy: "Sales Strategy",
-        clientMessage: "Client-Facing Sales Message",
-        buyerFit: "Buyer Fit",
-        negotiationAngle: "Negotiation Angle",
-        nextAction: "Next Action",
-        tokenModel: "Tokenization Model",
-        investmentDecision: "Investment Decision",
-        verdict: "Deal Verdict",
-        urgency: "Urgency Level",
-        tokenScore: "Token Suitability Score",
-        revenueEstimate: "Revenue Estimate",
-        profitEstimate: "Profit Estimate",
-        roi: "ROI",
-        annualizedReturn: "Annualized Return",
-        riskLevel: "Risk Level",
-        finalRecommendation: "Final Recommendation",
-        builtPrefix: "Please analyze the following whisky investment opportunity in a structured investor-grade format.\n\nInput Parameters:\n",
+        exported: "Summary exported.",
+        nothingToExport: "There is no rendered summary to export.",
+        rawEmpty: "No raw JSON yet.",
         promptDistillery: "Distillery",
         promptVintage: "Vintage",
         promptAbv: "ABV",
@@ -576,25 +568,25 @@
         promptBottlePrice: "Bottle Floor Price",
         promptCaskCost: "Cask Cost",
         promptBottlingPlan: "Target Bottling Strategy",
-        promptExtraNotes: "Extra Notes"
+        promptExtraNotes: "Extra Notes",
+        builtPrefix: "Please analyze the following whisky investment opportunity in structured JSON format.\n\nInput Parameters:\n",
+        builtMiddle: "\n\nPlease provide revenue estimate, profit, ROI, annualized return, risk level, and recommendation in both English and Chinese."
       },
       zh: {
         pageTitle: "HAGIMI 投资决策",
-        pageSub: "结构化威士忌投资分析，包含 ROI、交易判断、买家匹配与 Token 适配度",
+        pageSub: "结构化威士忌投资分析、ROI 比较与投资人级决策支持",
         btnBack: "返回 HAGIMI",
         btnLang: "中文 / EN",
-        heroTitle: "结构化投资决策引擎",
-        heroText: "本页面会把 AI 返回结果从原始 JSON 自动转换为面向投资人的分析面板，包括财务逻辑、市场匹配、谈判建议与 Token 适配度。",
+        heroTitle: "威士忌投资决策引擎",
+        heroText: "使用本页面比较酒桶策略，估算收入、利润、ROI、年化回报，并生成适合合伙人与投资人的结构化建议。",
         inputTitle: "输入参数",
-        inputSub: "填写下面的内容，或使用示例按钮测试结构化分析引擎。",
-        outputTitle: "结构化分析输出",
-        outputSub: "返回的 JSON 会被自动解析并展示为决策面板，而不是原始文本。",
+        inputSub: "填写关键酒桶信息，或使用示例按钮自动生成专业投资分析请求。",
         mini1Label: "分析重点",
         mini1Value: "ROI",
-        mini2Label: "输出格式",
-        mini2Value: "JSON 界面",
-        mini3Label: "决策风格",
-        mini3Value: "投资人级",
+        mini2Label: "输出风格",
+        mini2Value: "结构化",
+        mini3Label: "语言",
+        mini3Value: "双语",
         labelDistillery: "酒厂",
         labelVintage: "年份",
         labelAbv: "酒精度",
@@ -607,41 +599,29 @@
         btnBuild: "生成提示词",
         btnAnalyze: "开始分析",
         btnClear: "清空",
-        btnCopy: "复制原始 JSON",
-        btnExport: "导出原始 JSON",
-        hintText: "提示：这个版本要求 Make 返回结构化 JSON，并会自动渲染成投资人可读的分析模块。",
-        placeholder: "分析后，结构化结果会显示在这里...",
-        built: "提示词已生成。",
-        running: "正在进行结构化分析...",
-        completed: "分析完成。",
-        failed: "请求失败，请检查网络、Make 场景或 JSON 格式。",
-        invalidJson: "已收到返回结果，但不是有效 JSON。",
+        hintText: "提示：结果会自动转成摘要卡片。",
+        outputTitle: "结构化输出",
+        outputSub: "AI 结果会自动清洗、解析，并展示为可读的投资摘要。",
+        btnCopy: "复制摘要",
+        btnExport: "导出摘要",
+        btnRaw: "显示原始 JSON",
+        btnRawHide: "隐藏原始 JSON",
+        sectionRevenue: "预计收入",
+        sectionProfit: "预计利润",
+        sectionROI: "ROI",
+        sectionAnnualized: "年化回报",
+        sectionRisk: "风险等级",
+        sectionRecommendation: "投资建议",
         required: "请先填写关键字段。",
-        copied: "已复制原始 JSON。",
+        buildingDone: "提示词已生成。",
+        running: "正在进行投资分析...",
+        completed: "分析完成。",
+        failed: "请求失败，或返回内容不是有效 JSON。",
+        copied: "摘要已复制。",
         copyFail: "复制失败，请手动复制。",
-        exported: "已导出原始 JSON。",
-        nothingToExport: "目前没有可导出的内容。",
-        assetSummary: "资产概述",
-        costStructure: "成本结构",
-        marketPricing: "区域市场定价",
-        profitAnalysis: "利润分析",
-        salesStrategy: "销售策略",
-        clientMessage: "面向客户的销售话术",
-        buyerFit: "买家匹配",
-        negotiationAngle: "谈判角度",
-        nextAction: "下一步行动",
-        tokenModel: "Token 化模型",
-        investmentDecision: "投资决策",
-        verdict: "交易判断",
-        urgency: "紧迫程度",
-        tokenScore: "Token 适配度",
-        revenueEstimate: "预计收入",
-        profitEstimate: "预计利润",
-        roi: "ROI",
-        annualizedReturn: "年化回报",
-        riskLevel: "风险等级",
-        finalRecommendation: "最终建议",
-        builtPrefix: "请以结构化投资人级格式分析以下威士忌投资机会。\n\n输入参数：\n",
+        exported: "摘要已导出。",
+        nothingToExport: "目前没有可导出的摘要。",
+        rawEmpty: "目前没有原始 JSON。",
         promptDistillery: "酒厂",
         promptVintage: "年份",
         promptAbv: "酒精度",
@@ -649,12 +629,22 @@
         promptBottlePrice: "单瓶底价",
         promptCaskCost: "整桶成本",
         promptBottlingPlan: "目标装瓶策略",
-        promptExtraNotes: "补充说明"
+        promptExtraNotes: "补充说明",
+        builtPrefix: "请以结构化 JSON 格式分析以下威士忌投资机会。\n\n输入参数：\n",
+        builtMiddle: "\n\n请提供中英双语的预计收入、利润、ROI、年化回报、风险等级与投资建议。"
       }
     };
 
     function $(id) {
       return document.getElementById(id);
+    }
+
+    function getBiText(obj) {
+      if (!obj) return "-";
+      if (typeof obj === "string") return obj;
+      return currentLang === "zh"
+        ? (obj.chinese || obj.zh || obj.english || obj.en || "-")
+        : (obj.english || obj.en || obj.chinese || obj.zh || "-");
     }
 
     function applyLanguage() {
@@ -668,8 +658,6 @@
       $("heroText").innerText = t.heroText;
       $("inputTitle").innerText = t.inputTitle;
       $("inputSub").innerText = t.inputSub;
-      $("outputTitle").innerText = t.outputTitle;
-      $("outputSub").innerText = t.outputSub;
       $("mini1Label").innerText = t.mini1Label;
       $("mini1Value").innerText = t.mini1Value;
       $("mini2Label").innerText = t.mini2Label;
@@ -688,27 +676,21 @@
       $("btnBuild").innerText = t.btnBuild;
       $("btnAnalyze").innerText = t.btnAnalyze;
       $("btnClear").innerText = t.btnClear;
+      $("hintText").innerText = t.hintText;
+      $("outputTitle").innerText = t.outputTitle;
+      $("outputSub").innerText = t.outputSub;
       $("btnCopy").innerText = t.btnCopy;
       $("btnExport").innerText = t.btnExport;
-      $("hintText").innerText = t.hintText;
+      $("btnRaw").innerText = rawVisible ? t.btnRawHide : t.btnRaw;
+      $("sectionRevenue").innerText = t.sectionRevenue;
+      $("sectionProfit").innerText = t.sectionProfit;
+      $("sectionROI").innerText = t.sectionROI;
+      $("sectionAnnualized").innerText = t.sectionAnnualized;
+      $("sectionRisk").innerText = t.sectionRisk;
+      $("sectionRecommendation").innerText = t.sectionRecommendation;
 
-      $("distillery").placeholder = currentLang === "en" ? "Macallan" : "例如：麦卡伦";
-      $("vintage").placeholder = currentLang === "en" ? "1990" : "例如：1990";
-      $("abv").placeholder = currentLang === "en" ? "51.9%, 52.5%, 51.2%" : "例如：51.9%、52.5%、51.2%";
-      $("bottles").placeholder = currentLang === "en" ? "313, 323, 285" : "例如：313、323、285";
-      $("bottlePrice").placeholder = currentLang === "en" ? "16500 RMB" : "例如：16500 人民币";
-      $("caskCost").placeholder = currentLang === "en" ? "5164500 RMB, 5329500 RMB, 4702500 RMB" : "例如：5164500 人民币、5329500 人民币、4702500 人民币";
-      $("bottlingPlan").placeholder = currentLang === "en"
-        ? "Example: Cask 1 bottled at 38 years, Cask 2 bottled at 40 years, Cask 3 bottled at 45 years."
-        : "例如：第一桶38年装瓶，第二桶40年装瓶，第三桶45年装瓶。";
-      $("extraNotes").placeholder = currentLang === "en"
-        ? "Add assumptions, growth expectations, target market, or comparison notes."
-        : "填写假设条件、增长预期、目标市场或比较说明。";
-
-      if (!latestParsed) {
-        $("placeholder").innerText = t.placeholder;
-      } else {
-        renderStructured(latestParsed);
+      if (latestJson) {
+        renderStructured(latestJson);
       }
     }
 
@@ -722,21 +704,21 @@
       if (currentLang === "en") {
         $("distillery").value = "Macallan";
         $("vintage").value = "1990";
-        $("abv").value = "51.9%, 52.5%, 51.2%";
-        $("bottles").value = "313, 323, 285";
+        $("abv").value = "51.5%";
+        $("bottles").value = "285";
         $("bottlePrice").value = "16500 RMB";
-        $("caskCost").value = "5164500 RMB, 5329500 RMB, 4702500 RMB";
-        $("bottlingPlan").value = "Cask 1 bottled at 38 years. Cask 2 bottled at 40 years. Cask 3 bottled at 45 years.";
-        $("extraNotes").value = "Please compare the three casks from profit, ROI, annualized return, risk level, and best bottling-year perspectives.";
+        $("caskCost").value = "4702500 RMB";
+        $("bottlingPlan").value = "Bottle at 40 years";
+        $("extraNotes").value = "Please provide structured investment analysis.";
       } else {
         $("distillery").value = "麦卡伦";
         $("vintage").value = "1990";
-        $("abv").value = "51.9%、52.5%、51.2%";
-        $("bottles").value = "313、323、285";
+        $("abv").value = "51.5%";
+        $("bottles").value = "285";
         $("bottlePrice").value = "16500 人民币";
-        $("caskCost").value = "5164500 人民币、5329500 人民币、4702500 人民币";
-        $("bottlingPlan").value = "第一桶：38年装瓶。第二桶：40年装瓶。第三桶：45年装瓶。";
-        $("extraNotes").value = "请比较三桶从利润、ROI、年化回报、风险等级与最优装瓶年份角度的优先级。";
+        $("caskCost").value = "4702500 人民币";
+        $("bottlingPlan").value = "40年装瓶";
+        $("extraNotes").value = "请提供结构化投资分析。";
       }
     }
 
@@ -757,7 +739,7 @@
         return;
       }
 
-      const prompt =
+      latestPrompt =
         t.builtPrefix +
         `${t.promptDistillery}: ${distillery}\n` +
         `${t.promptVintage}: ${vintage}\n` +
@@ -766,26 +748,20 @@
         `${t.promptBottlePrice}: ${bottlePrice}\n` +
         `${t.promptCaskCost}: ${caskCost}\n` +
         `${t.promptBottlingPlan}: ${bottlingPlan}\n` +
-        `${t.promptExtraNotes}: ${extraNotes}`;
+        `${t.promptExtraNotes}: ${extraNotes}` +
+        t.builtMiddle;
 
-      latestRawOutput = prompt;
-      latestParsed = null;
-      $("results").style.display = "none";
-      $("placeholder").style.display = "block";
-      $("placeholder").innerText = prompt;
-      $("status").innerText = t.built;
+      $("status").innerText = t.buildingDone;
     }
 
     async function runAnalysis() {
       const t = translations[currentLang];
 
-      const currentText = $("placeholder").innerText.trim();
-      if (!currentText || currentText === t.placeholder) {
+      if (!latestPrompt) {
         buildPrompt();
       }
 
-      const prompt = $("placeholder").innerText.trim();
-      if (!prompt || prompt === t.placeholder) {
+      if (!latestPrompt) {
         $("status").innerText = t.required;
         return;
       }
@@ -793,199 +769,48 @@
       $("status").innerText = t.running;
 
       try {
-        const response = await fetch(webhookUrl + encodeURIComponent(prompt), {
+        const response = await fetch(webhookUrl + encodeURIComponent(latestPrompt), {
           method: "GET"
         });
 
-        const raw = await response.text();
-        latestRawOutput = raw;
+        const text = await response.text();
 
-        let parsed;
-        try {
-          parsed = JSON.parse(raw);
-        } catch (e) {
-          latestParsed = null;
-          $("results").style.display = "none";
-          $("placeholder").style.display = "block";
-          $("placeholder").innerText = raw;
-          $("status").innerText = t.invalidJson;
-          return;
-        }
+        const cleaned = text
+          .replace(/^```json\s*/i, "")
+          .replace(/^```\s*/i, "")
+          .replace(/\s*```$/i, "")
+          .trim();
 
-        latestParsed = parsed;
+        const parsed = JSON.parse(cleaned);
+
+        latestJson = parsed;
         renderStructured(parsed);
+        $("rawJsonBox").textContent = JSON.stringify(parsed, null, 2);
         $("status").innerText = t.completed;
       } catch (error) {
         $("status").innerText = t.failed;
+        console.error(error);
       }
-    }
-
-    function safeValue(obj, path, fallback = "-") {
-      try {
-        const parts = path.split(".");
-        let value = obj;
-        for (const part of parts) {
-          value = value[part];
-        }
-        if (value === undefined || value === null || value === "") return fallback;
-        return value;
-      } catch {
-        return fallback;
-      }
-    }
-
-    function langText(enVal, zhVal) {
-      return currentLang === "zh" ? (zhVal || enVal || "-") : (enVal || zhVal || "-");
-    }
-
-    function badgeClassForVerdict(verdict) {
-      if (verdict === "PUSH") return "badge-success";
-      if (verdict === "NEGOTIATE" || verdict === "HOLD") return "badge-warn";
-      return "badge-danger";
-    }
-
-    function badgeClassForUrgency(level) {
-      if (level === "High") return "badge-danger";
-      if (level === "Medium") return "badge-warn";
-      return "badge-success";
     }
 
     function renderStructured(data) {
-      const t = translations[currentLang];
-      const results = $("results");
-      const placeholder = $("placeholder");
+      const analysis = data.investment_analysis || {};
 
-      const assetSummary = langText(safeValue(data, "asset_summary.en"), safeValue(data, "asset_summary.zh"));
-      const costStructure = langText(safeValue(data, "cost_structure.en"), safeValue(data, "cost_structure.zh"));
-      const marketPricing = langText(safeValue(data, "market_pricing_by_region.en"), safeValue(data, "market_pricing_by_region.zh"));
-      const profitAnalysis = langText(safeValue(data, "profit_analysis.en"), safeValue(data, "profit_analysis.zh"));
-      const salesStrategy = langText(safeValue(data, "sales_strategy.en"), safeValue(data, "sales_strategy.zh"));
-      const clientMessage = langText(safeValue(data, "client_facing_sales_message.en"), safeValue(data, "client_facing_sales_message.zh"));
-      const buyerFit = langText(safeValue(data, "buyer_fit.en"), safeValue(data, "buyer_fit.zh"));
-      const negotiationAngle = langText(safeValue(data, "negotiation_angle.en"), safeValue(data, "negotiation_angle.zh"));
-      const nextAction = langText(safeValue(data, "next_action.en"), safeValue(data, "next_action.zh"));
-      const tokenModel = langText(safeValue(data, "tokenization_model.en"), safeValue(data, "tokenization_model.zh"));
+      $("revenueEstimate").innerText = getBiText(analysis.revenue_estimate);
+      $("profitEstimate").innerText = getBiText(analysis.profit);
+      $("roiValue").innerText = getBiText(analysis.roi);
+      $("annualizedReturn").innerText = getBiText(analysis.annualized_return);
+      $("riskLevel").innerText = getBiText(analysis.risk_level);
+      $("recommendationText").innerText = getBiText(analysis.recommendation);
 
-      const finalRecommendation = currentLang === "zh"
-        ? safeValue(data, "investment_decision.final_recommendation_zh")
-        : safeValue(data, "investment_decision.final_recommendation_en");
-
-      const verdict = safeValue(data, "deal_verdict");
-      const urgency = safeValue(data, "urgency_level");
-      const tokenScore = safeValue(data, "token_suitability_score.score");
-      const tokenClassification = safeValue(data, "token_suitability_score.classification");
-      const tokenReason = currentLang === "zh"
-        ? safeValue(data, "token_suitability_score.reason_zh")
-        : safeValue(data, "token_suitability_score.reason_en");
-
-      const revenueEstimate = safeValue(data, "investment_decision.revenue_estimate");
-      const profitEstimate = safeValue(data, "investment_decision.profit_estimate");
-      const roi = safeValue(data, "investment_decision.roi");
-      const annualizedReturn = safeValue(data, "investment_decision.annualized_return");
-      const riskLevel = safeValue(data, "investment_decision.risk_level");
-
-      results.innerHTML = `
-        <div class="summary-grid">
-          <div class="summary-box">
-            <div class="summary-box-label">${t.verdict}</div>
-            <div class="summary-box-value"><span class="badge ${badgeClassForVerdict(verdict)}">${verdict}</span></div>
-          </div>
-          <div class="summary-box">
-            <div class="summary-box-label">${t.urgency}</div>
-            <div class="summary-box-value"><span class="badge ${badgeClassForUrgency(urgency)}">${urgency}</span></div>
-          </div>
-          <div class="summary-box">
-            <div class="summary-box-label">${t.tokenScore}</div>
-            <div class="summary-box-value">${tokenScore}/10</div>
-          </div>
-          <div class="summary-box">
-            <div class="summary-box-label">${t.riskLevel}</div>
-            <div class="summary-box-value">${riskLevel}</div>
-          </div>
-        </div>
-
-        <div class="summary-grid">
-          <div class="summary-box">
-            <div class="summary-box-label">${t.revenueEstimate}</div>
-            <div class="summary-box-value">${revenueEstimate}</div>
-          </div>
-          <div class="summary-box">
-            <div class="summary-box-label">${t.profitEstimate}</div>
-            <div class="summary-box-value">${profitEstimate}</div>
-          </div>
-          <div class="summary-box">
-            <div class="summary-box-label">${t.roi}</div>
-            <div class="summary-box-value">${roi}</div>
-          </div>
-          <div class="summary-box">
-            <div class="summary-box-label">${t.annualizedReturn}</div>
-            <div class="summary-box-value">${annualizedReturn}</div>
-          </div>
-        </div>
-
-        <div class="result-card">
-          <div class="result-title">${t.assetSummary}</div>
-          <div class="result-body">${assetSummary}</div>
-        </div>
-
-        <div class="result-card">
-          <div class="result-title">${t.costStructure}</div>
-          <div class="result-body">${costStructure}</div>
-        </div>
-
-        <div class="result-card">
-          <div class="result-title">${t.marketPricing}</div>
-          <div class="result-body">${marketPricing}</div>
-        </div>
-
-        <div class="result-card">
-          <div class="result-title">${t.profitAnalysis}</div>
-          <div class="result-body">${profitAnalysis}</div>
-        </div>
-
-        <div class="result-card">
-          <div class="result-title">${t.salesStrategy}</div>
-          <div class="result-body">${salesStrategy}</div>
-        </div>
-
-        <div class="result-card">
-          <div class="result-title">${t.clientMessage}</div>
-          <div class="result-body">${clientMessage}</div>
-        </div>
-
-        <div class="result-card">
-          <div class="result-title">${t.buyerFit}</div>
-          <div class="result-body">${buyerFit}</div>
-        </div>
-
-        <div class="result-card">
-          <div class="result-title">${t.negotiationAngle}</div>
-          <div class="result-body">${negotiationAngle}</div>
-        </div>
-
-        <div class="result-card">
-          <div class="result-title">${t.nextAction}</div>
-          <div class="result-body">${nextAction}</div>
-        </div>
-
-        <div class="result-card">
-          <div class="result-title">${t.tokenModel}</div>
-          <div class="result-body">${tokenModel}</div>
-        </div>
-
-        <div class="result-card">
-          <div class="result-title">${t.tokenScore}</div>
-          <div class="result-body">${tokenClassification}\n${tokenReason}</div>
-        </div>
-
-        <div class="result-card">
-          <div class="result-title">${t.investmentDecision}</div>
-          <div class="result-body">${t.finalRecommendation}：\n${finalRecommendation}</div>
-        </div>
-      `;
-
-      placeholder.style.display = "none";
-      results.style.display = "flex";
+      latestRenderedText = [
+        `${translations[currentLang].sectionRevenue}: ${getBiText(analysis.revenue_estimate)}`,
+        `${translations[currentLang].sectionProfit}: ${getBiText(analysis.profit)}`,
+        `${translations[currentLang].sectionROI}: ${getBiText(analysis.roi)}`,
+        `${translations[currentLang].sectionAnnualized}: ${getBiText(analysis.annualized_return)}`,
+        `${translations[currentLang].sectionRisk}: ${getBiText(analysis.risk_level)}`,
+        `${translations[currentLang].sectionRecommendation}: ${getBiText(analysis.recommendation)}`
+      ].join("\n\n");
     }
 
     function clearForm() {
@@ -997,47 +822,63 @@
       $("caskCost").value = "";
       $("bottlingPlan").value = "";
       $("extraNotes").value = "";
-      latestRawOutput = "";
-      latestParsed = null;
+      $("revenueEstimate").innerText = "-";
+      $("profitEstimate").innerText = "-";
+      $("roiValue").innerText = "-";
+      $("annualizedReturn").innerText = "-";
+      $("riskLevel").innerText = "-";
+      $("recommendationText").innerText = "-";
+      latestPrompt = "";
+      latestJson = null;
+      latestRenderedText = "";
+      $("rawJsonBox").textContent = "";
       $("status").innerText = "";
-      $("results").style.display = "none";
-      $("placeholder").style.display = "block";
-      $("placeholder").innerText = translations[currentLang].placeholder;
     }
 
-    async function copyOutput() {
+    async function copyRenderedOutput() {
       const t = translations[currentLang];
-      if (!latestRawOutput) {
+      if (!latestRenderedText) {
         $("status").innerText = t.nothingToExport;
         return;
       }
 
       try {
-        await navigator.clipboard.writeText(latestRawOutput);
+        await navigator.clipboard.writeText(latestRenderedText);
         $("status").innerText = t.copied;
       } catch (error) {
         $("status").innerText = t.copyFail;
       }
     }
 
-    function exportOutput() {
+    function exportRenderedOutput() {
       const t = translations[currentLang];
-      if (!latestRawOutput) {
+      if (!latestRenderedText) {
         $("status").innerText = t.nothingToExport;
         return;
       }
 
-      const blob = new Blob([latestRawOutput], { type: "application/json;charset=utf-8" });
+      const blob = new Blob([latestRenderedText], { type: "text/plain;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "hagimi-structured-output.json";
+      a.download = "hagimi-investment-summary.txt";
       a.click();
       URL.revokeObjectURL(url);
       $("status").innerText = t.exported;
     }
 
+    function toggleRawJson() {
+      rawVisible = !rawVisible;
+      $("rawJsonBox").style.display = rawVisible ? "block" : "none";
+      $("btnRaw").innerText = rawVisible ? translations[currentLang].btnRawHide : translations[currentLang].btnRaw;
+
+      if (!latestJson) {
+        $("rawJsonBox").textContent = translations[currentLang].rawEmpty;
+      }
+    }
+
     applyLanguage();
+    clearForm();
   </script>
 </body>
 </html>
