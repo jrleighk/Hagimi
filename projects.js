@@ -11,6 +11,15 @@ const projects = [
     estimatedBottles: 285,
     targetMarket: "Hong Kong / Mainland China",
     totalValue: 327750,
+
+    // Fractional Ownership V1
+    totalUnits: 10000,
+    initialUnitPrice: 32.775,
+    assetStatus: "open",
+    custodyStatus: "verified",
+    ownershipStructure: "economic_units",
+
+    // Legacy demo compatibility
     tokenSupply: 327750,
     sold: 120000,
     suitabilityScore: 8.7,
@@ -29,6 +38,15 @@ const projects = [
     estimatedBottles: 190,
     targetMarket: "Mainland China / Hong Kong",
     totalValue: 228000,
+
+    // Fractional Ownership V1
+    totalUnits: 10000,
+    initialUnitPrice: 22.80,
+    assetStatus: "open",
+    custodyStatus: "verified",
+    ownershipStructure: "economic_units",
+
+    // Legacy demo compatibility
     tokenSupply: 228000,
     sold: 64000,
     suitabilityScore: 7.9,
@@ -47,6 +65,15 @@ const projects = [
     estimatedBottles: 210,
     targetMarket: "Japan / Hong Kong / Singapore",
     totalValue: 168000,
+
+    // Fractional Ownership V1
+    totalUnits: 10000,
+    initialUnitPrice: 16.80,
+    assetStatus: "open",
+    custodyStatus: "verified",
+    ownershipStructure: "economic_units",
+
+    // Legacy demo compatibility
     tokenSupply: 168000,
     sold: 42000,
     suitabilityScore: 7.1,
